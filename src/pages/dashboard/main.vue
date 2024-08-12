@@ -1,5 +1,5 @@
 <template>
-    <q-page class="login-page">
+    <q-page class="login-page q-pa-md q-mt-xs">
         asd
     </q-page>
 </template>

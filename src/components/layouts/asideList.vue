@@ -77,7 +77,7 @@ export default defineComponent({
       const logout = await authStore.doLogout();
       if (logout)
         router.push({
-          name: 'login',
+          path: '/',
         });
     }
 

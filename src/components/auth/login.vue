@@ -1,7 +1,7 @@
 <template>
   <section class="bg-login">
     <div class="row full-height mobile-bg">
-      <div class="col-12 col-md-6 d-flex justify-center items-center">
+      <div class="col-12 col-md-5 d-flex justify-center items-center">
         <div class="overflow"></div>
         <section class="login-row">
           <q-img class="logo" src="images/logo.svg" alt="Motowork logo"></q-img>
@@ -34,7 +34,8 @@
                 placeholder="Ingresa tu contraseña"></q-input>
             </div>
             <div class="col-12">
-              <q-checkbox color="secondary" bg-color="white" v-model="rememberPassword" label="Recordar contraseña" />
+              <q-checkbox @update:model-value="doRemember" color="secondary" bg-color="white" v-model="rememberPassword"
+                label="Recordar contraseña" />
             </div>
             <div class="col-12 q-mt-xl">
               <q-btn unelevated square :loading="loading" type="submit" class="full-width submit-btn" color="secondary"
@@ -43,7 +44,7 @@
           </q-form>
         </section>
       </div>
-      <div class="col-12 col-md-6 full-height hide-mobile">
+      <div class="col-12 col-md-7 full-height hide-mobile">
         <q-img src="images/loginbg.svg" class="login-img" />
       </div>
     </div>
@@ -52,9 +53,10 @@
 
 <script lang="ts">
 import { useRouter } from 'vue-router'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onBeforeMount, ref } from 'vue'
 import { useAuthStore } from 'src/stores/auth'
 import { LoginData } from 'src/interfaces/AuthInterface'
+import { StorageService } from 'src/utils/storage'
 
 export default defineComponent({
   name: 'LoginComponent',
@@ -67,6 +69,7 @@ export default defineComponent({
     const router = useRouter()
     const authStore = useAuthStore()
     const loading = ref<boolean>(false)
+    const storage = new StorageService('auth')
     const rememberPassword = ref<boolean>(false)
 
     // methods
@@ -86,10 +89,27 @@ export default defineComponent({
       }
     }
 
+    const doRemember = (val: boolean) => {
+      if (val) {
+        storage.saveInStorage('local', 'rememberPassword', val)
+      } else {
+        storage.deleteItemStorage('local', 'rememberPassword')
+      }
+    }
+
+    // hook
+    onBeforeMount(() => {
+      const hasRemember = storage.getItemStorage('local', 'rememberPassword') || false
+      if (hasRemember) {
+        rememberPassword.value = hasRemember
+      }
+    })
+
     return {
       login,
       doLogin,
       loading,
+      doRemember,
       rememberPassword
     }
   }

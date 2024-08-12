@@ -222,6 +222,38 @@ input::placeholder {
     text-transform: uppercase;
 }
 
+.user-welcome-metrics-bars {
+    width: 100%;
+    height: 468px;
+    flex-shrink: 0;
+    padding: 18px 32px;
+    background: var(--Neutrals-Base-White, #F5F5F5);
+}
+
+.chart-day-section {
+    position: absolute;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 10px; /* Agregué 'px' para especificar la unidad del gap */
+}
+
+.chart-day-disable {
+    display: flex;
+    width: 60px;
+    padding: 4px var(--Spacing-s, 8px);
+    justify-content: center;
+    align-items: center;
+    gap: var(--Radius-sm, 10px);
+    background: var(--Neutrals-Neutrals200, #CCCBCB);
+}
+
+.chart-section {
+    position: absolute;
+    width: 100%;
+    top: 40px
+}
+
 // media queries
 @media (max-width: 1060px) {
     .hide-mobile {

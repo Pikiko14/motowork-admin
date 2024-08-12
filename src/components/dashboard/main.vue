@@ -13,7 +13,7 @@
         <CardMetrics :title="'Total productos'" />
       </div>
       <div class="user-welcome-metrics-bars q-mt-lg">
-        a
+        <ChartComponent />
       </div>
     </div>
     <div class="col-12 col-md-4" :class="{ 'q-pl-md': $q.screen.gt.sm }">
@@ -26,11 +26,13 @@
 import { useAuthStore } from 'src/stores/auth'
 import { computed, defineComponent } from 'vue'
 import CardMetrics from './main/cardMetrics.vue'
+import ChartComponent from './main/chartComponent.vue'
 
 export default defineComponent({
   name: 'MainComponent',
   components: {
-    CardMetrics
+    CardMetrics,
+    ChartComponent
   },
   setup() {
     // data

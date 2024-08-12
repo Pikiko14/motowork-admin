@@ -1,7 +1,7 @@
 <template>
   <section class="bg-login">
     <div class="row full-height mobile-bg">
-      <div class="col-12 col-md-5 d-flex justify-center items-center">
+      <div class="col-12 col-md-5 col-lg-6 d-flex justify-center items-center">
         <div class="overflow"></div>
         <section class="login-row">
           <q-img class="logo" src="images/logo.svg" alt="Motowork logo"></q-img>
@@ -44,7 +44,7 @@
           </q-form>
         </section>
       </div>
-      <div class="col-12 col-md-7 full-height hide-mobile">
+      <div class="col-12 col-md-7 col-lg-6 full-height hide-mobile">
         <q-img src="images/loginbg.svg" class="login-img" />
       </div>
     </div>

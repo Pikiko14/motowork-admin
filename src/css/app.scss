@@ -162,6 +162,66 @@ input::placeholder {
     bottom: 20px;
 }
 
+.user-welcome-title {
+    color: var(--Secondary-Secondary, $primary);
+    /* Desktop/Headings/H4 */
+    font-family: Play;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 125%;
+    text-transform: uppercase;
+}
+
+.user-welcome-subtitle {
+    color: var(--Neutrals-Neutrals500, #898384);
+    /* Desktop/Body/Text/Small */
+    font-family: Ubuntu;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%; /* 15px */
+}
+
+.user-welcome-item-section {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.user-welcome-item-section-item {
+    display: flex;
+    padding: 14px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--Spacing-s, 8px);
+    flex: 1 0 0;
+    background: var(--Neutrals-Base-White, #F5F5F5);
+    height: 113px !important;
+}
+
+.title-card-welcome {
+    color: var(--Primary-Primary, #000);
+    /* Desktop/Body/Text/Small */
+    font-family: Ubuntu;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%; /* 15px */
+}
+
+.amount-card-welcome {
+    color: var(--Secondary-Secondary, #ED1C24);
+    /* Desktop/Headings/H1 */
+    font-family: Play;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 125%; /* 60px */
+    text-transform: uppercase;
+}
+
 // media queries
 @media (max-width: 1060px) {
     .hide-mobile {
@@ -216,5 +276,13 @@ input::placeholder {
         background-image: url('/images/loginbg.svg');
         background-repeat: no-repeat;
         background-size: cover;
+    }
+
+    .user-welcome-item-section {
+        flex-direction: column; /* Cambia la dirección a columna para mostrar los elementos uno debajo del otro */
+    }
+
+    .user-welcome-item-section-item {
+        width: 100%; /* Asegura que cada elemento tome el ancho completo del contenedor */
     }
 }

@@ -1,0 +1,198 @@
+// app global css in SCSS form
+@import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Ubuntu:wght@400;700&display=swap');
+body {
+    font-family: 'Ubuntu', sans-serif !important;
+}
+
+.title-login {
+    color: var(--Base-Base-White, #FFF);
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-family: Play;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 125%; /* 40px */
+    text-transform: uppercase;
+}
+
+.bg-login {
+    background-color: #000;
+    width: 100%;
+    height: 100vh;
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.login-img {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.logo {
+    width: 220px;
+    display: flex;
+    height: 100px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    flex-shrink: 0;
+}
+
+.login-row {
+    display: flex;
+    height: 720px;
+    padding: 42px 60px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--Spacing-l, 32px);
+    flex: 1 0 0;
+}
+
+.subtitle-login {
+    color: var(--Base-Base-White, #FFF);
+    /* Desktop/Body/Text/Medium */
+    font-family: Ubuntu;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%; /* 20px */
+}
+
+label {
+    overflow: hidden;
+    color: var(--Base-Base-White, #FFF);
+    text-overflow: ellipsis;
+
+    /* Desktop/Body/Text/Medium */
+    font-family: Ubuntu;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%; /* 20px */
+}
+
+.q-field--outlined .q-field__control::before {
+    border: 1px solid var(--Neutrals-Neutrals400, #9F9C9C) !important;
+}
+
+.q-field--outlined .q-field__control::after {
+    border: 1px solid var(--Neutrals-Neutrals400, #9F9C9C) !important;
+}
+
+input {
+    display: flex;
+    padding: var(--Spacing-sm, 12px) 16px;
+    align-items: center;
+    gap: var(--Radius-sm, 10px);
+    flex: 1 0 0;
+    color: var(--Neutrals-Neutrals400, #9F9C9C) !important;
+}
+
+input::placeholder {
+    overflow: hidden;
+    color: var(--Neutrals-Neutrals400, #9F9C9C) !important;
+    text-overflow: ellipsis;
+    /* Desktop/Body/Text/Medium */
+    font-family: Ubuntu;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%; /* 20px */
+}
+
+.bg-login .q-checkbox__inner{
+    color: white;
+}
+
+.q-checkbox__bg {
+    background: white !important;
+}
+
+.q-checkbox__inner--truthy .q-checkbox__bg, .q-checkbox__inner--indet .q-checkbox__bg {
+    background: $secondary !important;
+  }
+
+.bg-login .q-checkbox__label {
+    color: var(--Base-Base-White, #FFF);
+    /* Desktop/Body/Text/Small */
+    font-family: Ubuntu;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%; /* 15px */
+}
+
+.submit-btn {
+    color: var(--Base-Base-White, #FFF);
+    /* Desktop/Body/Title/Medium */
+    font-family: Play;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 125%; /* 20px */
+    text-transform: uppercase;
+}
+
+.login-page {
+    overflow-y: hidden;
+}
+
+// media queries
+@media (max-width: 1060px) {
+    .hide-mobile {
+        display: none;
+    }
+
+    .title-login {
+        color: var(--Base-Base-White, #FFF);
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        font-family: Play;
+        font-size: 22px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 125%; /* 40px */
+        text-transform: uppercase;
+    }
+
+    .login-row {
+        display: flex;
+        height: 720px;
+        padding: 20px 32px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: var(--Spacing-l, 32px);
+        flex: 1 0 0;
+        z-index: 2;
+    }
+
+    .overflow {
+        background-color: #0000008a;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 1;
+    }
+
+    .bg-login {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    .login-img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+    }
+
+    .mobile-bg {
+        background-image: url('/images/loginbg.svg');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+}

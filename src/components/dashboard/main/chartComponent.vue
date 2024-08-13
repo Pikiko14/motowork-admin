@@ -5,10 +5,10 @@
         :class="{ 'chart-day-disable': typeTime !== 'week', 'bg-secondary': typeTime === 'week' }" label="SEM." dense
         square unelevated class="q-px-lg text-weight-bold" @click="setTimePeriod('week')"></q-btn>
       <q-btn text-color="white"
-        :class="{ 'chart-day-disable': typeTime !== 'months', 'bg-secondary': typeTime === 'months' }" label="MESES"
-        dense square unelevated class="q-px-lg text-weight-bold" @click="setTimePeriod('months')"></q-btn>
+        :class="{ 'chart-day-disable': typeTime !== 'months', 'bg-secondary': typeTime === 'months' }" label="MES" dense
+        square unelevated class="q-px-lg text-weight-bold" @click="setTimePeriod('months')"></q-btn>
       <q-btn text-color="white"
-        :class="{ 'chart-day-disable': typeTime !== 'years', 'bg-secondary': typeTime === 'years' }" label="AÑOS" dense
+        :class="{ 'chart-day-disable': typeTime !== 'years', 'bg-secondary': typeTime === 'years' }" label="AÑO" dense
         square unelevated class="q-px-lg text-weight-bold" @click="setTimePeriod('years')"></q-btn>
     </div>
     <div class="chart-section" v-if="render">
@@ -34,7 +34,7 @@ export default defineComponent({
           show: false, // Oculta la barra de herramientas
         },
       },
-      colors: ['#E5221F', '#7C7C7C'], // Define los colores de las línea
+      colors: ['#7C7C7C', '#E5221F'], // Define los colores de las línea
       dataLabels: {
         enabled: false,
       },
@@ -59,11 +59,11 @@ export default defineComponent({
 
     const series = ref<any[]>([
       {
-        name: 'Productos Publicados',
+        name: 'PRODUCTOS PUBLICADOS',
         data: [50, 60, 70, 80, 90, 100, 60], // Datos de productos publicados
       },
       {
-        name: 'Productos Vendidos',
+        name: 'PRODUCTOS VENDIDOS',
         data: [30, 40, 35, 50, 49, 60, 70], // Datos de productos vendidos
       },
     ])

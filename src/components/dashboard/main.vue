@@ -16,8 +16,8 @@
         <ChartComponent />
       </div>
     </div>
-    <div class="col-12 col-md-4" :class="{ 'q-pl-md': $q.screen.gt.sm }">
-      asd
+    <div class="col-12 col-md-4" :class="{ 'q-px-md': $q.screen.gt.sm }">
+      <RecentlyProducts />
     </div>
   </div>
 </template>
@@ -27,12 +27,14 @@ import { useAuthStore } from 'src/stores/auth'
 import { computed, defineComponent } from 'vue'
 import CardMetrics from './main/cardMetrics.vue'
 import ChartComponent from './main/chartComponent.vue'
+import RecentlyProducts from './main/recentlyProducts.vue'
 
 export default defineComponent({
   name: 'MainComponent',
   components: {
     CardMetrics,
-    ChartComponent
+    ChartComponent,
+    RecentlyProducts
   },
   setup() {
     // data

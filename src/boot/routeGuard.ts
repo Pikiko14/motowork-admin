@@ -61,10 +61,6 @@ export default boot(async ({ router, app }) => {
           }
         }
       }
-      if (to.path === "/login/" && userData.value._id) {
-        next("/dashboard");
-        return true;
-      }
       next();
     }
   });

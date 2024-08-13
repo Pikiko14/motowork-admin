@@ -4,4 +4,5 @@ export interface RecentlyItemsInterface {
   category: string;
   item_type: string;
   price: string | number;
+  brand?: string;
 }

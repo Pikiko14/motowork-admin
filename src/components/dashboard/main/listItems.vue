@@ -7,8 +7,8 @@
         </q-item-section>
         <q-item-section class="q-px-sm">
           <q-item-label>
-            <q-icon style="margin-top: -2px" size="16pt" name="img:images/yamaha.svg"></q-icon>
-            <span class="product-title q-pl-sm">{{ item.name }}</span>
+            <q-icon v-if="showBrandIcon" style="margin-top: -2px" size="16pt" :name="`img:${item.brand}`"></q-icon>
+            <span class="product-title" :class="{ 'q-pl-sm': showBrandIcon }">{{ item.name }}</span>
           </q-item-label>
           <q-item-label class="q-px-xs q-pt-xs">
             <div class="chip-section">
@@ -41,13 +41,17 @@ export default defineComponent({
     items: {
       type: Array as () => RecentlyItemsInterface[],
       default: () => []
+    },
+    showBrandIcon: {
+      type: Boolean,
+      default: () => true
     }
   },
   setup() {
     // data
     const itemsTypeLabel: any = {
-      new: 'Nueva',
-      used: 'Usada'
+      new: 'Nuevo',
+      used: 'Usado'
     }
 
     return {

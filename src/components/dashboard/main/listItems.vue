@@ -10,7 +10,7 @@
             <q-icon style="margin-top: -2px" size="16pt" name="img:images/yamaha.svg"></q-icon>
             <span class="product-title q-pl-sm">{{ item.name }}</span>
           </q-item-label>
-          <q-item-label class="q-px-xs">
+          <q-item-label class="q-px-xs q-pt-xs">
             <div class="chip-section">
               <div class="chip" :class="{ 'news': item.item_type === 'new', 'used': item.item_type === 'used' }">
                 {{ itemsTypeLabel[item.item_type] }}
@@ -20,9 +20,10 @@
               </div>
             </div>
           </q-item-label>
-          <q-item-label>
-            <q-icon style="margin-top: -2px" size="16pt" name="img:images/yamaha.svg"></q-icon>
-            <span class="product-title q-pl-sm">Nombre motocicleta</span>
+          <q-item-label class="q-pt-xs">
+            <span class="product-price q-pl-xs">
+              {{ $utils.formatPrice(item.price) }}
+            </span>
           </q-item-label>
         </q-item-section>
       </q-item>

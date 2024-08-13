@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useAuthStore } from 'src/stores/auth';
+import { useAuthStore } from "src/stores/auth";
 
 export class Utils {
   model: string;
@@ -10,10 +10,10 @@ export class Utils {
 
   formatPrice(price: number | undefined): string {
     if (!price) {
-      return '';
+      return "";
     }
-    const val = (price / 1).toFixed(0).replace('.', ',');
-    return '$' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const val = (price / 1).toFixed(2).replace(".", ".");
+    return "$" + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "’");
   }
 
   validatePermission(available: string): boolean {
@@ -47,7 +47,7 @@ export class Utils {
       if (
         Array.isArray(object[keyObj]) ||
         (object[keyObj] &&
-          typeof object[keyObj] === 'object' &&
+          typeof object[keyObj] === "object" &&
           !object[keyObj].size &&
           !object[keyObj].lastModified)
       ) {
@@ -58,11 +58,11 @@ export class Utils {
       }
     }
     if (hasFile && file && !Array.isArray(file)) {
-      formData.append('file', file);
+      formData.append("file", file);
     }
     if (Array.isArray(file)) {
       file.forEach((item: File) => {
-        formData.append('file', item);
+        formData.append("file", item);
       });
     }
     return formData;

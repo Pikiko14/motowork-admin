@@ -7,6 +7,7 @@
     <!-- end headers -->
 
     <!--table Banners-->
+    {{ banners }}
     <TableMotowork :columns="bannersColums" class="q-mt-lg" />
     <!--End table Banners-->
 
@@ -17,10 +18,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import TableMotowork from '../partials/tableMotowork.vue';
-import HeadersMotowork from '../partials/headersMotowork.vue';
-import { TableColumnsInterface } from 'src/interfaces/tableInterface';
+import { useRoute } from 'vue-router'
+import { useBannersStore } from 'src/stores/banners'
+import TableMotowork from '../partials/tableMotowork.vue'
+import HeadersMotowork from '../partials/headersMotowork.vue'
+import { computed, defineComponent, onBeforeMount, ref } from 'vue'
+import { TableColumnsInterface } from 'src/interfaces/tableInterface'
 
 export default defineComponent({
   name: 'MainBannersComponents',
@@ -30,6 +33,8 @@ export default defineComponent({
   },
   setup() {
     // data
+    const route = useRoute()
+    const store = useBannersStore()
     const openModalBanners = ref<boolean>(false)
     const bannersColums = ref<TableColumnsInterface[]>([
       {
@@ -42,14 +47,42 @@ export default defineComponent({
         label: 'Enlace directo',
         field: 'link'
       },
+      {
+        name: 'options',
+        label: '',
+        field: 'link'
+      },
     ])
+
+    // computed
+    const banners = computed(() => {
+      return store.banners
+    })
 
     // methods
     const openModal = () => {
       openModalBanners.value = !openModalBanners.value
     }
 
+    const listBanners = async () => {
+      try {
+        const page = route.query.page || 1
+        const perPage = route.query.perPage || 12
+        const search = route.query.search || ''
+        const query = `?page=${page}&perPage=${perPage}&search=${search}`
+        await store.listBanners(query)
+      } catch (error) {
+      }
+    }
+
+    // hook
+    onBeforeMount(async () => {
+      await listBanners()
+    })
+
+    // return statement
     return {
+      banners,
       openModal,
       bannersColums,
       openModalBanners

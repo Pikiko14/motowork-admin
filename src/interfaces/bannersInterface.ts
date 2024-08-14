@@ -25,3 +25,13 @@ export interface BannersInterface {
   images: BannerImageInterface[];
   desktop_image?: BannerImageInterface;
 }
+
+export interface FileObject {
+  __key: string;
+  name: string;
+  lastModified: number;
+  webkitRelativePath: string;
+  size: number;
+  type: string;
+  filename?: string;
+}

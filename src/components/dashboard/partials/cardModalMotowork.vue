@@ -4,9 +4,13 @@
       <span class="title-card-modal">
         {{ title }}
       </span>
-      <q-btn v-close-popup class="btn-close-modal-motowork" round dense icon="img:/images/close.svg" flat></q-btn>
+      <q-btn v-close-popup class="btn-close-modal-motowork" round dense icon="img:/images/close.svg" flat>
+        <q-tooltip square class="bg-red">
+          Cerrar
+        </q-tooltip>
+      </q-btn>
     </q-card-section>
-    <q-card-section style="margin-top: -20px">
+    <q-card-section style="margin-top: -10px">
       <slot name="content"></slot>
     </q-card-section>
   </q-card>

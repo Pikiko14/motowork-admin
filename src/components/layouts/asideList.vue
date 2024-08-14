@@ -12,27 +12,27 @@
             size="24px"></q-icon>
         </q-item-section>
       </q-item>
-      <q-item clickable class="q-mt-sm" to="/dashboard/banners">
+      <q-item clickable class="q-mt-sm" to="/dashboard/banners?page=1&perPage=7&search=">
         <q-item-section class="text-center">
           <q-icon
             :name="$route.path == '/dashboard/banners' ? 'img:/images/banners-primary.svg' : 'img:/images/banner.svg'"
             size="24px"></q-icon>
         </q-item-section>
       </q-item>
-      <q-item clickable class="q-mt-sm" to="/dashboard/products">
+      <q-item clickable class="q-mt-sm" to="/dashboard/products?page=1&perPage=16&search=">
         <q-item-section class="text-center">
           <q-icon
             :name="$route.path == '/dashboard/products' ? 'img:/images/products-primary.svg' : 'img:/images/products.svg'"
             size="24px"></q-icon>
         </q-item-section>
       </q-item>
-      <q-item clickable class="q-mt-sm" to="/dashboard/blogs">
+      <q-item clickable class="q-mt-sm" to="/dashboard/blogs?page=1&perPage=7&search=">
         <q-item-section class="text-center">
           <q-icon :name="$route.path == '/dashboard/blogs' ? 'img:/images/blogs-primary.svg' : 'img:/images/blogs.svg'"
             size="24px"></q-icon>
         </q-item-section>
       </q-item>
-      <q-item clickable class="q-mt-sm" to="/dashboard/schedule">
+      <q-item clickable class="q-mt-sm" to="/dashboard/schedule?page=1&perPage=7&search=">
         <q-item-section class="text-center">
           <q-icon
             :name="$route.path == '/dashboard/schedule' ? 'img:/images/schedule-primary.svg' : 'img:/images/schedule.svg'"

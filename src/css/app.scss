@@ -487,6 +487,10 @@ input::placeholder {
 
 // media queries
 @media (max-width: 1060px) {
+    body {
+        padding: 16px;
+    }
+
     .hide-mobile {
         display: none;
     }

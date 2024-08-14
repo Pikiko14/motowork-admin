@@ -65,7 +65,5 @@ export default defineComponent({
 </script>
 
 <style lang="css" scoped>
-.input-search {
-  margin-top: -10px;
-}
+.input-search {}
 </style>

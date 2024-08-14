@@ -5,8 +5,8 @@
       <!--Options tr-->
       <template v-slot:body-cell-options="props">
         <q-td class="text-center">
-          <q-btn size="8pt" @click="doEdit(props.row.id)" flat dense icon="img:/images/pencil-edit.svg" round></q-btn>
-          <q-btn class="q-ml-20" size="8.5pt" flat dense icon="img:/images/reset.svg" round></q-btn>
+          <q-btn size="7.8pt" @click="doEdit(props.row.id)" flat dense icon="img:/images/pencil-edit.svg" round></q-btn>
+          <q-btn class="q-ml-20" size="8pt" flat dense icon="img:/images/reset.svg" round></q-btn>
         </q-td>
       </template>
       <!--End Options tr-->
@@ -49,9 +49,12 @@ export default defineComponent({
       default: () => []
     }
   },
-  setup() {
+  emits: ['do-edit'],
+  setup(props, { emit }) {
     // methods
-    const doEdit = (id: string) => { }
+    const doEdit = (id: string) => {
+      emit('do-edit', id)
+    }
 
     const openUrl = (url: string) => {
       window.open(url, '_blank')

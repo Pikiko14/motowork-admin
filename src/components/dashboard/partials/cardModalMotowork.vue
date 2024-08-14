@@ -1,7 +1,13 @@
 <template>
-  <q-card square>
+  <q-card square class="card-modal-motowork">
     <q-card-section>
-      a
+      <span class="title-card-modal">
+        {{ title }}
+      </span>
+      <q-btn v-close-popup class="btn-close-modal-motowork" round dense icon="img:/images/close.svg" flat></q-btn>
+    </q-card-section>
+    <q-card-section style="margin-top: -20px">
+      <slot name="content"></slot>
     </q-card-section>
   </q-card>
 </template>
@@ -10,6 +16,12 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'CardModalMotoworkComponent'
+  name: 'CardModalMotoworkComponent',
+  props: {
+    title: {
+      type: String,
+      default: ''
+    }
+  }
 })
 </script>

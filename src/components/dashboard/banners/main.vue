@@ -11,13 +11,20 @@
     <!--End table Banners-->
 
     <!--Modal Banners-->
-    <q-dialog v-model="openModalBanners"></q-dialog>
+    <q-dialog v-model="openModalBanners">
+      <CardModalMotowork :title="'Crear banners'">
+        <template v-slot:content>
+          <FormBanner />
+        </template>
+      </CardModalMotowork>
+    </q-dialog>
     <!--End Modal Banners-->
   </div>
 </template>
 
 <script lang="ts">
 import { useRoute } from 'vue-router'
+import FormBanner from './components/form.vue'
 import { useBannersStore } from 'src/stores/banners'
 import TableMotowork from '../partials/tableMotowork.vue'
 import HeadersMotowork from '../partials/headersMotowork.vue'
@@ -28,6 +35,7 @@ import { TableColumnsInterface } from 'src/interfaces/tableInterface'
 export default defineComponent({
   name: 'MainBannersComponents',
   components: {
+    FormBanner,
     TableMotowork,
     HeadersMotowork,
     CardModalMotowork

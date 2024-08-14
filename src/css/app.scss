@@ -493,6 +493,29 @@ input::placeholder {
     box-shadow: none !important;
 }
 
+.card-modal-motowork {
+    pad: 24px 32px;
+    max-width: 620px;
+    min-width: 340px;
+}
+
+.title-card-modal {
+    color: var(--Principales-950---Principal, var(--Primary-Primary, #000));
+    
+    /* Desktop/Headings/H4 */
+    font-family: Play;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 125%; /* 30px */
+    text-transform: uppercase;
+}
+
+.btn-close-modal-motowork {
+    margin-top: 0px;
+    float: right;
+}
+
 // media queries
 @media (max-width: 1060px) {
     body {

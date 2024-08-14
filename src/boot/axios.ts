@@ -18,6 +18,7 @@ const api = axios.create({ baseURL: `${process.env.API_URL}/api/v1` });
 export default boot(({ app }) => {
   app.config.globalProperties.$axios = axios;
   app.config.globalProperties.$api = api;
+  app.config.globalProperties.$urlApi = process.env.API_URL;
 
   const storage = new StorageService("interceptor");
   const store = useAuthStore();

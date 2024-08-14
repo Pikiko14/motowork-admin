@@ -3,7 +3,11 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import { Request } from "src/api/api";
 import { ResponseObj } from "src/interfaces/api";
-import { BannersInterface, TypeBanner } from "src/interfaces/bannersInterface";
+import {
+  BannerImageInterface,
+  BannersInterface,
+  TypeImageBanner,
+} from "src/interfaces/bannersInterface";
 
 const path = "banners";
 const handlerRequest = new Request({
@@ -13,18 +17,12 @@ const handlerRequest = new Request({
 export const useBannersStore = defineStore("bannersStore", () => {
   //## data ##//
   const totalItems = ref<number>(0);
-  const banners = ref<BannersInterface>({
-    images: [],
-    link: "",
-    is_active: false,
-    name: "",
-    type: TypeBanner.home,
-  });
+  const banners = ref<BannersInterface[]>([]);
 
   //## methods##//
   /**
    * List
-   * @param query
+   * @param { string } query
    * @returns
    */
   const listBanners = async (query: string): Promise<ResponseObj | void> => {
@@ -35,7 +33,16 @@ export const useBannersStore = defineStore("bannersStore", () => {
         true
       )) as ResponseObj;
       if (response.success) {
-        banners.value = response.data.banners;
+        banners.value = response.data.banners.map(
+          (banner: BannersInterface) => {
+            banner.desktop_image = banner.images.find(
+              (item: BannerImageInterface) => {
+                return item.type === TypeImageBanner.desktop;
+              }
+            );
+            return banner;
+          }
+        );
         totalItems.value = response.data.totalItems;
         return response;
       }

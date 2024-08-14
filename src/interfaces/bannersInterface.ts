@@ -23,4 +23,5 @@ export interface BannersInterface {
   type: TypeBanner;
   is_active: boolean;
   images: BannerImageInterface[];
+  desktop_image?: BannerImageInterface;
 }

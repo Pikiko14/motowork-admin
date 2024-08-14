@@ -431,6 +431,60 @@ input::placeholder {
     border: transparent;
 }
 
+.q-table {
+    border-radius: 0px !important;
+}
+
+.motowork-table .q-table thead {
+    background: var(--Neutrals-Base-White, #F5F5F5);
+}
+
+.motowork-table .q-table tbody {
+    margin-top: 12px;
+}
+
+.motowork-table .q-table thead tr th {
+    overflow: hidden;
+    color: var(--Primary-Primary, #000);
+    text-overflow: ellipsis;
+
+    /* Desktop/Body/Title/Medium */
+    font-family: Play;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 125%; /* 20px */
+    text-transform: uppercase;
+}
+
+.motowork-table tbody tr td {
+    overflow: hidden;
+    color: var(--Neutrals-Neutrals500, #898384);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    /* Desktop/Body/Text/Medium */
+    font-family: Ubuntu;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%; /* 20px */
+}
+
+.motowork-table .link-table {
+    color: var(--Secondary-Secondary, #ED1C24);
+    cursor: pointer;
+}
+
+.banners-table-img {
+    width: 60px;
+    height: 40px;
+}
+
+.q-ml-20 {
+    margin-left: 20px;
+}
+
 // media queries
 @media (max-width: 1060px) {
     .hide-mobile {

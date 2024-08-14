@@ -7,8 +7,7 @@
     <!-- end headers -->
 
     <!--table Banners-->
-    {{ banners }}
-    <TableMotowork :columns="bannersColums" class="q-mt-lg" />
+    <TableMotowork :columns="bannersColums" :rows="banners" class="q-mt-lg" />
     <!--End table Banners-->
 
     <!--Modal Banners-->
@@ -24,6 +23,7 @@ import TableMotowork from '../partials/tableMotowork.vue'
 import HeadersMotowork from '../partials/headersMotowork.vue'
 import { computed, defineComponent, onBeforeMount, ref } from 'vue'
 import { TableColumnsInterface } from 'src/interfaces/tableInterface'
+import { BannersInterface } from 'src/interfaces/bannersInterface'
 
 export default defineComponent({
   name: 'MainBannersComponents',
@@ -40,17 +40,19 @@ export default defineComponent({
       {
         name: 'location',
         label: 'Ubicación',
-        field: 'location'
+        field: 'name',
+        align: 'left'
       },
       {
         name: 'link',
         label: 'Enlace directo',
-        field: 'link'
+        field: 'link',
+        align: 'center'
       },
       {
         name: 'options',
         label: '',
-        field: 'link'
+        field: 'option'
       },
     ])
 

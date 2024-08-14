@@ -14,7 +14,7 @@
     <q-dialog v-model="openModalBanners">
       <CardModalMotowork :title="'Crear banners'">
         <template v-slot:content>
-          <FormBanner />
+          <FormBanner @close-modal="openModal" />
         </template>
       </CardModalMotowork>
     </q-dialog>

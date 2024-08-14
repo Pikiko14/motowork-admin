@@ -569,6 +569,56 @@ input::placeholder {
     line-height: 125%; /* 15px */
 }
 
+.label-banner-form {
+    color: var(--Primary-Primary, #000);
+    /* Desktop/Body/Text/Medium */
+    font-family: Ubuntu;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%; /* 20px */
+    margin-top: 40px;
+}
+
+.q-field__native {
+    overflow: hidden;
+    color: var(--Neutrals-Neutrals400, #9F9C9C);
+    text-overflow: ellipsis;
+
+    /* Desktop/Body/Text/Medium */
+    font-family: Ubuntu;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%; /* 20px */
+}
+
+.q-btn {
+    color: var(--Base-Base-White, #FFF);
+
+    /* Desktop/Body/Title/Medium */
+    font-family: Play;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 125%; /* 20px */
+    text-transform: uppercase;
+}
+
+.q-notification__message {
+    color: var(--Base-Base-White, #FFF);
+    /* Desktop/Body/Title/Medium */
+    font-family: Play;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 125%; /* 20px */
+}
+
+.q-notification i {
+    color: white;
+}
+
 // media queries
 @media (max-width: 1060px) {
     body {
@@ -635,5 +685,9 @@ input::placeholder {
 
     .user-welcome-item-section-item {
         width: 100%; /* Asegura que cada elemento tome el ancho completo del contenedor */
+    }
+
+    .banner-form {
+        width: 100%;
     }
 }

@@ -16,26 +16,26 @@
               <label :for="login.username">
                 Usuario
               </label>
-              <q-input :rules="[(val) => !!val || 'Ingresa este campo']" bg-color="accent" v-model="login.username"
-                square dense outlined class="q-mt-xs" placeholder="Ingresa tu usuario"></q-input>
+              <q-input square :rules="[(val) => !!val || 'Ingresa este campo']" bg-color="accent"
+                v-model="login.username" dense outlined class="q-mt-xs" placeholder="Ingresa tu usuario"></q-input>
             </div>
             <div class="col-12">
               <label :for="login.username">
                 Contraseña
               </label>
-              <q-input type="password" :rules="[
+              <q-input square type="password" :rules="[
                 (val) => !!val || 'Ingresa este campo',
                 (val) => val.length >= 8 || 'Debe tener minimo 8 caracteres',
                 (val) => /[A-Z]/.test(val) || 'Debe contener una letra mayúscula',
                 (val) => /[a-z]/.test(val) || 'Debe contener una letra minúscula',
                 (val) => /\d/.test(val) || 'Debe contener un número',
                 (val) => /[$@#&!*-]/.test(val) || 'Debe contener uno de estos caracteres $, @, #, &, *, -, !'
-              ]" bg-color="accent" v-model="login.password" square dense outlined class="q-mt-xs"
+              ]" bg-color="accent" v-model="login.password" dense outlined class="q-mt-xs"
                 placeholder="Ingresa tu contraseña"></q-input>
             </div>
             <div class="col-12">
-              <q-checkbox @update:model-value="doRemember" color="secondary" bg-color="white" v-model="rememberPassword"
-                label="Recordar contraseña" />
+              <q-checkbox square @update:model-value="doRemember" color="secondary" bg-color="white"
+                v-model="rememberPassword" label="Recordar contraseña" />
             </div>
             <div class="col-12 q-mt-xl">
               <q-btn unelevated square :loading="loading" type="submit" class="full-width submit-btn" color="secondary"

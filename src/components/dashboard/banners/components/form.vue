@@ -23,31 +23,149 @@
         </q-tab-panel>
       </q-tab-panels>
     </div>
+    <div class="col-12 col-md-6 q-px-md q-pt-sm q-mt-md">
+      <span class="label-banner-form">
+        Nombre del banner
+      </span>
+    </div>
+    <div class="col-12 col-md-6 q-px-md q-mt-md">
+      <q-input square :rules="[
+        val => (val && val.length > 0) || 'Por favor ingrese el nombre del banner',
+        val => (val && val.length >= 5) || 'Mayor a 5 caracteres',
+        val => (val && val.length <= 90) || 'Menor a 90 caracteres'
+      ]" placeholder="Banner 01" outlined dense v-model="banner.name"></q-input>
+    </div>
+    <div class="col-12 col-md-6 q-px-md q-pt-md">
+      <span class="label-banner-form">
+        Enlace directo
+      </span>
+    </div>
+    <div class="col-12 col-md-6 q-px-md q-mt-sm">
+      <q-input square :rules="[
+        val => (val && val.length > 0) || 'Por favor ingrese el nombre del banner',
+        val => (val && val.length >= 5) || 'Mayor a 5 caracteres',
+        val => (val && val.length <= 160) || 'Menor a 90 caracteres',
+        val => /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9#]+\/?)*$/.test(val) || 'Debe ser un link correcto'
+      ]" placeholder="https://www.google.com" outlined dense v-model="banner.link"></q-input>
+    </div>
+    <div class="col-12 col-md-6 q-px-md q-pt-md">
+      <span class="label-banner-form">
+        Tipo de banner
+      </span>
+    </div>
+    <div class="col-12 col-md-6 q-px-md q-mt-sm">
+      <q-select square emit-value map-options :rules="[(val) => !!val || 'Selecciona una opción']" outlined dense
+        v-model="banner.type" :options="bannerTypeOptions"></q-select>
+    </div>
+    <div class="col-8 col-md-6 q-px-md q-pt-md">
+      <span class="label-banner-form">
+        Activar banner
+      </span>
+    </div>
+    <div class="col-4 col-md-6 q-pr-sm q-mt-sm text-right">
+      <q-checkbox left-label :label="banner.is_active ? 'Activo' : 'Inactivo'" v-model="banner.is_active"
+        color="secondary" bg-color="white"></q-checkbox>
+    </div>
+    <div class="col-12 col-md-6 q-mt-sm"
+      :class="{ 'q-pr-sm q-pl-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
+      <q-btn outline square label="Cancelar" class="full-width q-mt-md" color="secondary"></q-btn>
+    </div>
+    <div class="col-12 col-md-6 q-mt-sm"
+      :class="{ 'q-pl-sm q-pr-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
+      <q-btn type="submit" unelevated square label="Guardar" class="full-width q-mt-md" color="secondary"></q-btn>
+    </div>
   </q-form>
 </template>
 
 <script lang="ts">
+import { Utils } from 'src/utils/utils'
 import { defineComponent, ref } from 'vue'
-import { FileObject } from 'src/interfaces/bannersInterface'
+import { ResponseObj } from 'src/interfaces/api'
+import { useBannersStore } from 'src/stores/banners'
+import { notification } from 'src/boot/notification'
 import FilePickerMotowork from '../../partials/filePickerMotowork.vue'
+import { BannersInterface, TypeBanner } from 'src/interfaces/bannersInterface'
 
 export default defineComponent({
   name: 'BannersFormComponent',
   components: {
     FilePickerMotowork
   },
-  setup() {
+  setup(props, { emit }) {
     // data
+    const store = useBannersStore()
+    const utils = new Utils('banners')
+    const bannerTypeOptions = [
+      {
+        label: 'Inicio',
+        value: TypeBanner.home
+      },
+      {
+        label: 'Accesorios',
+        value: TypeBanner.accesories
+      },
+      {
+        label: 'Servicio técnico',
+        value: TypeBanner.used
+      },
+      {
+        label: 'Experiencias',
+        value: TypeBanner.experencie
+      },
+      {
+        label: 'Nosotros',
+        value: TypeBanner.us
+      }
+    ]
+    const banner = ref<BannersInterface>({
+      name: '',
+      link: '',
+      type: TypeBanner.home,
+      images: [],
+      is_active: false
+    })
     const tab = ref<string>('desktop')
     const tableBase64 = ref<string>('')
     const mobileBase64 = ref<string>('')
     const desktopBase64 = ref<string>('')
-    const tableImage = ref<FileObject>({} as FileObject)
-    const mobileImage = ref<FileObject>({} as FileObject)
-    const desktopImage = ref<FileObject>({} as FileObject)
+    const tableImage = ref<any>(null)
+    const mobileImage = ref<any>(null)
+    const desktopImage = ref<any>(null)
 
     // methods
-    const doSaveBanners = () => { }
+    const doSaveBanners = async () => {
+      if (!desktopImage.value || !tableImage.value || !mobileImage.value) {
+        notification('warning', 'Faltan imagenes que agregar al banner', 'warning')
+        return false
+      }
+
+      try {
+        const formData = utils.transformObjectInFormData(banner.value, false, null)
+        formData.append('images_tablet', tableImage.value ? tableImage.value : '')
+        formData.append('images_mobile', mobileImage.value ? mobileImage.value : '')
+        formData.append('images_desktop', desktopImage.value ? desktopImage.value : '')
+        const response = await store.doSaveBanners(formData) as ResponseObj;
+        if (response.success) {
+          notification('success', response.message, 'success')
+          banner.value = {
+            name: '',
+            link: '',
+            type: TypeBanner.home,
+            images: [],
+            is_active: false
+          }
+          tableImage.value = null
+          mobileImage.value = null
+          desktopImage.value = null
+          tableBase64.value = ''
+          mobileBase64.value = ''
+          desktopBase64.value = ''
+          emit('close-modal')
+        }
+      } catch (error) {
+      } finally {
+      }
+    }
 
     const setFile = (data: any) => {
       switch (data.type) {
@@ -70,11 +188,13 @@ export default defineComponent({
 
     return {
       tab,
+      banner,
       setFile,
       tableBase64,
       mobileBase64,
       doSaveBanners,
       desktopBase64,
+      bannerTypeOptions,
     }
   }
 })

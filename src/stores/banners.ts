@@ -53,10 +53,34 @@ export const useBannersStore = defineStore("bannersStore", () => {
     }
   };
 
+  const doSaveBanners = async (params: any) => {
+    try {
+      const response = (await handlerRequest.doPostRequest(
+        `${path}`,
+        params,
+        true,
+        true
+      )) as ResponseObj;
+      if (response.success) {
+        response.data.desktop_image = response.data.images.find(
+          (item: BannerImageInterface) => {
+            return item.type === TypeImageBanner.desktop;
+          }
+        );
+        banners.value.push(response.data);
+        totalItems.value++;
+        return response;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // return statement
   return {
     banners,
     totalPages,
     listBanners,
+    doSaveBanners,
   };
 });

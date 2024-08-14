@@ -15,7 +15,7 @@
             </template>
           </q-input>
         </div>
-        <div v-if="showAddButton" class="col-12 col-md-2 text-right"
+        <div v-if="showAddButton" class="col-12 col-md-2 q-pt-sm text-right"
           :class="{ 'q-px-lg': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
           <q-btn @click="doOpenModal" square color="secondary" class="full-width" label="Añadir" unelevated></q-btn>
         </div>

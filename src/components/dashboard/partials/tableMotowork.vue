@@ -1,8 +1,8 @@
 <template>
   <section class="full-width motowork-table" :class="{ 'q-pr-lg': $q.screen.gt.sm }">
     <!--Table section-->
-    <q-table hide-bottom flat bordered class="full-width hide-borders" :rows="rows" :columns="columns" row-key="name"
-      separator="none">
+    <q-table v-model:pagination="pagination" hide-bottom flat bordered class="full-width hide-borders" :rows="rows"
+      :columns="columns" row-key="name" separator="none">
       <!--Options tr-->
       <template v-slot:body-cell-options="props">
         <q-td class="text-center">
@@ -66,6 +66,9 @@ export default defineComponent({
   emits: ['do-edit'],
   setup(props, { emit }) {
     // data
+    const pagination = ref({
+      rowsPerPage: 7
+    })
     const route = useRoute()
     const router = useRouter()
     const currentPage = ref<number>(1)
@@ -94,6 +97,7 @@ export default defineComponent({
     return {
       doEdit,
       openUrl,
+      pagination,
       currentPage,
       doPagination
     }

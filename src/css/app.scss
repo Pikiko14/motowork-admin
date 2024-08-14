@@ -393,6 +393,40 @@ input::placeholder {
     line-height: 125%; /* 15px */
 }
 
+
+
+.q-field--standard .q-field__control::before {
+    border-bottom: 1px solid #9F9C9C !important;
+}
+
+.q-field--standard .q-field__control::after {
+    background: transparent;
+}
+
+.q-field--standard .q-field__control:hover::before {
+    border-color:  #9F9C9C !important;
+}
+
+.main-header input {
+    padding: 16px; /* Aplica el padding al input */
+    font-size: 16px; /* Ajusta el tamaño de fuente si es necesario */
+}
+
+.main-header .q-btn__content {
+    color: var(--Base-Base-White, #FFF);
+    /* Desktop/Body/Title/Small */
+    font-family: Play;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 125%; /* 15px */
+    text-transform: uppercase;
+}
+
+.main-header .q-btn {
+    height: 39px;
+}
+
 // media queries
 @media (max-width: 1060px) {
     .hide-mobile {

@@ -34,7 +34,7 @@
     <!--End Table section-->
 
     <!--Paginator section-->
-    <div class="full-width q-mt-lg">
+    <div class="full-width q-mt-lg" v-if="totalPages > 0">
       <q-pagination @update:model-value="doPagination" color="secondary" direction-links v-model="currentPage"
         :max="totalPages" />
     </div>

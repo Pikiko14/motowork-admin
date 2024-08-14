@@ -8,8 +8,8 @@
     <div class="col-12 col-md-8">
       <div class="row full-width justify-end">
         <div class="col-12 col-md-6">
-          <q-input debounce="1000" @update:model-value="doSearch" placeholder="Buscar" color="dark-page"
-            class="input-search" v-model.string="search" dense>
+          <q-input clearable debounce="1000" @update:model-value="doSearch" placeholder="Buscar" color="dark-page"
+            class="input-search" v-model="search" dense>
             <template v-slot:append>
               <q-icon size="16pt" class="q-mr-md" name="img:/images/search.svg" />
             </template>
@@ -25,8 +25,8 @@
 </template>
 
 <script lang="ts">
-import { useRouter } from 'vue-router'
-import { defineComponent, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { defineComponent, onBeforeMount, ref } from 'vue'
 
 export default defineComponent({
   name: 'HeadersMotoworkComponent',
@@ -43,17 +43,31 @@ export default defineComponent({
   emits: ['open-modal'],
   setup(props, { emit }) {
     // data
+    const route = useRoute()
     const router = useRouter()
     const search = ref<string>('')
 
     // methods
     const doSearch = (searchString: string | number | null) => {
-      if (searchString) router.push({ name: 'banners', query: { page: 1, perPage: 12, search: searchString } })
+      router.push({
+        name: 'banners',
+        query: {
+          page: 1,
+          perPage: 12,
+          search: searchString
+        }
+      })
     }
 
     const doOpenModal = () => {
       emit('open-modal')
     }
+
+    // hook
+    onBeforeMount(() => {
+      search.value = route.query.search ? route.query.search as string : ''
+    })
+
 
     return {
       search,
@@ -64,6 +78,4 @@ export default defineComponent({
 })
 </script>
 
-<style lang="css" scoped>
-.input-search {}
-</style>
+<style lang="css" scoped></style>

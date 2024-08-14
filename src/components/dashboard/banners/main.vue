@@ -21,15 +21,16 @@ import { useRoute } from 'vue-router'
 import { useBannersStore } from 'src/stores/banners'
 import TableMotowork from '../partials/tableMotowork.vue'
 import HeadersMotowork from '../partials/headersMotowork.vue'
+import CardModalMotowork from '../partials/cardModalMotowork.vue'
 import { computed, defineComponent, onBeforeMount, ref } from 'vue'
 import { TableColumnsInterface } from 'src/interfaces/tableInterface'
-import { BannersInterface } from 'src/interfaces/bannersInterface'
 
 export default defineComponent({
   name: 'MainBannersComponents',
   components: {
+    TableMotowork,
     HeadersMotowork,
-    TableMotowork
+    CardModalMotowork
   },
   setup() {
     // data

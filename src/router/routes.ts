@@ -21,6 +21,15 @@ const routes: RouteRecordRaw[] = [
         },
         name: "dashboard",
       },
+      {
+        path: "banners",
+        component: () => import("src/pages/dashboard/main.vue"),
+        meta: {
+          available: ["list-banners"],
+          auth: true,
+        },
+        name: "banners",
+      },
     ],
   },
   // Always leave this as last one,

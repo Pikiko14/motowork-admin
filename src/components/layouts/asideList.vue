@@ -3,39 +3,39 @@
     <q-list>
       <q-item>
         <q-item-section class="text-center">
-          <q-icon style="margin-left: -4px" name="img:images/white-logo.svg" size="32px"></q-icon>
+          <q-icon style="margin-left: -4px" name="img:/images/white-logo.svg" size="32px"></q-icon>
         </q-item-section>
       </q-item>
       <q-item clickable class="q-mt-sm" to="/dashboard">
         <q-item-section class="text-center">
-          <q-icon :name="$route.path == '/dashboard' ? 'img:images/home-primary.svg' : 'img:images/home.svg'"
+          <q-icon :name="$route.path == '/dashboard' ? 'img:/images/home-primary.svg' : 'img:/images/home.svg'"
             size="24px"></q-icon>
         </q-item-section>
       </q-item>
       <q-item clickable class="q-mt-sm" to="/dashboard/banners">
         <q-item-section class="text-center">
           <q-icon
-            :name="$route.path == '/dashboard/banners' ? 'img:images/banners-primary.svg' : 'img:images/banner.svg'"
+            :name="$route.path == '/dashboard/banners' ? 'img:/images/banners-primary.svg' : 'img:/images/banner.svg'"
             size="24px"></q-icon>
         </q-item-section>
       </q-item>
       <q-item clickable class="q-mt-sm" to="/dashboard/products">
         <q-item-section class="text-center">
           <q-icon
-            :name="$route.path == '/dashboard/products' ? 'img:images/products-primary.svg' : 'img:images/products.svg'"
+            :name="$route.path == '/dashboard/products' ? 'img:/images/products-primary.svg' : 'img:/images/products.svg'"
             size="24px"></q-icon>
         </q-item-section>
       </q-item>
       <q-item clickable class="q-mt-sm" to="/dashboard/blogs">
         <q-item-section class="text-center">
-          <q-icon :name="$route.path == '/dashboard/blogs' ? 'img:images/blogs-primary.svg' : 'img:images/blogs.svg'"
+          <q-icon :name="$route.path == '/dashboard/blogs' ? 'img:/images/blogs-primary.svg' : 'img:/images/blogs.svg'"
             size="24px"></q-icon>
         </q-item-section>
       </q-item>
       <q-item clickable class="q-mt-sm" to="/dashboard/schedule">
         <q-item-section class="text-center">
           <q-icon
-            :name="$route.path == '/dashboard/schedule' ? 'img:images/schedule-primary.svg' : 'img:images/schedule.svg'"
+            :name="$route.path == '/dashboard/schedule' ? 'img:/images/schedule-primary.svg' : 'img:/images/schedule.svg'"
             size="24px"></q-icon>
         </q-item-section>
       </q-item>

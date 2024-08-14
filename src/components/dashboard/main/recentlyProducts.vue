@@ -26,7 +26,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import ListItems from './listItems.vue'
-import { RecentlyItemsInterface } from 'src/interfaces/DashboardInterface'
+import { RecentlyItemsInterface } from 'src/interfaces/dashboardInterface'
 
 export default defineComponent({
   name: 'RecentlyComponents',

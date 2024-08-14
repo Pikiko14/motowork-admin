@@ -6,7 +6,7 @@ import {
   ProfileInterface,
   RegisterData,
   LoginData,
-} from "src/interfaces/AuthInterface";
+} from "src/interfaces/authInterface";
 import { ResponseObj } from "src/interfaces/api";
 import { StorageService } from "src/utils/storage";
 import { User } from "src/interfaces/userInterface";

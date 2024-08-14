@@ -55,7 +55,7 @@
 import { useRouter } from 'vue-router'
 import { defineComponent, onBeforeMount, ref } from 'vue'
 import { useAuthStore } from 'src/stores/auth'
-import { LoginData } from 'src/interfaces/AuthInterface'
+import { LoginData } from 'src/interfaces/authInterface'
 import { StorageService } from 'src/utils/storage'
 
 export default defineComponent({

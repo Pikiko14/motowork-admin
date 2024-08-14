@@ -427,6 +427,10 @@ input::placeholder {
     height: 39px;
 }
 
+.hide-borders {
+    border: transparent;
+}
+
 // media queries
 @media (max-width: 1060px) {
     .hide-mobile {

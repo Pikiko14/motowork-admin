@@ -33,7 +33,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { RecentlyItemsInterface } from 'src/interfaces/DashboardInterface';
+import { RecentlyItemsInterface } from 'src/interfaces/dashboardInterface';
 
 export default defineComponent({
   name: 'ListRecentlyComponents',

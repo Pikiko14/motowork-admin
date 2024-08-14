@@ -17,6 +17,7 @@ const handlerRequest = new Request({
 export const useBannersStore = defineStore("bannersStore", () => {
   //## data ##//
   const totalItems = ref<number>(0);
+  const totalPages = ref<number>(0);
   const banners = ref<BannersInterface[]>([]);
 
   //## methods##//
@@ -44,6 +45,7 @@ export const useBannersStore = defineStore("bannersStore", () => {
           }
         );
         totalItems.value = response.data.totalItems;
+        totalPages.value = response.data.totalPages;
         return response;
       }
     } catch (error) {
@@ -54,6 +56,7 @@ export const useBannersStore = defineStore("bannersStore", () => {
   // return statement
   return {
     banners,
+    totalPages,
     listBanners,
   };
 });

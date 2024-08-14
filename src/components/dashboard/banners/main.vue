@@ -7,7 +7,7 @@
     <!-- end headers -->
 
     <!--table Banners-->
-    <TableMotowork :columns="bannersColums" :rows="banners" class="q-mt-lg" />
+    <TableMotowork :columns="bannersColums" :rows="banners" class="q-mt-lg" :totalPages="totalPages" />
     <!--End table Banners-->
 
     <!--Modal Banners-->
@@ -61,6 +61,10 @@ export default defineComponent({
       return store.banners
     })
 
+    const totalPages = computed(() => {
+      return store.totalPages
+    })
+
     // methods
     const openModal = () => {
       openModalBanners.value = !openModalBanners.value
@@ -86,6 +90,7 @@ export default defineComponent({
     return {
       banners,
       openModal,
+      totalPages,
       bannersColums,
       openModalBanners
     }

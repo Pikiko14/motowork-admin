@@ -1,5 +1,6 @@
 <template>
   <section class="full-width motowork-table" :class="{ 'q-pr-lg': $q.screen.gt.sm }">
+    <!--Table section-->
     <q-table hide-bottom flat bordered class="full-width hide-borders" :rows="rows" :columns="columns" row-key="name"
       separator="none">
       <!--Options tr-->
@@ -30,11 +31,20 @@
       </template>
       <!--End name banners tr-->
     </q-table>
+    <!--End Table section-->
+
+    <!--Paginator section-->
+    <div class="full-width q-mt-lg">
+      <q-pagination @update:model-value="doPagination" color="secondary" direction-links v-model="currentPage"
+        :max="totalPages" />
+    </div>
+    <!--End Paginator section-->
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { useRoute, useRouter } from 'vue-router';
+import { defineComponent, onBeforeMount, ref } from 'vue'
 import { TableColumnsInterface } from 'src/interfaces/tableInterface';
 
 export default defineComponent({
@@ -47,10 +57,19 @@ export default defineComponent({
     columns: {
       type: Array as () => TableColumnsInterface[],
       default: () => []
+    },
+    totalPages: {
+      type: Number,
+      default: 0
     }
   },
   emits: ['do-edit'],
   setup(props, { emit }) {
+    // data
+    const route = useRoute()
+    const router = useRouter()
+    const currentPage = ref<number>(1)
+
     // methods
     const doEdit = (id: string) => {
       emit('do-edit', id)
@@ -60,9 +79,23 @@ export default defineComponent({
       window.open(url, '_blank')
     }
 
+    const doPagination = (page: number) => {
+      currentPage.value = page
+      const search = route.query.search ? route.query.search as string : ''
+      const perPage = route.query.perPage ? parseInt(route.query.perPage as string) : 12
+      router.push({ name: 'banners', query: { page, perPage, search } })
+    }
+
+    // hook
+    onBeforeMount(() => {
+      currentPage.value = route.query.page ? parseInt(route.query.page as string) : 1
+    })
+
     return {
       doEdit,
-      openUrl
+      openUrl,
+      currentPage,
+      doPagination
     }
   }
 })

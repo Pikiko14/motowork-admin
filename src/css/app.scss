@@ -485,6 +485,14 @@ input::placeholder {
     margin-left: 20px;
 }
 
+.q-pagination__middle .q-btn{
+    border-radius: 0px;
+}
+
+.q-pagination__middle .q-btn::before{
+    box-shadow: none !important;
+}
+
 // media queries
 @media (max-width: 1060px) {
     body {

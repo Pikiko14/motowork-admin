@@ -154,7 +154,7 @@ export const useBannersStore = defineStore("bannersStore", () => {
    * @returns
    */
   const doUpdateBanners = async (
-    id: string,
+    id: string | undefined,
     params: any
   ): Promise<ResponseObj | void> => {
     try {

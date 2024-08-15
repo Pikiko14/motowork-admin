@@ -131,7 +131,7 @@ export default defineComponent({
       try {
         const response = await store.doDeleteBanners(id);
         if (response?.success) {
-          notification('positive', response?.message, 'green')
+          notification('positive', response?.message, 'success')
         }
       } catch (error) {
       }

@@ -10,13 +10,29 @@
         <q-item-section class="text-center">
           <q-icon :name="$route.path == '/dashboard' ? 'img:/images/home-primary.svg' : 'img:/images/home.svg'"
             size="24px"></q-icon>
+          <q-tooltip class="bg-secondary" anchor="center right" self="center left" :offset="[10, 10]">
+            Inicio
+          </q-tooltip>
         </q-item-section>
       </q-item>
       <q-item clickable class="q-mt-sm" to="/dashboard/banners?page=1&perPage=7&search=">
         <q-item-section class="text-center">
           <q-icon
             :name="$route.path == '/dashboard/banners' ? 'img:/images/banners-primary.svg' : 'img:/images/banner.svg'"
+            size="22px"></q-icon>
+          <q-tooltip class="bg-secondary" anchor="center right" self="center left" :offset="[10, 10]">
+            Banners
+          </q-tooltip>
+        </q-item-section>
+      </q-item>
+      <q-item clickable class="q-mt-sm" to="/dashboard/categories?page=1&perPage=7&search=">
+        <q-item-section class="text-center">
+          <q-icon
+            :name="$route.path == '/dashboard/categories' ? 'img:/images/category-red.svg' : 'img:/images/category.svg'"
             size="24px"></q-icon>
+          <q-tooltip class="bg-secondary" anchor="center right" self="center left" :offset="[10, 10]">
+            Categorias
+          </q-tooltip>
         </q-item-section>
       </q-item>
       <q-item clickable class="q-mt-sm" to="/dashboard/products?page=1&perPage=16&search=">

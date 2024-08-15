@@ -38,12 +38,14 @@ export const useBannersStore = defineStore("bannersStore", () => {
       if (response.success) {
         banners.value = response.data.banners.map(
           (banner: BannersInterface) => {
-            banner.desktop_image = banner.images.find(
-              (item: BannerImageInterface) => {
-                return item.type === TypeImageBanner.desktop;
-              }
-            );
-            return banner;
+            if (banner.images) {
+              banner.desktop_image = banner.images.find(
+                (item: BannerImageInterface) => {
+                  return item.type === TypeImageBanner.desktop;
+                }
+              );
+              return banner;
+            }
           }
         );
         totalItems.value = response.data.totalItems;
@@ -55,6 +57,11 @@ export const useBannersStore = defineStore("bannersStore", () => {
     }
   };
 
+  /**
+   * Save banners
+   * @param { any } params params of creation
+   * @returns
+   */
   const doSaveBanners = async (params: any): Promise<ResponseObj | void> => {
     try {
       const response = (await handlerRequest.doPostRequest(
@@ -92,7 +99,12 @@ export const useBannersStore = defineStore("bannersStore", () => {
     }
   };
 
-  const doDeleteBanners = async (id: string) => {
+  /**
+   * Delete banners
+   * @param { string } id id of banners
+   * @returns
+   */
+  const doDeleteBanners = async (id: string): Promise<ResponseObj | void> => {
     try {
       const response = await handlerRequest.doDeleteRequest(
         `${path}/${id}`,
@@ -123,13 +135,70 @@ export const useBannersStore = defineStore("bannersStore", () => {
     }
   };
 
+  /**
+   *
+   * @param { string } id id of banner
+   * @returns
+   */
+  const getBannerById = (id: string): BannersInterface => {
+    const banner: BannersInterface = banners.value.find(
+      (banner: BannersInterface) => banner._id === id
+    ) as BannersInterface;
+    return banner;
+  };
+
+  /**
+   * Update banners
+   * @param { string } id id of banner
+   * @param { any } params params of creation
+   * @returns
+   */
+  const doUpdateBanners = async (
+    id: string,
+    params: any
+  ): Promise<ResponseObj | void> => {
+    try {
+      const response = (await handlerRequest.doPutRequest(
+        `${path}/${id}`,
+        params,
+        true,
+        true
+      )) as ResponseObj;
+      if (response.success) {
+        // get query params
+        const queryParams = utils.getCurrentQueryParams();
+        const perPage = queryParams.perPage || 7;
+
+        // set desktop_image
+        response.data.desktop_image = response.data.images.find(
+          (item: BannerImageInterface) => {
+            return item.type === TypeImageBanner.desktop;
+          }
+        );
+
+        // push new item to storage
+        const index = banners.value.findIndex(
+          (banner: BannersInterface) => banner._id === response.data._id
+        );
+        if (index !== -1) banners.value[index] = response.data;
+
+        // return response
+        return response;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // return statement
   return {
     banners,
     totalItems,
     totalPages,
     listBanners,
+    getBannerById,
     doSaveBanners,
+    doUpdateBanners,
     doDeleteBanners,
   };
 });

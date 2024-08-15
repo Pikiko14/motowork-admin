@@ -81,19 +81,28 @@
 <script lang="ts">
 import { Utils } from 'src/utils/utils'
 import { ResponseObj } from 'src/interfaces/api'
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, onBeforeMount, ref } from 'vue'
 import { useBannersStore } from 'src/stores/banners'
 import { notification } from 'src/boot/notification'
 import FilePickerMotowork from '../../partials/filePickerMotowork.vue'
-import { BannersInterface, TypeBanner } from 'src/interfaces/bannersInterface'
+import { BannersInterface, TypeBanner, TypeImageBanner } from 'src/interfaces/bannersInterface'
 
 export default defineComponent({
   name: 'BannersFormComponent',
   components: {
     FilePickerMotowork
   },
+  props: {
+    bannerData: {
+      type: Object as () => BannersInterface,
+      default: () => {
+        return {}
+      }
+    }
+  },
   setup(props, { emit }) {
     // data
+    const { bannerData } = props
     const store = useBannersStore()
     const utils = new Utils('banners')
     const loading = ref<boolean>(false)
@@ -141,8 +150,13 @@ export default defineComponent({
 
     // methods
     const doSaveBanners = async () => {
-      if (!desktopImage.value || !tableImage.value || !mobileImage.value) {
+      if (!banner.value._id && !desktopImage.value || !banner.value._id && !tableImage.value || !banner.value._id && !mobileImage.value) {
         notification('warning', 'Faltan imagenes que agregar al banner', 'warning')
+        return false
+      }
+
+      if (banner.value._id) {
+        await doUpdateBanners()
         return false
       }
 
@@ -195,6 +209,63 @@ export default defineComponent({
           break;
       }
     }
+
+    const prepareBannerForEdit = (bannerObj: BannersInterface) => {
+      // prepare image for edit
+      const { images } = bannerObj
+      const desktopImg = images ? images.find((image: any) => image.type === TypeImageBanner.desktop) : ''
+      const mobileImg = images ? images.find((image: any) => image.type === TypeImageBanner.mobile) : ''
+      const tabletImg = images ? images.find((image: any) => image.type === TypeImageBanner.tablet) : ''
+      desktopBase64.value = desktopImg ? `${process.env.API_URL}${desktopImg.path}` : ''
+      tableBase64.value = tabletImg ? `${process.env.API_URL}${tabletImg.path}` : ''
+      mobileBase64.value = mobileImg ? `${process.env.API_URL}${mobileImg.path}` : ''
+
+      // set banner
+      banner.value = JSON.parse(JSON.stringify(bannerObj))
+    }
+
+    const doUpdateBanners = async () => {
+      if (banner.value.images) {
+        delete banner.value.images
+      }
+
+      try {
+        const formData = utils.transformObjectInFormData(banner.value, false, null)
+        formData.append('images_tablet', tableImage.value ? tableImage.value : '')
+        formData.append('images_mobile', mobileImage.value ? mobileImage.value : '')
+        formData.append('images_desktop', desktopImage.value ? desktopImage.value : '')
+        loading.value = true
+        const response = await store.doUpdateBanners(banner.value._id, formData) as ResponseObj;
+        if (response.success) {
+          notification('success', response.message, 'success')
+          // clear data
+          banner.value = {
+            name: '',
+            link: '',
+            type: TypeBanner.home,
+            images: [],
+            is_active: false
+          }
+          tableImage.value = null
+          mobileImage.value = null
+          desktopImage.value = null
+          tableBase64.value = ''
+          mobileBase64.value = ''
+          desktopBase64.value = ''
+          emit('close-modal')
+        }
+      } catch (error) {
+      } finally {
+        loading.value = false
+      }
+    }
+
+    // hook
+    onBeforeMount(() => {
+      if (bannerData && bannerData._id) {
+        prepareBannerForEdit(bannerData)
+      }
+    })
 
     return {
       tab,

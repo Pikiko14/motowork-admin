@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import { defineStore } from "pinia";
 import { Request } from "src/api/api";
+import { Utils } from "src/utils/utils";
 import { ResponseObj } from "src/interfaces/api";
 import {
   BannerImageInterface,
@@ -18,6 +19,7 @@ export const useBannersStore = defineStore("bannersStore", () => {
   //## data ##//
   const totalItems = ref<number>(0);
   const totalPages = ref<number>(0);
+  const utils = new Utils("banners");
   const banners = ref<BannersInterface[]>([]);
 
   //## methods##//
@@ -62,13 +64,27 @@ export const useBannersStore = defineStore("bannersStore", () => {
         true
       )) as ResponseObj;
       if (response.success) {
+        // get query params
+        const queryParams = utils.getCurrentQueryParams();
+        const perPage = queryParams.perPage || 7;
+
+        // set desktop_image
         response.data.desktop_image = response.data.images.find(
           (item: BannerImageInterface) => {
             return item.type === TypeImageBanner.desktop;
           }
         );
-        banners.value.push(response.data);
+
+        // push new item to storage
+        if (banners.value.length < perPage) banners.value.push(response.data);
+
+        // up total items
         totalItems.value++;
+
+        // set total pages
+        totalPages.value = Math.ceil(totalItems.value / perPage);
+
+        // return response
         return response;
       }
     } catch (error) {
@@ -79,6 +95,7 @@ export const useBannersStore = defineStore("bannersStore", () => {
   // return statement
   return {
     banners,
+    totalItems,
     totalPages,
     listBanners,
     doSaveBanners,

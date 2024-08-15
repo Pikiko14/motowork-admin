@@ -83,4 +83,18 @@ export class Utils {
     }
     return true;
   }
+
+  getCurrentQueryParams() {
+    // Obtener la URL actual desde la ventana
+    const currentUrl = window.location.href;
+    // Crear un objeto URL con la URL actual
+    const urlObj = new URL(currentUrl);
+    // Crear un objeto para almacenar los query params
+    const queryParams: any = {};
+    // Iterar sobre los pares clave/valor de los query params
+    urlObj.searchParams.forEach((value, key) => {
+      queryParams[key] = value;
+    });
+    return queryParams;
+  }
 }

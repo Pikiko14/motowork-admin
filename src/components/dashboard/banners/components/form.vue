@@ -79,12 +79,13 @@
 
 <script lang="ts">
 import { Utils } from 'src/utils/utils'
-import { defineComponent, ref } from 'vue'
 import { ResponseObj } from 'src/interfaces/api'
+import { computed, defineComponent, ref } from 'vue'
 import { useBannersStore } from 'src/stores/banners'
 import { notification } from 'src/boot/notification'
 import FilePickerMotowork from '../../partials/filePickerMotowork.vue'
 import { BannersInterface, TypeBanner } from 'src/interfaces/bannersInterface'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'BannersFormComponent',
@@ -93,6 +94,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     // data
+    const route = useRoute()
     const store = useBannersStore()
     const utils = new Utils('banners')
     const bannerTypeOptions = [
@@ -132,6 +134,11 @@ export default defineComponent({
     const mobileImage = ref<any>(null)
     const desktopImage = ref<any>(null)
 
+    // computed
+    const totalItems = computed(() => {
+      return store.totalItems
+    })
+
     // methods
     const doSaveBanners = async () => {
       if (!desktopImage.value || !tableImage.value || !mobileImage.value) {
@@ -147,6 +154,7 @@ export default defineComponent({
         const response = await store.doSaveBanners(formData) as ResponseObj;
         if (response.success) {
           notification('success', response.message, 'success')
+          // clear data
           banner.value = {
             name: '',
             link: '',

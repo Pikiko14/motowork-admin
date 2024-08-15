@@ -86,7 +86,7 @@ export default defineComponent({
         const fileData = files[i]
         if (fileData.size > maxSizeInBytes) {
           file.value = null
-          notification('negative', 'El archivo excede el tamaño maximo permitido.', 'red')
+          notification('negative', 'El archivo excede el tamaño maximo permitido (1MB).', 'red')
           return false
         }
         if (fileData.type.startsWith('image/')) {
@@ -111,6 +111,7 @@ export default defineComponent({
         return false
       }
       const maxSizeInBytes = 1024 * 1024
+      console.log(filePicker)
       const isValidFile = utils.valdiateFile(filePicker)
       // validate type file
       if (!isValidFile) {
@@ -121,7 +122,7 @@ export default defineComponent({
       // validamos el tamaño del archivo
       if (filePicker.size > maxSizeInBytes) {
         file.value = null
-        notification('negative', 'El archivo excede el tamaño maximo permitido.', 'red')
+        notification('negative', 'El archivo excede el tamaño maximo permitido (1MB).', 'red')
         return false
       }
       if (filePicker.type.startsWith('image/')) {

@@ -78,7 +78,7 @@ export class Utils {
 
   valdiateFile(value: any): boolean {
     if (value) {
-      const regex = /^.*\.(png|jpg|jpeg|webp|pdf)$/;
+      const regex = /^.*\.(png|jpg|jpeg|webp|pdf|svg)$/;
       return regex.test(value.name);
     }
     return true;

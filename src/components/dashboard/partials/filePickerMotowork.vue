@@ -10,6 +10,8 @@
     <span class="title-file-picker-format" v-if="!base64Image">
       {{ resolutionLabel }}
     </span>
+    <q-img class="brand-category-image" v-if="maxFile === 1 && !isBackgroundImage && base64Image"
+      :src="base64Image"></q-img>
     <q-file accept="image/*" @update:model-value="(event) => setFile(event)" ref="fileInput" class="hidden"
       v-model="file"></q-file>
   </section>
@@ -45,6 +47,10 @@ export default defineComponent({
     base64Image: {
       type: String,
       default: () => '',
+    },
+    isBackgroundImage: {
+      type: Boolean,
+      default: () => true,
     }
   },
   emits: ['set-file'],
@@ -53,7 +59,7 @@ export default defineComponent({
     const fileInput = ref()
     const filePickerRef = ref()
     const file = ref<any>(null)
-    const { maxFile, type } = props
+    const { maxFile, type, isBackgroundImage } = props
     const filesBase64 = ref<any>([])
     const imageBase64 = ref<string>('')
     const utils = new Utils('filePicker')
@@ -111,7 +117,6 @@ export default defineComponent({
         return false
       }
       const maxSizeInBytes = 1024 * 1024
-      console.log(filePicker)
       const isValidFile = utils.valdiateFile(filePicker)
       // validate type file
       if (!isValidFile) {
@@ -134,7 +139,9 @@ export default defineComponent({
           })
           imageBase64.value = event.target.result
           const backgroundImage = `url('${event.target.result}')`
-          setBackground(backgroundImage)
+          if (isBackgroundImage) {
+            setBackground(backgroundImage)
+          }
           emitFile(filePicker)
         }
         reader.readAsDataURL(filePicker as any)

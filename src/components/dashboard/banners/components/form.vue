@@ -23,24 +23,16 @@
         </q-tab-panel>
       </q-tab-panels>
     </div>
-    <div class="col-12 col-md-6 q-px-md q-pt-sm q-mt-md">
-      <span class="label-banner-form">
-        Nombre del banner
-      </span>
-    </div>
     <div class="col-12 col-md-6 q-px-md q-mt-md">
+      <label for="">Nombre del banner</label>
       <q-input square :rules="[
         val => (val && val.length > 0) || 'Por favor ingrese el nombre del banner',
         val => (val && val.length >= 5) || 'Mayor a 5 caracteres',
         val => (val && val.length <= 90) || 'Menor a 90 caracteres'
       ]" placeholder="Banner 01" outlined dense v-model="banner.name"></q-input>
     </div>
-    <div class="col-12 col-md-6 q-px-md q-pt-md">
-      <span class="label-banner-form">
-        Enlace directo
-      </span>
-    </div>
-    <div class="col-12 col-md-6 q-px-md q-mt-sm">
+    <div class="col-12 col-md-6 q-px-md q-mt-md">
+      <label for="">Enlace directo</label>
       <q-input square :rules="[
         val => (val && val.length > 0) || 'Por favor ingrese el nombre del banner',
         val => (val && val.length >= 5) || 'Mayor a 5 caracteres',
@@ -48,32 +40,25 @@
         val => /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9#]+\/?)*$/.test(val) || 'Debe ser un link correcto'
       ]" placeholder="https://www.google.com" outlined dense v-model="banner.link"></q-input>
     </div>
-    <div class="col-12 col-md-6 q-px-md q-pt-md">
-      <span class="label-banner-form">
-        Tipo de banner
-      </span>
-    </div>
     <div class="col-12 col-md-6 q-px-md q-mt-sm">
+      <label for="">Tipo de banner</label>
       <q-select square emit-value map-options :rules="[(val) => !!val || 'Selecciona una opción']" outlined dense
         v-model="banner.type" :options="bannerTypeOptions"></q-select>
     </div>
-    <div class="col-8 col-md-6 q-px-md q-pt-md">
-      <span class="label-banner-form">
-        Activar banner
-      </span>
+    <div class="col-4 col-md-6 q-px-md q-pr-sm q-mt-sm text-left">
+      <label for="">Activar el banner</label><br>
+      <q-checkbox left-label :label="banner.is_active ? 'No' : 'Si'" v-model="banner.is_active" color="secondary"
+        bg-color="white"></q-checkbox>
     </div>
-    <div class="col-4 col-md-6 q-pr-sm q-mt-sm text-right">
-      <q-checkbox left-label :label="banner.is_active ? 'Activo' : 'Inactivo'" v-model="banner.is_active"
-        color="secondary" bg-color="white"></q-checkbox>
+
+    <div class="col-12 col-md-6 q-mt-sm"
+      :class="{ 'q-pl-md q-pr-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
+      <q-btn :loading="loading" type="submit" unelevated square label="Guardar"
+        class="full-width q-mt-md btn-cancel-solid"></q-btn>
     </div>
     <div class="col-12 col-md-6 q-mt-sm"
-      :class="{ 'q-pr-sm q-pl-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
+      :class="{ 'q-pr-md q-pl-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
       <q-btn v-close-popup outline square label="Cancelar" class="full-width q-mt-md btn-cancel"></q-btn>
-    </div>
-    <div class="col-12 col-md-6 q-mt-sm"
-      :class="{ 'q-pl-sm q-pr-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
-      <q-btn :loading="loading" type="submit" unelevated square label="Guardar" class="full-width q-mt-md"
-        color="secondary"></q-btn>
     </div>
   </q-form>
 </template>
@@ -81,9 +66,9 @@
 <script lang="ts">
 import { Utils } from 'src/utils/utils'
 import { ResponseObj } from 'src/interfaces/api'
-import { computed, defineComponent, onBeforeMount, ref } from 'vue'
 import { useBannersStore } from 'src/stores/banners'
 import { notification } from 'src/boot/notification'
+import { computed, defineComponent, onBeforeMount, ref } from 'vue'
 import FilePickerMotowork from '../../partials/filePickerMotowork.vue'
 import { BannersInterface, TypeBanner, TypeImageBanner } from 'src/interfaces/bannersInterface'
 
@@ -142,11 +127,6 @@ export default defineComponent({
     const tableImage = ref<any>(null)
     const mobileImage = ref<any>(null)
     const desktopImage = ref<any>(null)
-
-    // computed
-    const totalItems = computed(() => {
-      return store.totalItems
-    })
 
     // methods
     const doSaveBanners = async () => {

@@ -7,7 +7,7 @@
       <template v-slot:body-cell-options="props">
         <q-td class="text-center">
           <q-btn size="7.8pt" @click="doEdit(props.row.id)" flat dense icon="img:/images/pencil-edit.svg" round></q-btn>
-          <q-btn @click="doDelete(props.row.id)" class="q-ml-20" size="10pt" color="black" flat dense
+          <q-btn @click="doDelete(props.row._id)" class="q-ml-20" size="10pt" color="black" flat dense
             icon="delete_sweep" round></q-btn>
         </q-td>
       </template>

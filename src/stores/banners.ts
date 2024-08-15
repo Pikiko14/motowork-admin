@@ -55,7 +55,7 @@ export const useBannersStore = defineStore("bannersStore", () => {
     }
   };
 
-  const doSaveBanners = async (params: any) => {
+  const doSaveBanners = async (params: any): Promise<ResponseObj | void> => {
     try {
       const response = (await handlerRequest.doPostRequest(
         `${path}`,
@@ -92,6 +92,37 @@ export const useBannersStore = defineStore("bannersStore", () => {
     }
   };
 
+  const doDeleteBanners = async (id: string) => {
+    try {
+      const response = await handlerRequest.doDeleteRequest(
+        `${path}/${id}`,
+        true
+      );
+      if (response.success) {
+        // get query params
+        const queryParams = utils.getCurrentQueryParams();
+        const perPage = queryParams.perPage || 7;
+
+        // delete from store
+        const index = banners.value.findIndex(
+          (banner: BannersInterface) => banner._id === id
+        );
+        if (index !== -1) banners.value.splice(index, 1);
+
+        // up total items
+        totalItems.value--;
+
+        // set total pages
+        totalPages.value = Math.ceil(totalItems.value / perPage);
+
+        // return response
+        return response;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // return statement
   return {
     banners,
@@ -99,5 +130,6 @@ export const useBannersStore = defineStore("bannersStore", () => {
     totalPages,
     listBanners,
     doSaveBanners,
+    doDeleteBanners,
   };
 });

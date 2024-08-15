@@ -33,6 +33,7 @@ import CardModalMotowork from '../partials/cardModalMotowork.vue'
 import { computed, defineComponent, onBeforeMount, ref } from 'vue'
 import { TableColumnsInterface } from 'src/interfaces/tableInterface'
 import { useQuasar } from 'quasar'
+import { notification } from 'src/boot/notification'
 
 export default defineComponent({
   name: 'MainBannersComponents',
@@ -107,7 +108,10 @@ export default defineComponent({
 
     const confirmDeleteBanner = async (id: string) => {
       try {
-        alert(id)
+        const response = await store.doDeleteBanners(id);
+        if (response?.success) {
+          notification('positive', response?.message, 'green')
+        }
       } catch (error) {
       }
     }

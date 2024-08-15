@@ -20,6 +20,7 @@ export interface BannerImageInterface {
 }
 
 export interface BannersInterface {
+  _id?: string;
   name: string;
   link: string;
   type: TypeBanner;

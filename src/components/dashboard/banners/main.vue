@@ -7,7 +7,8 @@
     <!-- end headers -->
 
     <!--table Banners-->
-    <TableMotowork :columns="bannersColums" :rows="banners" class="q-mt-lg" :totalPages="totalPages" />
+    <TableMotowork @do-delete="doDeleteBanner" :columns="bannersColums" :rows="banners" class="q-mt-lg"
+      :totalPages="totalPages" />
     <!--End table Banners-->
 
     <!--Modal Banners-->
@@ -31,6 +32,7 @@ import HeadersMotowork from '../partials/headersMotowork.vue'
 import CardModalMotowork from '../partials/cardModalMotowork.vue'
 import { computed, defineComponent, onBeforeMount, ref } from 'vue'
 import { TableColumnsInterface } from 'src/interfaces/tableInterface'
+import { useQuasar } from 'quasar'
 
 export default defineComponent({
   name: 'MainBannersComponents',
@@ -42,6 +44,7 @@ export default defineComponent({
   },
   setup() {
     // data
+    const q = useQuasar()
     const route = useRoute()
     const store = useBannersStore()
     const openModalBanners = ref<boolean>(false)
@@ -90,6 +93,25 @@ export default defineComponent({
       }
     }
 
+    const doDeleteBanner = async (id: string) => {
+      q.dialog({
+        dark: false,
+        title: 'Eliminar banner',
+        message: '¿Deseas eliminar el banner?',
+        cancel: true,
+        persistent: true
+      }).onOk(async () => {
+        await confirmDeleteBanner(id)
+      })
+    }
+
+    const confirmDeleteBanner = async (id: string) => {
+      try {
+        alert(id)
+      } catch (error) {
+      }
+    }
+
     // hook
     onBeforeMount(async () => {
       await listBanners()
@@ -101,6 +123,7 @@ export default defineComponent({
       openModal,
       totalPages,
       bannersColums,
+      doDeleteBanner,
       openModalBanners
     }
   }

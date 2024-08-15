@@ -7,7 +7,8 @@
       <template v-slot:body-cell-options="props">
         <q-td class="text-center">
           <q-btn size="7.8pt" @click="doEdit(props.row.id)" flat dense icon="img:/images/pencil-edit.svg" round></q-btn>
-          <q-btn class="q-ml-20" size="8pt" flat dense icon="img:/images/reset.svg" round></q-btn>
+          <q-btn @click="doDelete(props.row.id)" class="q-ml-20" size="10pt" color="black" flat dense
+            icon="delete_sweep" round></q-btn>
         </q-td>
       </template>
       <!--End Options tr-->
@@ -63,7 +64,10 @@ export default defineComponent({
       default: 0
     }
   },
-  emits: ['do-edit'],
+  emits: [
+    'do-edit',
+    'do-delete'
+  ],
   setup(props, { emit }) {
     // data
     const pagination = ref({
@@ -89,6 +93,10 @@ export default defineComponent({
       router.push({ name: 'banners', query: { page, perPage, search } })
     }
 
+    const doDelete = (id: string) => {
+      emit('do-delete', id)
+    }
+
     // hook
     onBeforeMount(() => {
       currentPage.value = route.query.page ? parseInt(route.query.page as string) : 1
@@ -97,6 +105,7 @@ export default defineComponent({
     return {
       doEdit,
       openUrl,
+      doDelete,
       pagination,
       currentPage,
       doPagination

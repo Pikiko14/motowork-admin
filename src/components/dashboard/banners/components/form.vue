@@ -68,11 +68,12 @@
     </div>
     <div class="col-12 col-md-6 q-mt-sm"
       :class="{ 'q-pr-sm q-pl-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
-      <q-btn outline square label="Cancelar" class="full-width q-mt-md" color="secondary"></q-btn>
+      <q-btn v-close-popup outline square label="Cancelar" class="full-width q-mt-md btn-cancel"></q-btn>
     </div>
     <div class="col-12 col-md-6 q-mt-sm"
       :class="{ 'q-pl-sm q-pr-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
-      <q-btn type="submit" unelevated square label="Guardar" class="full-width q-mt-md" color="secondary"></q-btn>
+      <q-btn :loading="loading" type="submit" unelevated square label="Guardar" class="full-width q-mt-md"
+        color="secondary"></q-btn>
     </div>
   </q-form>
 </template>
@@ -85,7 +86,6 @@ import { useBannersStore } from 'src/stores/banners'
 import { notification } from 'src/boot/notification'
 import FilePickerMotowork from '../../partials/filePickerMotowork.vue'
 import { BannersInterface, TypeBanner } from 'src/interfaces/bannersInterface'
-import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'BannersFormComponent',
@@ -94,9 +94,9 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     // data
-    const route = useRoute()
     const store = useBannersStore()
     const utils = new Utils('banners')
+    const loading = ref<boolean>(false)
     const bannerTypeOptions = [
       {
         label: 'Inicio',
@@ -151,6 +151,7 @@ export default defineComponent({
         formData.append('images_tablet', tableImage.value ? tableImage.value : '')
         formData.append('images_mobile', mobileImage.value ? mobileImage.value : '')
         formData.append('images_desktop', desktopImage.value ? desktopImage.value : '')
+        loading.value = true
         const response = await store.doSaveBanners(formData) as ResponseObj;
         if (response.success) {
           notification('success', response.message, 'success')
@@ -172,6 +173,7 @@ export default defineComponent({
         }
       } catch (error) {
       } finally {
+        loading.value = false
       }
     }
 
@@ -198,6 +200,7 @@ export default defineComponent({
       tab,
       banner,
       setFile,
+      loading,
       tableBase64,
       mobileBase64,
       doSaveBanners,

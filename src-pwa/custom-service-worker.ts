@@ -38,3 +38,30 @@ if (process.env.MODE !== "ssr" || process.env.PROD) {
     new StaleWhileRevalidate()
   );
 }
+
+const CACHE_NAME = "image-cache-v1";
+
+self.addEventListener("fetch", (event) => {
+  console.log(1);
+  const requestUrl = new URL(event.request.url);
+
+  if (
+    requestUrl.origin === location.origin &&
+    requestUrl.pathname.startsWith("/banners/")
+  ) {
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+
+        return caches.open(CACHE_NAME).then((cache) => {
+          return fetch(event.request).then((response) => {
+            cache.put(event.request, response.clone());
+            return response;
+          });
+        });
+      })
+    );
+  }
+});

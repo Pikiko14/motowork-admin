@@ -71,7 +71,7 @@ export default defineComponent({
           notification(
             'negative',
             'Solo puedes agregar una imágen.',
-            'red'
+            'warning'
           )
           return false
         }
@@ -86,7 +86,7 @@ export default defineComponent({
         const fileData = files[i]
         if (fileData.size > maxSizeInBytes) {
           file.value = null
-          notification('negative', 'El archivo excede el tamaño maximo permitido (1MB).', 'red')
+          notification('negative', 'El archivo excede el tamaño maximo permitido (1MB).', 'warning')
           return false
         }
         if (fileData.type.startsWith('image/')) {
@@ -94,7 +94,7 @@ export default defineComponent({
           setFile(fileData)
           return true
         } else {
-          notification('negative', 'El archivo debe ser tipo jpg, png, webp.', 'red')
+          notification('negative', 'El archivo debe ser tipo jpg, png, webp.', 'warning')
           return false
           // Aquí puedes mostrar un mensaje de error al usuario si es necesario
         }
@@ -116,13 +116,13 @@ export default defineComponent({
       // validate type file
       if (!isValidFile) {
         file.value = null
-        notification('negative', 'El archivo debe ser tipo jpg, png, webp.', 'red')
+        notification('negative', 'El archivo debe ser tipo jpg, png, webp.', 'warning')
         return false
       }
       // validamos el tamaño del archivo
       if (filePicker.size > maxSizeInBytes) {
         file.value = null
-        notification('negative', 'El archivo excede el tamaño maximo permitido (1MB).', 'red')
+        notification('negative', 'El archivo excede el tamaño maximo permitido (1MB).', 'warning')
         return false
       }
       if (filePicker.type.startsWith('image/')) {

@@ -28,7 +28,7 @@ export default boot(async ({ router, app }) => {
         i18n.locale === "es"
           ? "Necesitas estar logueado para acceder a esta sección"
           : "You need to be logged in to access this section",
-        "red-9"
+        "warning"
       );
       store.doLogout();
       next("/");
@@ -54,7 +54,7 @@ export default boot(async ({ router, app }) => {
               i18n.locale === "es"
                 ? "No tienes permiso para poder ver esta sección de la app"
                 : "You do not have permission to view this section of the app",
-              "red-9"
+              "warning"
             );
             next(false);
             return true;

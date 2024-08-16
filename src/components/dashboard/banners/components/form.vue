@@ -23,16 +23,20 @@
         </q-tab-panel>
       </q-tab-panels>
     </div>
-    <div class="col-12 col-md-6 q-px-md q-mt-md">
+    <div class="col-12 col-md-6 q-px-md q-mt-md q-pt-sm">
       <label for="">Nombre del banner</label>
+    </div>
+    <div class="col-12 col-md-6 q-px-md q-mt-md">
       <q-input square :rules="[
         val => (val && val.length > 0) || 'Por favor ingrese el nombre del banner',
         val => (val && val.length >= 5) || 'Mayor a 5 caracteres',
         val => (val && val.length <= 90) || 'Menor a 90 caracteres'
       ]" placeholder="Banner 01" outlined dense v-model="banner.name"></q-input>
     </div>
-    <div class="col-12 col-md-6 q-px-md q-mt-md">
+    <div class="col-12 col-md-6 q-px-md q-mt-md q-pt-sm">
       <label for="">Enlace directo</label>
+    </div>
+    <div class="col-12 col-md-6 q-px-md q-mt-md">
       <q-input square :rules="[
         val => (val && val.length > 0) || 'Por favor ingrese el nombre del banner',
         val => (val && val.length >= 5) || 'Mayor a 5 caracteres',
@@ -40,13 +44,17 @@
         val => /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9#]+\/?)*$/.test(val) || 'Debe ser un link correcto'
       ]" placeholder="https://www.google.com" outlined dense v-model="banner.link"></q-input>
     </div>
-    <div class="col-12 col-md-6 q-px-md q-mt-sm">
+    <div class="col-12 col-md-6 q-px-md q-mt-md q-pt-sm">
       <label for="">Tipo de banner</label>
+    </div>
+    <div class="col-12 col-md-6 q-px-md q-mt-sm">
       <q-select square emit-value map-options :rules="[(val) => !!val || 'Selecciona una opción']" outlined dense
         v-model="banner.type" :options="bannerTypeOptions"></q-select>
     </div>
-    <div class="col-4 col-md-6 q-px-md q-pr-sm q-mt-sm text-left">
-      <label for="">Activar el banner</label><br>
+    <div class="col-12 col-md-6 q-px-md q-mt-md q-pt-sm">
+      <label for="">Activar el banner</label>
+    </div>
+    <div class="col-4 col-md-6 q-px-md q-pr-sm q-mt-sm text-right">
       <q-checkbox left-label :label="banner.is_active ? 'No' : 'Si'" v-model="banner.is_active" color="secondary"
         bg-color="white"></q-checkbox>
     </div>

@@ -24,7 +24,7 @@ export const useCategoriesStore = defineStore("categoriesStore", () => {
    * @param { any } params params of creation
    * @returns
    */
-  const doSaveCategories = async (params: any): Promise<ResponseObj | void> => {
+  const doSaveCategories = async (params: FormData): Promise<ResponseObj | void> => {
     try {
       const response = (await handlerRequest.doPostRequest(
         `${path}`,

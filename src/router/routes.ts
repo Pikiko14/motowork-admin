@@ -3,7 +3,7 @@ import { RouteRecordRaw } from "vue-router";
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    component: () => import("src/layouts/MainLayout.vue"),
+    component: () => import("src/layouts/mainLayout.vue"),
     children: [
       {
         path: "",
@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: "/dashboard",
-    component: () => import("src/layouts/MainLayout.vue"),
+    component: () => import("src/layouts/mainLayout.vue"),
     children: [
       {
         path: "",

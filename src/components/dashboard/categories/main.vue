@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { computed, defineComponent, onBeforeMount, ref, watch } from 'vue'
 import FormCategory from './components/form.vue'
 import { useCategoriesStore } from 'src/stores/category'
@@ -65,6 +65,7 @@ export default defineComponent({
   setup() {
     // data
     const route = useRoute()
+    const router = useRouter()
     const tab = ref<string>('vehicle')
     const store = useCategoriesStore()
     const category = ref<CategoriesInterface>({
@@ -109,8 +110,20 @@ export default defineComponent({
     })
 
     // watch
-    watch(tab, async () => {
-      await listCategories()
+    watch(tab, async (value) => {
+      const page = 1
+      const perPage = 7
+      const type = value
+      const search = route.query.search ? route.query.search as string : ''
+      router.push({
+        name: 'categories',
+        query: {
+          page,
+          perPage,
+          search,
+          type
+        }
+      })
     })
 
     // methods 
@@ -131,7 +144,8 @@ export default defineComponent({
         const page = route.query.page || 1
         const perPage = route.query.perPage || 12
         const search = route.query.search || ''
-        const query = `?page=${page}&perPage=${perPage}&search=${search}&type=${tab.value}`
+        const type = route.query.type || 'vehicle'
+        const query = `?page=${page}&perPage=${perPage}&search=${search}&type=${type}`
         await store.doListCategories(query)
       } catch (error) {
       }
@@ -140,6 +154,10 @@ export default defineComponent({
     // life cycle
     onBeforeMount(async () => {
       await listCategories()
+
+      if (route.query.type) {
+        tab.value = route.query.type as string;
+      }
     })
 
     return {

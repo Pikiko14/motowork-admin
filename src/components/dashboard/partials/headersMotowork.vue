@@ -49,12 +49,15 @@ export default defineComponent({
 
     // methods
     const doSearch = (searchString: string | number | null) => {
+      const type = route.query.type ? route.query.type as string : ''
+      const { path } = route
       router.push({
-        name: 'banners',
+        path: path,
         query: {
           page: 1,
           perPage: 12,
-          search: searchString
+          search: searchString,
+          type,
         }
       })
     }

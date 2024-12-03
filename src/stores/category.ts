@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { onBeforeMount, ref } from "vue";
+import { ref } from "vue";
 import { defineStore } from "pinia";
 import { Request } from "src/api/api";
 import { Utils } from "src/utils/utils";
@@ -40,7 +40,8 @@ export const useCategoriesStore = defineStore("categoriesStore", () => {
         const perPage = queryParams.perPage || 7;
 
         // push new item to storage
-        if (categories.value.length < perPage)
+        const type = queryParams.type ? (queryParams.type as string) : "";
+        if (categories.value.length < perPage && type === response.data.type)
           categories.value.push(response.data);
 
         // up total items
@@ -75,11 +76,50 @@ export const useCategoriesStore = defineStore("categoriesStore", () => {
     }
   };
 
+  const getById = (id: string): CategoriesInterface | void => {
+    try {
+      const category = categories.value.find((item) => item._id === id);
+      return category;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const doDeleteCategory = async (id: string): Promise<ResponseObj | void> => {
+    try {
+      const response = await handlerRequest.doDeleteRequest(
+        `${path}/${id}`,
+        true
+      );
+      if (response.success) {
+        const queryParams = utils.getCurrentQueryParams();
+        const perPage = queryParams.perPage || 7;
+
+        // delete from store
+        const index = categories.value.findIndex(
+          (banner: CategoriesInterface) => banner._id === id
+        );
+        if (index !== -1) categories.value.splice(index, 1);
+
+        // up total items
+        totalItems.value--;
+
+        // set total pages
+        totalPages.value = Math.ceil(totalItems.value / perPage);
+      }
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // return statement
   return {
+    getById,
     categories,
     totalItems,
     totalPages,
+    doDeleteCategory,
     doSaveCategories,
     doListCategories,
   };

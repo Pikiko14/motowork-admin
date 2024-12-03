@@ -16,14 +16,16 @@
         <q-tab-panel name="vehicle">
           <div class="row full-width">
             <div class="col-12">
-              <TableMotowork :columns="categoriesColums" :rows="categories" :totalPages="totalPages" />
+              <TableMotowork @do-edit="doEdit" @do-delete="deleteCategory" :columns="categoriesColums"
+                :rows="categories" :totalPages="totalPages" />
             </div>
           </div>
         </q-tab-panel>
         <q-tab-panel name="product">
           <div class="row full-width">
             <div class="col-12">
-              <TableMotowork :columns="categoriesColums" :rows="categories" :totalPages="totalPages" />
+              <TableMotowork @do-edit="doEdit" @do-delete="deleteCategory" :columns="categoriesColums"
+                :rows="categories" :totalPages="totalPages" />
             </div>
           </div>
         </q-tab-panel>
@@ -44,6 +46,7 @@
 </template>
 
 <script lang="ts">
+import { useQuasar } from 'quasar'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, defineComponent, onBeforeMount, ref, watch } from 'vue'
 import FormCategory from './components/form.vue'
@@ -64,6 +67,7 @@ export default defineComponent({
   },
   setup() {
     // data
+    const q = useQuasar()
     const route = useRoute()
     const router = useRouter()
     const tab = ref<string>('vehicle')
@@ -151,6 +155,19 @@ export default defineComponent({
       }
     }
 
+    const deleteCategory = async (id: string) => {
+      const category = store.getById(id)
+      q.dialog({
+        dark: false,
+        title: 'Eliminar categoría',
+        message: `¿Deseas eliminar la categoría ${category?.name || ''}`,
+        cancel: true,
+        persistent: true
+      }).onOk(async () => {
+        await store.doDeleteCategory(id)
+      })
+    }
+
     // life cycle
     onBeforeMount(async () => {
       await listCategories()
@@ -167,6 +184,7 @@ export default defineComponent({
       openModal,
       categories,
       totalPages,
+      deleteCategory,
       categoriesColums,
       openModalCategory,
     }

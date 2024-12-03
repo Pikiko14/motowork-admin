@@ -115,7 +115,7 @@ export default defineComponent({
     const doPagination = (page: number): void => {
       currentPage.value = page
       const search = route.query.search ? route.query.search as string : ''
-      const perPage = route.query.perPage ? parseInt(route.query.perPage as string) : 12
+      const perPage = route.query.perPage ? parseInt(route.query.perPage as string) : 7
       const type = route.query.type ? route.query.type as string : ''
       const { path } = route
       router.push({ path: path, query: { page, perPage, search, type } })

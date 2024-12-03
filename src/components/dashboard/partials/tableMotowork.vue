@@ -39,6 +39,24 @@
         </q-td>
       </template>
       <!--End name banners tr-->
+
+      <!--Name category-->
+      <template v-slot:body-cell-category="props">
+        <q-td class="text-left category-name-img">
+          <q-img v-if="props.row.icon" class="banners-table-img" :src="`${$urlApi}${props.row.icon}`"></q-img>
+          {{ props.row.name }}
+        </q-td>
+      </template>
+      <!--End name category-->
+
+      <!--Date creation category-->
+      <template v-slot:body-cell-dateCategory="props">
+        <q-td class="text-left">
+          {{ formatDate(props.row.createdAt) }}
+        </q-td>
+      </template>
+      <!--End Date creation category-->
+
     </q-table>
     <!--End Table section-->
 
@@ -86,23 +104,36 @@ export default defineComponent({
     const currentPage = ref<number>(1)
 
     // methods
-    const doEdit = (id: string) => {
+    const doEdit = (id: string): void => {
       emit('do-edit', id)
     }
 
-    const openUrl = (url: string) => {
+    const openUrl = (url: string): void => {
       window.open(url, '_blank')
     }
 
-    const doPagination = (page: number) => {
+    const doPagination = (page: number): void => {
       currentPage.value = page
       const search = route.query.search ? route.query.search as string : ''
       const perPage = route.query.perPage ? parseInt(route.query.perPage as string) : 12
-      router.push({ name: 'banners', query: { page, perPage, search } })
+      const { path } = route
+      router.push({ path: path, query: { page, perPage, search } })
     }
 
-    const doDelete = (id: string) => {
+    const doDelete = (id: string): void => {
       emit('do-delete', id)
+    }
+
+    const formatDate = (isoDate: Date): string => {
+      const date = new Date(isoDate);
+      const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      };
+      const formattedDate = date.toLocaleDateString('es-ES', options);
+      const dateSplit = formattedDate.split(" ");
+      return `${dateSplit[2] ? dateSplit[2].toUpperCase() : ''} ${dateSplit[0] ? dateSplit[0] : ''}, ${dateSplit[4]}`;
     }
 
     // hook
@@ -114,6 +145,7 @@ export default defineComponent({
       doEdit,
       openUrl,
       doDelete,
+      formatDate,
       pagination,
       currentPage,
       doPagination

@@ -6,6 +6,31 @@
     </div>
     <!-- end headers -->
 
+    <!--tab-->
+    <div class="col-12 categories-tab">
+      <q-tabs class="text-grey-7" v-model="tab" active-color="primary" indicator-color="primary" ina align="justify">
+        <q-tab name="vehicle" label="MOTOCICLETAS" />
+        <q-tab name="product" label="ACCESORIOS" />
+      </q-tabs>
+      <q-tab-panels v-model="tab" animated>
+        <q-tab-panel name="vehicle">
+          <div class="row full-width">
+            <div class="col-12">
+              <TableMotowork :columns="categoriesColums" :rows="categories" :totalPages="totalPages" />
+            </div>
+          </div>
+        </q-tab-panel>
+        <q-tab-panel name="product">
+          <div class="row full-width">
+            <div class="col-12">
+              <TableMotowork :columns="categoriesColums" :rows="categories" :totalPages="totalPages" />
+            </div>
+          </div>
+        </q-tab-panel>
+      </q-tab-panels>
+    </div>
+    <!--End tab-->
+
     <!--Modal Banners-->
     <q-dialog v-model="openModalCategory" @before-hide="clearData">
       <CardModalMotowork :title="category._id ? `Editar categoría ${category.name}` : 'Nueva categoría'">
@@ -19,10 +44,14 @@
 </template>
 
 <script lang="ts">
+import { useRoute } from 'vue-router'
+import { computed, defineComponent, onBeforeMount, ref, watch } from 'vue'
 import FormCategory from './components/form.vue'
-import { defineComponent, ref } from 'vue'
+import { useCategoriesStore } from 'src/stores/category'
+import TableMotowork from '../partials/tableMotowork.vue'
 import HeadersMotowork from '../partials/headersMotowork.vue'
 import CardModalMotowork from '../partials/cardModalMotowork.vue'
+import { TableColumnsInterface } from 'src/interfaces/tableInterface'
 import { CategoriesInterface, TypeCategory } from 'src/interfaces/categories.interface'
 
 export default defineComponent({
@@ -30,16 +59,59 @@ export default defineComponent({
   components: {
     FormCategory,
     HeadersMotowork,
-    CardModalMotowork
+    CardModalMotowork,
+    TableMotowork
   },
   setup() {
     // data
+    const route = useRoute()
+    const tab = ref<string>('vehicle')
+    const store = useCategoriesStore()
     const category = ref<CategoriesInterface>({
       icon: '',
       name: '',
       type: TypeCategory.vehicle
     })
     const openModalCategory = ref<boolean>(false)
+    const categoriesColums = ref<TableColumnsInterface[]>([
+      {
+        name: 'category',
+        label: 'Categoría',
+        field: 'name',
+        align: 'left'
+      },
+      {
+        name: 'dateCategory',
+        label: 'Fecha',
+        field: 'createdAt',
+        align: 'left'
+      },
+      {
+        name: 'asociated_items',
+        label: 'Motocicletas Asociadas',
+        field: 'asociated',
+        align: 'left'
+      },
+      {
+        name: 'options',
+        label: '',
+        field: 'option'
+      },
+    ])
+
+    // computed
+    const categories = computed(() => {
+      return store.categories
+    })
+
+    const totalPages = computed(() => {
+      return store.totalPages
+    })
+
+    // watch
+    watch(tab, async () => {
+      await listCategories()
+    })
 
     // methods 
     const openModal = () => {
@@ -54,12 +126,39 @@ export default defineComponent({
       }
     }
 
+    const listCategories = async (): Promise<void> => {
+      try {
+        const page = route.query.page || 1
+        const perPage = route.query.perPage || 12
+        const search = route.query.search || ''
+        const query = `?page=${page}&perPage=${perPage}&search=${search}&type=${tab.value}`
+        await store.doListCategories(query)
+      } catch (error) {
+      }
+    }
+
+    // life cycle
+    onBeforeMount(async () => {
+      await listCategories()
+    })
+
     return {
+      tab,
       category,
       clearData,
       openModal,
-      openModalCategory
+      categories,
+      totalPages,
+      categoriesColums,
+      openModalCategory,
     }
   }
 })
 </script>
+
+<style scoped>
+.q-tab__indicator {
+  width: 0%;
+  left: -20px;
+}
+</style>

@@ -50,6 +50,7 @@ import { useQuasar } from 'quasar'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, defineComponent, onBeforeMount, ref, watch } from 'vue'
 import FormCategory from './components/form.vue'
+import { notification } from 'src/boot/notification'
 import { useCategoriesStore } from 'src/stores/category'
 import TableMotowork from '../partials/tableMotowork.vue'
 import HeadersMotowork from '../partials/headersMotowork.vue'
@@ -165,6 +166,7 @@ export default defineComponent({
         persistent: true
       }).onOk(async () => {
         await store.doDeleteCategory(id)
+        notification('positive', 'Categoría eliminada', 'success')
       })
     }
 

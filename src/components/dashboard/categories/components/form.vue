@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import { Utils } from 'src/utils/utils'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onBeforeMount, ref } from 'vue'
 import { ResponseObj } from 'src/interfaces/api'
 import { useCategoriesStore } from 'src/stores/category'
 import FilePickerMotowork from '../../partials/filePickerMotowork.vue'
@@ -43,6 +43,16 @@ export default defineComponent({
   name: 'CategoriesFormComponents',
   components: {
     FilePickerMotowork
+  },
+  props: {
+    category: {
+      type: Object as () => CategoriesInterface,
+      default: () => ({
+        icon: '',
+        name: '',
+        type: TypeCategory.vehicle
+      })
+    }
   },
   emits: ['close-modal'],
   setup(props, { emit }) {
@@ -69,7 +79,7 @@ export default defineComponent({
     })
 
     // methods
-    const doSaveCategories = async () => {
+    const doSaveCategories = async (): Promise<boolean | void> => {
       try {
         // set form data
         const formData = utils.transformObjectInFormData(category.value, false, null)
@@ -81,7 +91,34 @@ export default defineComponent({
 
         // send request
         loading.value = true
+
+        // validate
+        if (category.value._id) {
+          await doUpdateCategories(category.value._id, formData)
+          return true;
+        }
+
         const response = await store.doSaveCategories(formData) as ResponseObj
+        if (response.success) {
+          notification('success', response.message, 'success')
+          category.value = {
+            icon: '',
+            name: '',
+            type: TypeCategory.vehicle
+          }
+          file.value = null
+          base64Img.value = ''
+          emit('close-modal')
+        }
+      } catch (error) {
+      } finally {
+        loading.value = false
+      }
+    }
+
+    const doUpdateCategories = async (id: string, formData: FormData): Promise<boolean | void> => {
+      try {
+        const response = await store.doUpdateCategories(id, formData) as ResponseObj
         if (response.success) {
           notification('success', response.message, 'success')
           category.value = {
@@ -103,6 +140,13 @@ export default defineComponent({
       file.value = data.filePicker
       base64Img.value = data.base64
     }
+
+    // hook
+    onBeforeMount(() => {
+      if (props.category && props.category._id) {
+        category.value = JSON.parse(JSON.stringify(props.category))
+      }
+    })
 
     return {
       setFile,

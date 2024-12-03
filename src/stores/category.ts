@@ -97,7 +97,7 @@ export const useCategoriesStore = defineStore("categoriesStore", () => {
 
         // delete from store
         const index = categories.value.findIndex(
-          (banner: CategoriesInterface) => banner._id === id
+          (category: CategoriesInterface) => category._id === id
         );
         if (index !== -1) categories.value.splice(index, 1);
 
@@ -113,6 +113,29 @@ export const useCategoriesStore = defineStore("categoriesStore", () => {
     }
   };
 
+  const doUpdateCategories = async (
+    id: string | undefined,
+    params: any
+  ): Promise<ResponseObj | void> => {
+    try {
+      const response = await handlerRequest.doPutRequest(
+        `${path}/${id}`,
+        params,
+        true,
+        true
+      );
+      if (response.success) {
+        const index = categories.value.findIndex(
+          (category: CategoriesInterface) => category._id === id
+        );
+        if (index !== -1) categories.value[index] = response.data;
+        return response;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // return statement
   return {
     getById,
@@ -122,5 +145,6 @@ export const useCategoriesStore = defineStore("categoriesStore", () => {
     doDeleteCategory,
     doSaveCategories,
     doListCategories,
+    doUpdateCategories,
   };
 });

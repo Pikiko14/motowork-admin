@@ -16,7 +16,7 @@
         <q-tab-panel name="vehicle">
           <div class="row full-width">
             <div class="col-12">
-              <TableMotowork @do-edit="doEdit" @do-delete="deleteCategory" :columns="categoriesColums"
+              <TableMotowork @do-edit="doEditCategory" @do-delete="deleteCategory" :columns="categoriesColums"
                 :rows="categories" :totalPages="totalPages" />
             </div>
           </div>
@@ -24,7 +24,7 @@
         <q-tab-panel name="product">
           <div class="row full-width">
             <div class="col-12">
-              <TableMotowork @do-edit="doEdit" @do-delete="deleteCategory" :columns="categoriesColums"
+              <TableMotowork @do-edit="doEditCategory" @do-delete="deleteCategory" :columns="categoriesColums"
                 :rows="categories" :totalPages="totalPages" />
             </div>
           </div>
@@ -37,7 +37,7 @@
     <q-dialog v-model="openModalCategory" @before-hide="clearData">
       <CardModalMotowork :title="category._id ? `Editar categoría ${category.name}` : 'Nueva categoría'">
         <template v-slot:content>
-          <FormCategory @close-modal="openModal" />
+          <FormCategory :category="category" @close-modal="openModal" />
         </template>
       </CardModalMotowork>
     </q-dialog>
@@ -155,7 +155,7 @@ export default defineComponent({
       }
     }
 
-    const deleteCategory = async (id: string) => {
+    const deleteCategory = async (id: string): Promise<void> => {
       const category = store.getById(id)
       q.dialog({
         dark: false,
@@ -166,6 +166,12 @@ export default defineComponent({
       }).onOk(async () => {
         await store.doDeleteCategory(id)
       })
+    }
+
+    const doEditCategory = (id: string): void => {
+      const categoryStore = store.getById(id)
+      category.value = categoryStore as CategoriesInterface
+      openModal()
     }
 
     // life cycle
@@ -184,6 +190,7 @@ export default defineComponent({
       openModal,
       categories,
       totalPages,
+      doEditCategory,
       deleteCategory,
       categoriesColums,
       openModalCategory,

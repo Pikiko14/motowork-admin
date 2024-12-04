@@ -57,6 +57,21 @@
       </template>
       <!--End Date creation category-->
 
+      <!--Items asociated-->
+      <template v-slot:body-cell-asociated_items="props">
+        <q-td class="text-left">
+          <div class="d-flex">
+            <div class="items-new">
+              {{ props.row.count_news }}
+            </div>
+            <div class="items-used">
+              {{ props.row.count_used }}
+            </div>
+          </div>
+        </q-td>
+      </template>
+      <!--End items asociated-->
+
     </q-table>
     <!--End Table section-->
 

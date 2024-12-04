@@ -1,0 +1,66 @@
+<template>
+  <div class="toggle" :class="{ active: isActive }" @click="toggle">
+    <div class="toggle-bg"></div>
+    <div class="toggle-indicator"></div>
+  </div>
+</template>
+
+<script>
+import { defineComponent, computed } from "vue";
+
+export default defineComponent({
+  name: "ToggleButton",
+  props: {
+    modelValue: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  emits: ["update:modelValue"],
+  setup(props, { emit }) {
+    const isActive = computed({
+      get: () => props.modelValue,
+      set: (value) => emit("update:modelValue", value),
+    });
+
+    const toggle = () => {
+      isActive.value = !isActive.value;
+    };
+
+    return { isActive, toggle };
+  },
+});
+</script>
+
+<style scoped>
+.toggle {
+  width: 80px;
+  height: 40px;
+  background-color: #FCD9DB;
+  border-radius: 0px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.toggle .toggle-indicator {
+  width: 25px;
+  height: 25px;
+  background-color: white;
+  border-radius: 0px;
+  position: absolute;
+  transition: all 0.3s ease;
+  left: 7px;
+}
+
+.toggle.active {
+  background-color: #ED1C24;
+}
+
+.toggle.active .toggle-indicator {
+  left: 48px;
+}
+</style>

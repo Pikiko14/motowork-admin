@@ -136,12 +136,33 @@ export const useCategoriesStore = defineStore("categoriesStore", () => {
     }
   };
 
+  const doChangeStatus = async (id: string): Promise<ResponseObj | void> => {
+    try {
+      const response = await handlerRequest.doPutRequest(
+        `${path}/${id}/change-status`,
+        {},
+        true,
+        true
+      );
+      if (response.success) {
+        const index = categories.value.findIndex(
+          (category: CategoriesInterface) => category._id === id
+        );
+        if (index !== -1) categories.value[index] = response.data;
+        return response;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // return statement
   return {
     getById,
     categories,
     totalItems,
     totalPages,
+    doChangeStatus,
     doDeleteCategory,
     doSaveCategories,
     doListCategories,

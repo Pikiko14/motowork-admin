@@ -16,16 +16,16 @@
         <q-tab-panel name="vehicle">
           <div class="row full-width">
             <div class="col-12">
-              <TableMotowork @do-edit="doEditCategory" @do-delete="deleteCategory" :columns="categoriesColums"
-                :rows="categories" :totalPages="totalPages" />
+              <TableMotowork @do-toggle-status="doToggleStatus" :enableSelection="true" @do-edit="doEditCategory"
+                @do-delete="deleteCategory" :columns="categoriesColums" :rows="categories" :totalPages="totalPages" />
             </div>
           </div>
         </q-tab-panel>
         <q-tab-panel name="product">
           <div class="row full-width">
             <div class="col-12">
-              <TableMotowork @do-edit="doEditCategory" @do-delete="deleteCategory" :columns="categoriesColums"
-                :rows="categories" :totalPages="totalPages" />
+              <TableMotowork @do-toggle-status="doToggleStatus" :enableSelection="true" @do-edit="doEditCategory"
+                @do-delete="deleteCategory" :columns="categoriesColums" :rows="categories" :totalPages="totalPages" />
             </div>
           </div>
         </q-tab-panel>
@@ -57,6 +57,7 @@ import HeadersMotowork from '../partials/headersMotowork.vue'
 import CardModalMotowork from '../partials/cardModalMotowork.vue'
 import { TableColumnsInterface } from 'src/interfaces/tableInterface'
 import { CategoriesInterface, TypeCategory } from 'src/interfaces/categories.interface'
+import { ResponseObj } from 'src/interfaces/api'
 
 export default defineComponent({
   name: 'CategoriesMainComponent',
@@ -176,6 +177,16 @@ export default defineComponent({
       openModal()
     }
 
+    const doToggleStatus = async (id: string): Promise<void> => {
+      try {
+        const response = await store.doChangeStatus(id);
+        if (response?.success) {
+          notification('positive', response?.message, 'success')
+        }
+      } catch (error) {
+      }
+    }
+
     // life cycle
     onBeforeMount(async () => {
       await listCategories()
@@ -192,6 +203,7 @@ export default defineComponent({
       openModal,
       categories,
       totalPages,
+      doToggleStatus,
       doEditCategory,
       deleteCategory,
       categoriesColums,

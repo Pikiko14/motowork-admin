@@ -1,8 +1,16 @@
 <template>
   <section class="full-width motowork-table" :class="{ 'q-pr-lg': $q.screen.gt.sm }">
     <!--Table section-->
-    <q-table v-model:pagination="pagination" hide-bottom flat bordered class="full-width hide-borders" :rows="rows"
-      :columns="columns" row-key="name" separator="none">
+    <q-table :selection="enableSelection ? 'multiple' : 'none'" v-model:pagination="pagination" hide-bottom flat
+      bordered class="full-width hide-borders" :rows="rows" :columns="columns" row-key="name" separator="none">
+      <!--Selection slot-->
+      <template v-slot:header-selection> <!--Disable default header slot-->
+      </template>
+      <template v-slot:body-selection="scope">
+        <ToggleInput @update:modelValue="doChangeStatus(scope.row._id)" v-model="scope.row.is_active" />
+      </template>
+      <!--End Selection slot-->
+
       <!--Options tr-->
       <template v-slot:body-cell-options="props">
         <q-td class="text-center">
@@ -87,10 +95,14 @@
 <script lang="ts">
 import { useRoute, useRouter } from 'vue-router';
 import { defineComponent, onBeforeMount, ref } from 'vue'
+import ToggleInput from 'src/components/commons/ToggleInput.vue';
 import { TableColumnsInterface } from 'src/interfaces/tableInterface';
 
 export default defineComponent({
   name: 'TableMotoworkComponents',
+  components: {
+    ToggleInput
+  },
   props: {
     rows: {
       type: Array as () => any,
@@ -103,11 +115,16 @@ export default defineComponent({
     totalPages: {
       type: Number,
       default: 0
+    },
+    enableSelection: {
+      type: Boolean,
+      default: false
     }
   },
   emits: [
     'do-edit',
-    'do-delete'
+    'do-delete',
+    'do-toggle-status'
   ],
   setup(props, { emit }) {
     // data
@@ -156,6 +173,10 @@ export default defineComponent({
       return number.toString().padStart(3, '0');
     }
 
+    const doChangeStatus = (id: string): void => {
+      emit('do-toggle-status', id)
+    }
+
     // hook
     onBeforeMount(() => {
       currentPage.value = route.query.page ? parseInt(route.query.page as string) : 1
@@ -169,7 +190,8 @@ export default defineComponent({
       formatDate,
       pagination,
       currentPage,
-      doPagination
+      doPagination,
+      doChangeStatus,
     }
   }
 })

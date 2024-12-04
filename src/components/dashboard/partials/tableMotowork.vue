@@ -61,11 +61,11 @@
       <template v-slot:body-cell-asociated_items="props">
         <q-td class="text-left">
           <div class="d-flex">
-            <div class="items-new">
-              {{ props.row.count_news }}
+            <div class="items news" v-if="props.row.count_news > 0">
+              {{ padNumbers(props.row.count_news) }} Cantidad nuevas
             </div>
-            <div class="items-used">
-              {{ props.row.count_used }}
+            <div class="items used" v-if="props.row.count_used > 0">
+              {{ padNumbers(props.row.count_used) }} cantidad usadas
             </div>
           </div>
         </q-td>
@@ -152,6 +152,10 @@ export default defineComponent({
       return `${dateSplit[2] ? dateSplit[2].toUpperCase() : ''} ${dateSplit[0] ? dateSplit[0] : ''}, ${dateSplit[4]}`;
     }
 
+    const padNumbers = (number: number): string => {
+      return number.toString().padStart(3, '0');
+    }
+
     // hook
     onBeforeMount(() => {
       currentPage.value = route.query.page ? parseInt(route.query.page as string) : 1
@@ -161,6 +165,7 @@ export default defineComponent({
       doEdit,
       openUrl,
       doDelete,
+      padNumbers,
       formatDate,
       pagination,
       currentPage,
@@ -169,3 +174,20 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.d-flex {
+  display: flex;
+  gap: 20px;
+
+  .items {
+    width: auto;
+    height: 21px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+</style>

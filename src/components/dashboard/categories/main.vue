@@ -2,7 +2,8 @@
   <div class="row q-py-md q-my-xs">
     <!-- headers -->
     <div class="col-12">
-      <HeadersMotowork @open-modal="openModal" :title="'Categorías'" />
+      <HeadersMotowork @do-order="doOrder" :order-menu="orderMenu" :show-order-button="true" @open-modal="openModal"
+        :title="'Categorías'" />
     </div>
     <!-- end headers -->
 
@@ -69,6 +70,7 @@ import CardModalMotowork from '../partials/cardModalMotowork.vue'
 import { TableColumnsInterface } from 'src/interfaces/tableInterface'
 import { computed, defineComponent, onBeforeMount, ref, watch } from 'vue'
 import { CategoriesInterface, TypeCategory } from 'src/interfaces/categories.interface'
+import { SortGroup, SortOption } from 'src/interfaces/api';
 
 export default defineComponent({
   name: 'CategoriesMainComponent',
@@ -119,6 +121,38 @@ export default defineComponent({
         field: 'option'
       },
     ])
+    const orderMenu = ref<SortGroup[]>([
+      {
+        label: 'Alfabeticamente',
+        items: [
+          {
+            label: 'De la A - Z',
+            value: 'asc',
+            by: 'name',
+          },
+          {
+            label: 'De la Z- A',
+            value: 'desc',
+            by: 'name',
+          },
+        ]
+      },
+      {
+        label: 'Creación',
+        items: [
+          {
+            label: 'Agregados recientemente',
+            value: 'asc',
+            by: 'createAt',
+          },
+          {
+            label: 'Agregados anteriormente',
+            value: 'desc',
+            by: 'createAt',
+          },
+        ]
+      }
+    ])
 
     // computed
     const categories = computed(() => {
@@ -162,10 +196,12 @@ export default defineComponent({
     const listCategories = async (): Promise<void> => {
       try {
         const page = route.query.page || 1
-        const perPage = route.query.perPage || 12
+        const perPage = route.query.perPage || 7
         const search = route.query.search || ''
         const type = route.query.type || 'vehicle'
-        const query = `?page=${page}&perPage=${perPage}&search=${search}&type=${type}`
+        const sortBy = route.query.sortBy || 'name'
+        const order = route.query.order || 'asc'
+        const query = `?page=${page}&perPage=${perPage}&search=${search}&type=${type}&sortBy=${sortBy}&order=${order}`
         await store.doListCategories(query)
       } catch (error) {
       }
@@ -227,6 +263,27 @@ export default defineComponent({
         })
     }
 
+    const doOrder = (item: SortOption): void => {
+      const page = 1
+      const perPage = route.query.perPage || 7
+      const search = route.query.search || ''
+      const type = route.query.type || 'vehicle'
+      const sortBy = item.by
+      const order = item.value
+      router.push({
+        name: 'categories',
+        query: {
+          page,
+          perPage,
+          search,
+          type,
+          sortBy,
+          order
+        }
+      })
+
+    }
+
     // life cycle
     onBeforeMount(async () => {
       await listCategories()
@@ -238,9 +295,11 @@ export default defineComponent({
 
     return {
       tab,
+      doOrder,
       category,
       clearData,
       openModal,
+      orderMenu,
       categories,
       totalPages,
       doToggleStatus,

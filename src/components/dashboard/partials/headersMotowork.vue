@@ -7,7 +7,34 @@
     </div>
     <div class="col-12 col-md-8">
       <div class="row full-width justify-end">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-1 q-pt-sm" v-if="showOrderButton">
+          <q-btn :class="{ 'full-width q-mb-md': $q.screen.lt.md }" color="secondary" icon="img:/images/order_icon.svg"
+            unelevated>
+            <q-menu>
+              <q-list class="menu-list">
+                <q-item-label header>
+                  <span class="sort-title">Odenar</span>
+                </q-item-label>
+                <q-item v-for="(item, idx) in orderMenu" :key="idx">
+                  <q-item-section>
+                    <q-item-label>
+                      <span class="sort-item-label">
+                        {{ item.label }}
+                      </span>
+                      <div class="list-subitems cursor-pointer">
+                        <div class="list-subitem-label" v-close-popup @click="handleDoOrder(subitem)"
+                          v-for="(subitem, idx2) in item.items" :key="idx2">
+                          {{ subitem.label }}
+                        </div>
+                      </div>
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn>
+        </div>
+        <div class=" col-12 col-md-6">
           <q-input clearable debounce="1000" @update:model-value="doSearch" placeholder="Buscar" color="dark-page"
             class="input-search" v-model="search" dense>
             <template v-slot:append>
@@ -27,6 +54,8 @@
 <script lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { defineComponent, onBeforeMount, ref } from 'vue'
+import { as } from 'app/dist/spa/assets/index.411e8bd8'
+import { SortGroup, SortOption } from 'src/interfaces/api';
 
 export default defineComponent({
   name: 'HeadersMotoworkComponent',
@@ -38,9 +67,17 @@ export default defineComponent({
     showAddButton: {
       type: Boolean,
       default: true
+    },
+    showOrderButton: {
+      type: Boolean,
+      default: false
+    },
+    orderMenu: {
+      type: Array as () => SortGroup[],
+      default: () => []
     }
   },
-  emits: ['open-modal'],
+  emits: ['open-modal', 'do-order'],
   setup(props, { emit }) {
     // data
     const route = useRoute()
@@ -66,19 +103,70 @@ export default defineComponent({
       emit('open-modal')
     }
 
-    // hook
+    const handleDoOrder = (item: SortOption): void => {
+      emit('do-order', item)
+    }
+
+    // hook.
     onBeforeMount(() => {
       search.value = route.query.search ? route.query.search as string : ''
     })
 
-
     return {
       search,
       doSearch,
-      doOpenModal
+      doOpenModal,
+      handleDoOrder,
     }
   }
 })
 </script>
 
-<style lang="css" scoped></style>
+<style lang="scss" scoped>
+.sort-title {
+  color: $secondary;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 125%;
+  /* 20px */
+  text-transform: uppercase;
+}
+
+.sort-item-label {
+  color: var(--Primary-Primary, #000);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 125%;
+  /* 15px */
+  text-transform: uppercase;
+}
+
+.list-subitem-label {
+  overflow: hidden;
+  color: var(--Principales-950---Principal, #000);
+  text-overflow: ellipsis;
+
+  /* Desktop/Body/Text/Small */
+  font-family: Ubuntu;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 125%;
+  /* 15px */
+}
+
+.list-subitems {
+  margin-top: 8px;
+}
+
+.list-subitem-label {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.menu-list {
+  padding: 15px 20px 20px 20px;
+}
+</style>

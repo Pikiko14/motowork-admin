@@ -42,43 +42,54 @@
       </CardModalMotowork>
     </q-dialog>
     <!--End Modal Banners-->
+
+    <!--delete dialog-->
+    <q-dialog v-model="openDeleteDialog" persistent>
+      <CardModalMotowork title="Eliminar categoría">
+        <template v-slot:content>
+          <DeleteModal @do-delete-category="confirmDeleteCategory" :idDelete="categoryToDelete" entity="Categoría" />
+        </template>
+      </CardModalMotowork>
+    </q-dialog>
+    <!--End delete dialog-->
   </div>
 </template>
 
 <script lang="ts">
-import { useQuasar } from 'quasar'
 import { useRoute, useRouter } from 'vue-router'
-import { computed, defineComponent, onBeforeMount, ref, watch } from 'vue'
 import FormCategory from './components/form.vue'
 import { notification } from 'src/boot/notification'
 import { useCategoriesStore } from 'src/stores/category'
 import TableMotowork from '../partials/tableMotowork.vue'
 import HeadersMotowork from '../partials/headersMotowork.vue'
+import DeleteModal from 'src/components/commons/DeleteModal.vue'
 import CardModalMotowork from '../partials/cardModalMotowork.vue'
 import { TableColumnsInterface } from 'src/interfaces/tableInterface'
+import { computed, defineComponent, onBeforeMount, ref, watch } from 'vue'
 import { CategoriesInterface, TypeCategory } from 'src/interfaces/categories.interface'
-import { ResponseObj } from 'src/interfaces/api'
 
 export default defineComponent({
   name: 'CategoriesMainComponent',
   components: {
+    DeleteModal,
     FormCategory,
+    TableMotowork,
     HeadersMotowork,
     CardModalMotowork,
-    TableMotowork
   },
   setup() {
     // data
-    const q = useQuasar()
     const route = useRoute()
     const router = useRouter()
     const tab = ref<string>('vehicle')
     const store = useCategoriesStore()
+    const categoryToDelete = ref<string>('')
     const category = ref<CategoriesInterface>({
       icon: '',
       name: '',
       type: TypeCategory.vehicle
     })
+    const openDeleteDialog = ref<boolean>(false)
     const openModalCategory = ref<boolean>(false)
     const categoriesColums = ref<TableColumnsInterface[]>([
       {
@@ -158,17 +169,19 @@ export default defineComponent({
     }
 
     const deleteCategory = async (id: string): Promise<void> => {
-      const category = store.getById(id)
-      q.dialog({
-        dark: false,
-        title: 'Eliminar categoría',
-        message: `¿Deseas eliminar la categoría ${category?.name || ''}`,
-        cancel: true,
-        persistent: true
-      }).onOk(async () => {
-        await store.doDeleteCategory(id)
-        notification('positive', 'Categoría eliminada', 'success')
-      })
+      openDeleteDialog.value = !openDeleteDialog.value
+      categoryToDelete.value = id
+    }
+
+    const confirmDeleteCategory = async (): Promise<void> => {
+      try {
+        alert(123)
+        const response = await store.doDeleteCategory(categoryToDelete.value);
+        if (response?.success) {
+          notification('positive', response?.message, 'success')
+        }
+      } catch (error) {
+      }
     }
 
     const doEditCategory = (id: string): void => {
@@ -206,8 +219,11 @@ export default defineComponent({
       doToggleStatus,
       doEditCategory,
       deleteCategory,
+      categoryToDelete,
       categoriesColums,
+      openDeleteDialog,
       openModalCategory,
+      confirmDeleteCategory,
     }
   }
 })

@@ -34,8 +34,8 @@ export default defineComponent({
 
 <style scoped>
 .toggle {
-  width: 80px;
-  height: 40px;
+  width: 60px;
+  height: 30px;
   background-color: #FCD9DB;
   border-radius: 0px;
   position: relative;
@@ -47,8 +47,8 @@ export default defineComponent({
 }
 
 .toggle .toggle-indicator {
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
   background-color: white;
   border-radius: 0px;
   position: absolute;
@@ -61,6 +61,6 @@ export default defineComponent({
 }
 
 .toggle.active .toggle-indicator {
-  left: 48px;
+  left: 32px;
 }
 </style>

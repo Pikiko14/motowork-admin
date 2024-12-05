@@ -156,6 +156,12 @@ export const useCategoriesStore = defineStore("categoriesStore", () => {
     }
   };
 
+  const clearCategories = () => {
+    categories.value = [];
+    totalItems.value = 0;
+    totalPages.value = 0;
+  };
+
   // return statement
   return {
     getById,
@@ -163,6 +169,7 @@ export const useCategoriesStore = defineStore("categoriesStore", () => {
     totalItems,
     totalPages,
     doChangeStatus,
+    clearCategories,
     doDeleteCategory,
     doSaveCategories,
     doListCategories,

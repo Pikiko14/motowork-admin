@@ -56,7 +56,7 @@
         </q-item-section>
       </q-item>
       <q-item class="absolute-bottom text-center" style="bottom: 20px;">
-        <q-btn @click="doLogout" round color="secondary" size="8pt" icon="logout"></q-btn>
+        <q-btn @click="doLogout" round color="secondary" size="8pt" icon="img:/images/logout.svg"></q-btn>
       </q-item>
     </q-list>
   </section>

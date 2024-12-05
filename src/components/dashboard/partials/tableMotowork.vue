@@ -19,8 +19,8 @@
               Editar
             </q-tooltip>
           </q-btn>
-          <q-btn @click="doDelete(props.row._id)" class="q-ml-20" size="10pt" color="black" flat dense
-            icon="delete_sweep" round>
+          <q-btn @click="doDelete(props.row._id)" class="q-ml-20" size="9pt" color="black" flat dense
+            icon="img:/images/trash.svg" round>
             <q-tooltip square class="bg-red">
               Eliminar
             </q-tooltip>

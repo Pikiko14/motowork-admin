@@ -34,12 +34,10 @@
 </template>
 
 <script lang="ts">
-import { useQuasar } from 'quasar';
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'DeleteModal',
-  emits: ['do-delete-category'],
+  emits: ['delete'],
   props: {
     entity: {
       type: String,
@@ -51,24 +49,9 @@ export default defineComponent({
     }
   },
   setup(props, { emit }) {
-    // references
-    const q = useQuasar()
-
     // methods
     const doDelete = () => {
-      q.dialog({
-        dark: false,
-        title: `Eliminar ${props.entity}`,
-        message: `¿Deseas ejecutar esta acción?`,
-        cancel: true,
-        persistent: true
-      }).onOk(() => {
-        confirnDelete()
-      })
-    }
-
-    const confirnDelete = () => {
-      emit('do-delete-category', null)
+      emit('delete', props.idDelete)
     }
 
     return {

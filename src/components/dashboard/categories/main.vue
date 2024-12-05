@@ -47,7 +47,7 @@
     <q-dialog v-model="openDeleteDialog" persistent>
       <CardModalMotowork title="Eliminar categoría">
         <template v-slot:content>
-          <DeleteModal @do-delete-category="confirmDeleteCategory" :idDelete="categoryToDelete" entity="Categoría" />
+          <DeleteModal @delete="confirmDeleteCategory" :idDelete="categoryToDelete" entity="Categoría" />
         </template>
       </CardModalMotowork>
     </q-dialog>
@@ -56,6 +56,7 @@
 </template>
 
 <script lang="ts">
+import { useQuasar } from 'quasar';
 import { useRoute, useRouter } from 'vue-router'
 import FormCategory from './components/form.vue'
 import { notification } from 'src/boot/notification'
@@ -79,6 +80,7 @@ export default defineComponent({
   },
   setup() {
     // data
+    const q = useQuasar()
     const route = useRoute()
     const router = useRouter()
     const tab = ref<string>('vehicle')
@@ -173,10 +175,21 @@ export default defineComponent({
       categoryToDelete.value = id
     }
 
-    const confirmDeleteCategory = async (): Promise<void> => {
+    const confirmDeleteCategory = (id: string): void => {
+      q.dialog({
+        dark: false,
+        title: `Eliminar categoría`,
+        message: `¿Deseas ejecutar esta acción?`,
+        cancel: true,
+        persistent: true
+      }).onOk(async () => {
+        await doDeleteCategory(id);
+      })
+    }
+
+    const doDeleteCategory = async (id: string): Promise<void> => {
       try {
-        alert(123)
-        const response = await store.doDeleteCategory(categoryToDelete.value);
+        const response = await store.doDeleteCategory(id);
         if (response?.success) {
           notification('positive', response?.message, 'success')
         }

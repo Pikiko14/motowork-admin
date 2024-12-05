@@ -168,6 +168,8 @@ export default defineComponent({
       const page = 1
       const perPage = 7
       const type = value
+      const sortBy = 'name'
+      const order = 'asc'
       const search = route.query.search ? route.query.search as string : ''
       router.push({
         name: 'categories',
@@ -175,7 +177,9 @@ export default defineComponent({
           page,
           perPage,
           search,
-          type
+          type,
+          sortBy,
+          order
         }
       })
     })

@@ -20,9 +20,10 @@
       </p>
     </div>
     <div class="modal-action row full-width">
-      <div class="col-12 col-md-6 q-mt-sm"
+      <div v-if="showDiabledBtn" class="col-12 col-md-6 q-mt-sm"
         :class="{ 'q-pr-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
-        <q-btn v-close-popup unelevated square label="Desactivar" class="full-width q-mt-md btn-cancel-solid"></q-btn>
+        <q-btn @click="doDisable" v-close-popup unelevated square label="Desactivar"
+          class="full-width q-mt-md btn-cancel-solid"></q-btn>
       </div>
       <div class="col-12 col-md-6 q-mt-sm"
         :class="{ 'q-pl-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
@@ -37,7 +38,7 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  emits: ['delete'],
+  emits: ['delete', 'disable'],
   props: {
     entity: {
       type: String,
@@ -46,6 +47,11 @@ export default defineComponent({
     idDelete: {
       type: String,
       required: true
+    },
+    showDiabledBtn: {
+      type: Boolean,
+      required: true,
+      default: true
     }
   },
   setup(props, { emit }) {
@@ -54,8 +60,13 @@ export default defineComponent({
       emit('delete', props.idDelete)
     }
 
+    const doDisable = () => {
+      emit('disable', props.idDelete)
+    }
+
     return {
-      doDelete
+      doDelete,
+      doDisable,
     }
   }
 });

@@ -47,7 +47,8 @@
     <q-dialog v-model="openDeleteDialog" persistent>
       <CardModalMotowork title="Eliminar categoría">
         <template v-slot:content>
-          <DeleteModal @delete="confirmDeleteCategory" :idDelete="categoryToDelete" entity="Categoría" />
+          <DeleteModal @disable="confirmDisableCategory" :showDiabledBtn="true" @delete="confirmDeleteCategory"
+            :idDelete="categoryToDelete" entity="Categoría" />
         </template>
       </CardModalMotowork>
     </q-dialog>
@@ -213,6 +214,19 @@ export default defineComponent({
       }
     }
 
+    const confirmDisableCategory = (id: string): void => {
+      q.dialog({
+        dark: false,
+        title: `Desactivar categoría`,
+        message: `¿Deseas ejecutar esta acción?`,
+        cancel: true,
+        persistent: true
+      })
+        .onOk(async () => {
+          await doToggleStatus(id);
+        })
+    }
+
     // life cycle
     onBeforeMount(async () => {
       await listCategories()
@@ -237,6 +251,7 @@ export default defineComponent({
       openDeleteDialog,
       openModalCategory,
       confirmDeleteCategory,
+      confirmDisableCategory,
     }
   }
 })

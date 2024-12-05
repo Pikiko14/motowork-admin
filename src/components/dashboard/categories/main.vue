@@ -127,12 +127,12 @@ export default defineComponent({
         items: [
           {
             label: 'De la A - Z',
-            value: 'asc',
+            value: '1',
             by: 'name',
           },
           {
             label: 'De la Z- A',
-            value: 'desc',
+            value: '-1',
             by: 'name',
           },
         ]
@@ -142,13 +142,13 @@ export default defineComponent({
         items: [
           {
             label: 'Agregados recientemente',
-            value: 'asc',
-            by: 'createAt',
+            value: '-1',
+            by: 'createdAt',
           },
           {
             label: 'Agregados anteriormente',
-            value: 'desc',
-            by: 'createAt',
+            value: '1',
+            by: 'createdAt',
           },
         ]
       }

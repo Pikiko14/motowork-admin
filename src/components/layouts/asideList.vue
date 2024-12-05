@@ -26,7 +26,7 @@
         </q-item-section>
       </q-item>
       <q-item clickable class="q-mt-sm"
-        to="/dashboard/categories?page=1&perPage=7&search=&type=vehicle&sortBy=name&order=asc">
+        to="/dashboard/categories?page=1&perPage=7&search=&type=vehicle&sortBy=name&order=1">
         <q-item-section class="text-center">
           <q-icon
             :name="$route.path == '/dashboard/categories' ? 'img:/images/category-red.svg' : 'img:/images/category.svg'"

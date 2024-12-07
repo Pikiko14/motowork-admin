@@ -115,7 +115,7 @@ export const useCategoriesStore = defineStore("categoriesStore", () => {
 
   const doUpdateCategories = async (
     id: string | undefined,
-    params: any
+    params: FormData
   ): Promise<ResponseObj | void> => {
     try {
       const response = await handlerRequest.doPutRequest(
@@ -125,10 +125,15 @@ export const useCategoriesStore = defineStore("categoriesStore", () => {
         true
       );
       if (response.success) {
+        const type = params.get("type") || "product";
         const index = categories.value.findIndex(
           (category: CategoriesInterface) => category._id === id
         );
-        if (index !== -1) categories.value[index] = response.data;
+        if (type && type !== categories.value[index].type) {
+          categories.value.splice(index, 1);
+        } else {
+          if (index !== -1) categories.value[index] = response.data;
+        }
         return response;
       }
     } catch (error) {

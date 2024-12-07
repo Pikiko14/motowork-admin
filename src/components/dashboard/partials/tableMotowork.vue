@@ -51,7 +51,7 @@
       <!--Name category-->
       <template v-slot:body-cell-category="props">
         <q-td class="text-left category-name-img">
-          <q-img v-if="props.row.icon" class="banners-table-img" :src="`${$urlApi}${props.row.icon}`"></q-img>
+          <q-img v-if="props.row.icon" class="banners-table-img" :src="`${props.row.icon}`"></q-img>
           {{ props.row.name }}
         </q-td>
       </template>

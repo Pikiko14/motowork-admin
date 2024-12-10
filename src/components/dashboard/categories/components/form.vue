@@ -6,7 +6,7 @@
         val => (val && val.length > 0) || 'Por favor ingrese el nombre de la categoría',
         val => (val && val.length >= 1) || 'Mayor a 1 caracteres',
         val => (val && val.length <= 90) || 'Menor a 90 caracteres',
-        val => /^[a-zA-Z0-9 ]+$/.test(val) || 'Solo letras y números'
+        val => /^[a-zA-Z0-9 áéíóúÁÉÍÓÚñÑüÜ]+$/.test(val) || 'Solo letras y números'
       ]" placeholder="Ingresa un nombre" outlined dense v-model="category.name"></q-input>
     </div>
     <div class="col-12 q-px-md q-mt-sm">

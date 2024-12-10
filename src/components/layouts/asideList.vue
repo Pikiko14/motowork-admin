@@ -36,6 +36,17 @@
           </q-tooltip>
         </q-item-section>
       </q-item>
+      <q-item clickable class="q-mt-sm"
+        to="/dashboard/brands?page=1&perPage=7&search=&type=vehicle&sortBy=name&order=1">
+        <q-item-section class="text-center">
+          <q-icon
+            :name="$route.path == '/dashboard/brands' ? 'img:/images/brands.svg' : 'img:/images/search-category.svg'"
+            size="24px"></q-icon>
+          <q-tooltip class="bg-secondary" anchor="center right" self="center left" :offset="[10, 10]">
+            Marcas
+          </q-tooltip>
+        </q-item-section>
+      </q-item>
       <q-item clickable class="q-mt-sm" to="/dashboard/products?page=1&perPage=16&search=">
         <q-item-section class="text-center">
           <q-icon

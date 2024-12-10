@@ -100,7 +100,7 @@ export default defineComponent({
 
         const response = await store.doSaveBrands(formData) as ResponseObj
         if (response.success) {
-          notification('positive', response.message, 'success')
+          notification('success', response.message, 'success')
           brand.value = {
             icon: '',
             name: '',
@@ -120,7 +120,7 @@ export default defineComponent({
       try {
         const response = await store.doUpdateBrands(id, formData) as ResponseObj
         if (response.success) {
-          notification('positive', response.message, 'success')
+          notification('success', response.message, 'success')
           brand.value = {
             icon: '',
             name: '',

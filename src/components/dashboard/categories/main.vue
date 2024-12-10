@@ -232,7 +232,7 @@ export default defineComponent({
       try {
         const response = await store.doDeleteCategory(id);
         if (response?.success) {
-          notification('positive', response?.message, 'success')
+          notification('success', response?.message, 'success')
         }
       } catch (error) {
       }
@@ -248,7 +248,7 @@ export default defineComponent({
       try {
         const response = await store.doChangeStatus(id);
         if (response?.success) {
-          notification('positive', response?.message, 'success')
+          notification('success', response?.message, 'success')
         }
       } catch (error) {
       }

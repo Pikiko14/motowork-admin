@@ -97,7 +97,6 @@ export default defineComponent({
           await doUpdateBrands(brand.value._id, formData)
           return true;
         }
-        alert(123)
 
         const response = await store.doSaveBrands(formData) as ResponseObj
         if (response.success) {

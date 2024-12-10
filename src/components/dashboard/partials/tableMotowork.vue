@@ -75,6 +75,9 @@
             <div class="items used" v-if="props.row.count_used > 0">
               {{ padNumbers(props.row.count_used) }} cantidad usadas
             </div>
+            <div v-if="props.row.count_items > 0">
+              {{ padNumbers(props.row.count_items) }} (Número de items vinculados)
+            </div>
           </div>
         </q-td>
       </template>

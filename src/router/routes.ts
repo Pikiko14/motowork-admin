@@ -43,6 +43,15 @@ const routes: RouteRecordRaw[] = [
         },
         name: "categories",
       },
+      {
+        path: "brands",
+        component: () => import("src/pages/dashboard/brands/main.vue"),
+        meta: {
+          available: ["list-brand"],
+          auth: true,
+        },
+        name: "brands",
+      },
     ],
   },
   // Always leave this as last one,

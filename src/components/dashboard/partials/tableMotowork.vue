@@ -80,6 +80,17 @@
       </template>
       <!--End items asociated-->
 
+      <!--Name brands-->
+      <template v-slot:body-cell-brand="props">
+        <q-td class="text-left brand-name-img">
+          <div class="brand-img-wrapper">
+            <q-img v-if="props.row.icon" class="banners-table-img-brands" :src="`${props.row.icon}`" />
+          </div>
+          {{ props.row.name }}
+        </q-td>
+      </template>
+      <!--End name category-->
+
     </q-table>
     <!--End Table section-->
 

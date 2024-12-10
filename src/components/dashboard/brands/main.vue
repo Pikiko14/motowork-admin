@@ -104,7 +104,7 @@ export default defineComponent({
         align: 'left'
       },
       {
-        name: 'datebrand',
+        name: 'dateCategory',
         label: 'Fecha',
         field: 'createdAt',
         align: 'left'

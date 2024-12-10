@@ -2,8 +2,8 @@
   <div class="d-flex">
     <q-img class="delete-modal-icon" src="/images/delete-modal-icon.png" />
     <p class="delete-description">
-      ¿Estás seguro de que deseas eliminar esta categoría? Esta acción es irreversible y eliminará toda la información
-      relacionada con la misma, incluyendo Detalles de la categoría, Datos de ventas, Contenido asociado
+      ¿Estás seguro de que deseas eliminar esta {{ entity }}? Esta acción es irreversible y eliminará toda la información
+      relacionada con la misma, incluyendo Detalles de la {{ entity }}, Datos de ventas, Contenido asociado
     </p>
     <div class="footer-modal">
       <div class="icon">

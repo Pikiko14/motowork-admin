@@ -42,7 +42,7 @@
       <!--name banners tr-->
       <template v-slot:body-cell-location="props">
         <q-td class="text-left">
-          <q-img class="banners-table-img" :src="`${props.row.desktop_image?.path}`"></q-img>
+          <q-img v-if="props.row.desktop_image?.path" class="banners-table-img" :src="`${props.row.desktop_image?.path}`"></q-img>
           <span class="q-ml-20">{{ props.row.name }} - {{ props.row.type }}</span>
         </q-td>
       </template>

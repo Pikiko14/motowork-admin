@@ -52,6 +52,24 @@ const routes: RouteRecordRaw[] = [
         },
         name: "brands",
       },
+      {
+        path: "products",
+        component: () => import("src/pages/dashboard/products/mainProducts.vue"),
+        meta: {
+          available: ["list-products"],
+          auth: true,
+        },
+        name: "products",
+      },
+      {
+        path: "products/create",
+        component: () => import("src/pages/dashboard/products/createProducts.vue"),
+        meta: {
+          available: ["create-products"],
+          auth: true,
+        },
+        name: "createProduct",
+      },
     ],
   },
   // Always leave this as last one,

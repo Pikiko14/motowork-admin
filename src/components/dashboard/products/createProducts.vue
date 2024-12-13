@@ -46,7 +46,7 @@
           <q-tab name="aditional" label="INFO. ADICIONAL" />
         </q-tabs>
 
-        <section class="fiels-section">
+        <section class="fields-section">
           <q-tab-panels v-model="tabFields" animated>
             <q-tab-panel name="general">
               <generalFields :product="product" />
@@ -231,5 +231,9 @@ const createProduct = () => {
   /* 12.5px */
   display: flex;
   gap: 12px;
+}
+
+.fields-section {
+  height: 515px;
 }
 </style>

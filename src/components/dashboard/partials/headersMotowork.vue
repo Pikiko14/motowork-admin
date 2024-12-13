@@ -54,7 +54,6 @@
 <script lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { defineComponent, onBeforeMount, ref } from 'vue'
-import { as } from 'app/dist/spa/assets/index.411e8bd8'
 import { SortGroup, SortOption } from 'src/interfaces/api';
 
 export default defineComponent({

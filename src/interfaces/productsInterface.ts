@@ -4,12 +4,13 @@ export interface AdditionalField {
   }
   
   export interface SubsectionInterface {
-    subsectionName: string;
-    fields: AdditionalField[];
+    name: string;
+    value: string;
   }
   
   export interface AdditionalInfoInterface {
     sectionName: string;
+    enable: boolean;
     subsections: SubsectionInterface[];
   }
   

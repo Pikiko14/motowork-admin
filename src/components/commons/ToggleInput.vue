@@ -79,13 +79,13 @@ export default defineComponent({
     border-radius: 0px;
     position: absolute;
     transition: all 0.3s ease;
-    left: 5px;
+    left: 3px;
   }
 }
 
 .small.active {
   .toggle-indicator {
-    left: 20px !important;
+    left: 22px !important;
   }
 }
 </style>

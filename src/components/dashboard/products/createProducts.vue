@@ -1,7 +1,6 @@
 <template>
-  <div class="full-width q-py-md q-my-xs q-pr-sm">
+  <div class="full-width q-py-md q-my-xs q-pr-md">
     <q-form class="row" @submit="createProduct">
-      {{ product }}
       <div class="col-12">
         <div class="d-flex">
           <q-btn style="margin-left: -10px" @click="$router.go(-1)" rounded flat dense
@@ -55,7 +54,7 @@
               <detailFields :product="product" />
             </q-tab-panel>
             <q-tab-panel name="aditional">
-              i
+              <infoAditionalFields :product="product" />
             </q-tab-panel>
           </q-tab-panels>
         </section>
@@ -65,7 +64,7 @@
           <div class="row">
             <div class="col-12 col-md-6 q-mt-sm"
               :class="{ 'q-pl-md q-pr-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
-              <q-btn :disabled="enableSaveButton" :loading="loading" type="submit" unelevated square label="Crear"
+              <q-btn :disabled="!enableSaveButton" :loading="loading" type="submit" unelevated square label="Crear"
                 class="full-width q-mt-md btn-cancel-solid"></q-btn>
             </div>
             <div class="col-12 col-md-6 q-mt-sm"
@@ -88,6 +87,7 @@ import detailFields from './partials/detailFields.vue'
 import generalFields from './partials/generalFields.vue'
 import { ProductsInterface } from '@/interfaces/productsInterface'
 import FilePickerMotowork from '../partials/filePickerMotowork.vue'
+import infoAditionalFields from './partials/infoAditionalFields.vue'
 
 // references
 const tab = ref('desktop')

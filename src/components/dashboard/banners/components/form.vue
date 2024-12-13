@@ -48,7 +48,7 @@
       <label for="">Tipo de banner</label>
     </div>
     <div class="col-12 col-md-6 q-px-md q-mt-sm">
-      <q-select square emit-value map-options :rules="[(val) => !!val || 'Selecciona una opción']" outlined dense
+      <q-select hide-dropdown-icon square emit-value map-options :rules="[(val) => !!val || 'Selecciona una opción']" outlined dense
         v-model="banner.type" :options="bannerTypeOptions"></q-select>
     </div>
     <div class="col-12 col-md-6 q-px-md q-mt-md q-pt-sm">

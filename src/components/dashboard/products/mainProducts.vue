@@ -2,7 +2,7 @@
   <div class="row q-py-md q-my-xs">
     <!--Header-->
     <div class="col-12">
-      <HeadersMotowork :show-order-button="true" @open-modal="openModal" :title="'Productos'" />
+      <HeadersMotowork :show-order-button="true" @open-modal="pushRouter('createProduct')" :title="'Productos'" />
     </div>
     <!--End header-->
 
@@ -28,9 +28,12 @@ const tab = ref('vehicle')
 const router = useRouter()
 
 // methods
-const openModal = () => {
+const pushRouter = (routeName: string) => {
   router.push({
-    name: 'createProduct'
+    name: routeName,
+    query: {
+      type: tab.value
+    }
   });
 };
 

@@ -1,46 +1,102 @@
 <template>
-  <div class="row q-py-md q-my-xs">
-    <div class="col-12">
-      <div class="d-flex">
-        <q-btn style="margin-left: -10px" @click="$router.go(-1)" rounded flat dense
-          icon="img:/images/back_chevron.svg"></q-btn>
-        <h2 class="title q-pl-sm">NUEVO PRODUCTO</h2>
+  <div class="full-width q-py-md q-my-xs q-pr-sm">
+    <q-form class="row" @submit="createProduct">
+      {{ product }}
+      <div class="col-12">
+        <div class="d-flex">
+          <q-btn style="margin-left: -10px" @click="$router.go(-1)" rounded flat dense
+            icon="img:/images/back_chevron.svg"></q-btn>
+          <h2 class="title q-pl-sm">NUEVO PRODUCTO</h2>
+        </div>
       </div>
-    </div>
-    <div class="col-12 col-md-5" :class="{ 'q-pr-lg': $q.screen.gt.sm }">
-      <q-tabs class="text-grey-7" v-model="tab" active-color="primary" indicator-color="primary" ina align="justify">
-        <q-tab name="desktop" label="DESKTOP" />
-        <q-tab name="mobile" label="MOBILE" />
-      </q-tabs>
-      <div class="information">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M8.0013 15.3332C12.0514 15.3332 15.3346 12.0499 15.3346 7.99984C15.3346 3.94975 12.0514 0.666504 8.0013 0.666504C3.95122 0.666504 0.667969 3.94975 0.667969 7.99984C0.667969 12.0499 3.95122 15.3332 8.0013 15.3332ZM6.0013 7.6665H7.33464V10.3332H6.0013V11.6665H10.0013V10.3332H8.66797V6.33317H6.0013V7.6665ZM8.66797 5.33317V3.99984H7.33464V5.33317H8.66797Z"
-            fill="#B2B2B2" />
-        </svg>
-        <p>Para una experiencia visual óptima y sin errores en todas las pantallas, se recomienda cargar un archivo
-          específico para cada dispositivo, respetando sus dimensiones nativas.</p>
+      <!--Files-->
+      <div class="col-12 col-md-5" :class="{ 'q-pr-lg': $q.screen.gt.sm }">
+        <q-tabs class="text-grey-7" v-model="tab" active-color="primary" indicator-color="primary" ina align="justify">
+          <q-tab name="desktop" label="DESKTOP" />
+          <q-tab name="mobile" label="MOBILE" />
+        </q-tabs>
+        <div class="information">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M8.0013 15.3332C12.0514 15.3332 15.3346 12.0499 15.3346 7.99984C15.3346 3.94975 12.0514 0.666504 8.0013 0.666504C3.95122 0.666504 0.667969 3.94975 0.667969 7.99984C0.667969 12.0499 3.95122 15.3332 8.0013 15.3332ZM6.0013 7.6665H7.33464V10.3332H6.0013V11.6665H10.0013V10.3332H8.66797V6.33317H6.0013V7.6665ZM8.66797 5.33317V3.99984H7.33464V5.33317H8.66797Z"
+              fill="#B2B2B2" />
+          </svg>
+          <p>Para una experiencia visual óptima y sin errores en todas las pantallas, se recomienda cargar un archivo
+            específico para cada dispositivo, respetando sus dimensiones nativas.</p>
+        </div>
+        <div class="banner-picker" v-if="renderFilePickerSection">
+          <FilePickerMotowork :base64Image="tab === 'desktop' ? desktopBannerBase64 : mobileBannerBase64" :type="'banner'"
+            @set-file="setFile" :maxFile="1" :entity="'Banner producto'"
+            :resolutionLabel="'Resolución mínima 1280 X 450 Px'" />
+        </div>
+        <div class="banner-picker q-mt-20" v-if="renderFilePickerSection">
+          <FilePickerMotowork @delete-file="deleteFile" :isBackgroundImage="false" :type="'images'" @set-file="setFile"
+            :maxFile="5" :entity="'Imágenes del producto'" :resolutionLabel="'Resolución mínima 1080 X 1080 Px'"
+            :base64Image="''" :arrayBase64="tab === 'desktop' ? imagesDesktopBase64 : imagesMobileBase64" />
+        </div>
       </div>
-      <div class="banner-picker" v-if="renderFilePickerSection">
-        <FilePickerMotowork :base64Image="tab === 'desktop' ? desktopBannerBase64 : mobileBannerBase64" :type="'banner'" @set-file="setFile" :maxFile="1" :entity="'Banner producto'"
-          :resolutionLabel="'Resolución mínima 1280 X 450 Px'" />
+      <!--End Files-->
+  
+      <!--form field-->
+      <div class="col-12 col-md-7" :class="{ 'q-pl-lg': $q.screen.gt.sm }">
+        <q-tabs class="text-grey-7" v-model="tabFields" active-color="primary" indicator-color="primary" ina
+          align="justify">
+          <q-tab name="general" label="INFO. GENERAL" />
+          <q-tab name="details" label="DETALLES" />
+          <q-tab name="aditional" label="INFO. ADICIONAL" />
+        </q-tabs>
+  
+        <section class="fiels-section">
+          <q-tab-panels v-model="tabFields" animated>
+            <q-tab-panel name="general">
+              <generalFields :product="product" />
+            </q-tab-panel>
+            <q-tab-panel name="details">
+              e
+            </q-tab-panel>
+            <q-tab-panel name="aditional">
+              i
+            </q-tab-panel>
+          </q-tab-panels>
+        </section>
       </div>
-      <div class="banner-picker q-mt-20" v-if="renderFilePickerSection">
-        <FilePickerMotowork @delete-file="deleteFile" :isBackgroundImage="false" :type="'images'" @set-file="setFile" :maxFile="5" :entity="'Imágenes del producto'"
-          :resolutionLabel="'Resolución mínima 1080 X 1080 Px'" :base64Image="''" :arrayBase64="tab === 'desktop' ? imagesDesktopBase64 : imagesMobileBase64" />
-      </div>
-    </div>
+      <!--End Form Fields-->
+    </q-form>
   </div>
 </template>
 
 <script lang="ts" setup>
 // imports
 import { ref, watch } from 'vue'
+import generalFields from './partials/generalFields.vue';
+import { ProductsInterface } from '@/interfaces/productsInterface'
 import FilePickerMotowork from '../partials/filePickerMotowork.vue'
 
 // references
 const tab = ref('desktop')
+const tabFields = ref('general')
 const renderFilePickerSection = ref<boolean>(true)
+const product = ref<ProductsInterface>({
+  name: '',
+  model: '',
+  state: 'Nueva',
+  brand: '',
+  price: null,
+  discount: null,
+  category: '',
+  description: '',
+  banner: '',
+  images: [],
+  enableDiscount: false,
+  details: {
+    power: '',
+    licenseType: '',
+    storage: '',
+    testDrive: false,
+    colors: []
+  },
+  additionalInfo: [],
+})
 
 // banners references
 const bannerMobile = ref(null)
@@ -68,7 +124,7 @@ const setFile = (data: any) => {
     case 'banner':
       handlerBannerFile(data)
       break;
-  
+
     default:
       handlerDefaultImages(data)
       break;
@@ -110,6 +166,10 @@ const deleteFile = (idx: number) => {
     imagesDesktop.value.splice(idx, 1)
     imagesDesktopBase64.value.splice(idx, 1)
   }
+}
+
+const createProduct = () => {
+  console.log(product.value);
 }
 </script>
 

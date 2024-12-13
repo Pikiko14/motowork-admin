@@ -1,5 +1,5 @@
 <template>
-  <div class="toggle" :class="{ active: isActive }" @click="toggle">
+  <div class="toggle" :class="{ active: isActive, 'small': size === 'sm', 'large': size === 'lg' }" @click="toggle">
     <div class="toggle-bg"></div>
     <div class="toggle-indicator"></div>
   </div>
@@ -15,6 +15,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    size: {
+      type: String,
+      default: "lg",
+    }
   },
   emits: ["update:modelValue"],
   setup(props, { emit }) {
@@ -32,7 +36,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .toggle {
   width: 60px;
   height: 30px;
@@ -62,5 +66,26 @@ export default defineComponent({
 
 .toggle.active .toggle-indicator {
   left: 32px;
+}
+
+.small {
+  width: 40px;
+  height: 20px;
+
+  .toggle-indicator {
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border-radius: 0px;
+    position: absolute;
+    transition: all 0.3s ease;
+    left: 5px;
+  }
+}
+
+.small.active {
+  .toggle-indicator {
+    left: 20px !important;
+  }
 }
 </style>

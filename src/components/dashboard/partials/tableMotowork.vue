@@ -106,10 +106,10 @@
 </template>
 
 <script lang="ts">
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router'
 import { defineComponent, onBeforeMount, ref } from 'vue'
-import ToggleInput from 'src/components/commons/ToggleInput.vue';
-import { TableColumnsInterface } from 'src/interfaces/tableInterface';
+import ToggleInput from 'src/components/commons/ToggleInput.vue'
+import { TableColumnsInterface } from 'src/interfaces/tableInterface'
 
 export default defineComponent({
   name: 'TableMotoworkComponents',

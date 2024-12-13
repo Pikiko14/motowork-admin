@@ -11,7 +11,7 @@
     </div>
     <div class="col-12 q-px-md q-mt-sm">
       <label for="">Tipo de marca <span class="text-secondary">*</span></label>
-      <q-select square emit-value map-options :rules="[(val) => !!val || 'Selecciona una opción']" outlined dense
+      <q-select hide-dropdown-icon square emit-value map-options :rules="[(val) => !!val || 'Selecciona una opción']" outlined dense
         v-model="brand.type" :options="brandTypeOptions"></q-select>
     </div>
     <div class="col-12 q-px-md q-mt-sm">

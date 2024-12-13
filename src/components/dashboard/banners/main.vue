@@ -13,7 +13,7 @@
 
     <!--Modal Banners-->
     <q-dialog v-model="openModalBanners" @before-hide="clearData">
-      <CardModalMotowork :title="banner._id ? `Modificar banner ${banner.name}` : 'Crear banners'">
+      <CardModalMotowork :title="banner._id ? `Modificar banner` : 'Crear banners'">
         <template v-slot:content>
           <FormBanner @close-modal="openModal" :bannerData="banner" />
         </template>

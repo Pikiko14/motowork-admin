@@ -1,7 +1,6 @@
 <template>
   <div class="full-width q-py-md q-my-xs q-pr-sm">
     <q-form class="row" @submit="createProduct">
-      {{ product }}
       <div class="col-12">
         <div class="d-flex">
           <q-btn style="margin-left: -10px" @click="$router.go(-1)" rounded flat dense
@@ -25,8 +24,8 @@
             específico para cada dispositivo, respetando sus dimensiones nativas.</p>
         </div>
         <div class="banner-picker" v-if="renderFilePickerSection">
-          <FilePickerMotowork :base64Image="tab === 'desktop' ? desktopBannerBase64 : mobileBannerBase64" :type="'banner'"
-            @set-file="setFile" :maxFile="1" :entity="'Banner producto'"
+          <FilePickerMotowork :base64Image="tab === 'desktop' ? desktopBannerBase64 : mobileBannerBase64"
+            :type="'banner'" @set-file="setFile" :maxFile="1" :entity="'Banner producto'"
             :resolutionLabel="'Resolución mínima 1280 X 450 Px'" />
         </div>
         <div class="banner-picker q-mt-20" v-if="renderFilePickerSection">
@@ -36,7 +35,7 @@
         </div>
       </div>
       <!--End Files-->
-  
+
       <!--form field-->
       <div class="col-12 col-md-7" :class="{ 'q-pl-lg': $q.screen.gt.sm }">
         <q-tabs class="text-grey-7" v-model="tabFields" active-color="primary" indicator-color="primary" ina
@@ -45,7 +44,7 @@
           <q-tab name="details" label="DETALLES" />
           <q-tab name="aditional" label="INFO. ADICIONAL" />
         </q-tabs>
-  
+
         <section class="fiels-section">
           <q-tab-panels v-model="tabFields" animated>
             <q-tab-panel name="general">
@@ -59,6 +58,22 @@
             </q-tab-panel>
           </q-tab-panels>
         </section>
+
+        <!--botones-->
+        <div class="buttons-section">
+          <div class="row">
+            <div class="col-12 col-md-6 q-mt-sm"
+              :class="{ 'q-pl-md q-pr-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
+              <q-btn :disabled="enableSaveButton" :loading="loading" type="submit" unelevated square label="Crear"
+                class="full-width q-mt-md btn-cancel-solid"></q-btn>
+            </div>
+            <div class="col-12 col-md-6 q-mt-sm"
+              :class="{ 'q-pr-md q-pl-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
+              <q-btn v-close-popup outline square label="Cancelar" class="full-width q-mt-md btn-cancel"></q-btn>
+            </div>
+          </div>
+        </div>
+        <!--End botones-->
       </div>
       <!--End Form Fields-->
     </q-form>
@@ -67,7 +82,7 @@
 
 <script lang="ts" setup>
 // imports
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import generalFields from './partials/generalFields.vue';
 import { ProductsInterface } from '@/interfaces/productsInterface'
 import FilePickerMotowork from '../partials/filePickerMotowork.vue'
@@ -75,6 +90,7 @@ import FilePickerMotowork from '../partials/filePickerMotowork.vue'
 // references
 const tab = ref('desktop')
 const tabFields = ref('general')
+const loading = ref<boolean>(false)
 const renderFilePickerSection = ref<boolean>(true)
 const product = ref<ProductsInterface>({
   name: '',
@@ -117,6 +133,11 @@ watch(
     renderFilePicker()
   }
 )
+
+// computed
+const enableSaveButton = computed(() => {
+  return product.value.name && product.value.model && product.value.state && product.value.brand && product.value.price && product.value.description && product.value.category
+})
 
 // methods
 const setFile = (data: any) => {
@@ -169,7 +190,7 @@ const deleteFile = (idx: number) => {
 }
 
 const createProduct = () => {
-  console.log(product.value);
+  console.log(product.value, bannerMobile.value, bannerDesktop.value, imagesMobile.value, imagesDesktop.value);
 }
 </script>
 

@@ -30,7 +30,7 @@ export interface AdditionalField {
     discount?: number | null;
     enableDiscount?: boolean;
     category: string;
-    description?: string;
+    description: string;
     banner: string;
     images: string[];
     details: DetailsProducts;

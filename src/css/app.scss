@@ -549,7 +549,7 @@ input::placeholder {
   background: var(--Neutrals-Base-White, #f5f5f5);
 }
 
-.title-file-picker {
+.title-file-picker, .entity-file-picker {
   color: var(--Neutrals-Neutrals500, #898384);
   text-align: center;
 
@@ -750,4 +750,8 @@ label {
     width: 32px;
     height: 32px;
   }
+}
+
+.q-mt-20 {
+  margin-top: 20px;
 }

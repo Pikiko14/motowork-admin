@@ -1,19 +1,37 @@
 <template>
-  <section ref="filePickerRef" class="file-picker" @click="openFilePicker" @dragover.prevent @drop="handleDrop">
-    <q-img src="/images/upload.svg" width="60px" height="60px"></q-img>
-    <span class="title-file-picker" v-if="!base64Image">
-      Arrastrar y soltar archivos o <span class="title-file-picker-span cursor-pointer">explorar</span>
-    </span>
-    <span v-if="!base64Image" class="title-file-picker-format">
-      Formatos soportados: JPEG, PNG, GIF, MP4
-    </span>
-    <span class="title-file-picker-format" v-if="!base64Image">
-      {{ resolutionLabel }}
-    </span>
-    <q-img class="brand-category-image" v-if="maxFile === 1 && !isBackgroundImage && base64Image"
-      :src="base64Image"></q-img>
-    <q-file accept="image/*" @update:model-value="(event) => setFile(event)" ref="fileInput" class="hidden"
-      v-model="file"></q-file>
+  <section class="file-selector">
+    <div ref="filePickerRef" class="file-picker"
+      :class="{ 'd-flex flex-row': maxFile >= 1 && !isBackgroundImage && arrayBase64.length > 0 }" @click="openFilePicker"
+      @dragover.prevent @drop="handleDrop">
+      <q-img src="/images/upload.svg" width="60px" height="60px"></q-img>
+      <span class="entity-file-picker" v-if="entity && arrayBase64.length === 0">
+        {{ entity }}
+      </span>
+      <span class="title-file-picker" v-if="!base64Image && arrayBase64.length === 0">
+        Arrastrar y soltar archivos o <span class="title-file-picker-span cursor-pointer">explorar</span>
+      </span>
+      <span v-if="!base64Image && arrayBase64.length === 0" class="title-file-picker-format">
+        Formatos soportados: JPEG, PNG, GIF, MP4
+      </span>
+      <span class="title-file-picker-format" v-if="!base64Image && arrayBase64.length === 0">
+        {{ resolutionLabel }}
+      </span>
+      <q-img class="brand-category-image" v-if="maxFile === 1 && !isBackgroundImage && base64Image"
+        :src="base64Image"></q-img>
+      <q-file accept="image/*" @update:model-value="(event) => setFile(event)" ref="fileInput" class="hidden"
+        v-model="file"></q-file>
+      </div>
+      <div v-if="maxFile >= 1 && !isBackgroundImage && arrayBase64.length > 0" class="images-grid">
+        <q-img :ratio="2/2" class="products-category-image" v-for="(base, idx) in arrayBase64" :key="idx" :src="base">
+          <div class="absolute-full show-hover text-subtitle2 flex flex-center hidden">
+            <q-btn @click="deleteFile(idx)" size="7pt" flat dense rounded icon="img:/images/trash.svg">
+              <q-tooltip :offset="[10, 30]" class="bg-secondary">
+                Eliminar archivo
+              </q-tooltip>
+            </q-btn>
+          </div>
+        </q-img>
+      </div>
   </section>
 </template>
 
@@ -51,15 +69,23 @@ export default defineComponent({
     isBackgroundImage: {
       type: Boolean,
       default: () => true,
+    },
+    entity: {
+      type: String,
+      default: () => '',
+    },
+    arrayBase64: {
+      type: Array as () => any[],
+      default: () => [],
     }
   },
-  emits: ['set-file'],
+  emits: ['set-file', 'delete-file'],
   setup(props, { emit }) {
     // data
     const fileInput = ref()
     const filePickerRef = ref()
     const file = ref<any>(null)
-    const { maxFile, type, isBackgroundImage } = props
+    const { maxFile, type, isBackgroundImage, arrayBase64 } = props
     const filesBase64 = ref<any>([])
     const imageBase64 = ref<string>('')
     const utils = new Utils('filePicker')
@@ -76,7 +102,7 @@ export default defineComponent({
         if (filesBase64.value.length === maxFile) {
           notification(
             'negative',
-            'Solo puedes agregar una imágen.',
+            `Solo puedes agregar ${maxFile} imágenes.`,
             'warning'
           )
           return false
@@ -108,11 +134,11 @@ export default defineComponent({
     }
 
     const setFile = (filePicker: FileObject) => {
-      if (filesBase64.value.length === maxFile) {
+      if (filesBase64.value.length === maxFile || arrayBase64.length === maxFile) {
         notification(
           'negative',
-          'Solo puedes agregar una imágen',
-          'red'
+          `Solo puedes agregar ${maxFile} imágenes`,
+          'warning'
         )
         return false
       }
@@ -139,7 +165,7 @@ export default defineComponent({
           })
           imageBase64.value = event.target.result
           const backgroundImage = `url('${event.target.result}')`
-          if (isBackgroundImage) {
+          if (isBackgroundImage && props.arrayBase64.length === 0) {
             setBackground(backgroundImage)
           }
           emitFile(filePicker)
@@ -159,10 +185,14 @@ export default defineComponent({
       emit('set-file', { type, filePicker, base64: imageBase64.value })
     }
 
+    const deleteFile = (idx: number) => {
+      emit('delete-file', idx);
+    }
+
     // hook
     onBeforeMount(() => {
       setTimeout(() => {
-        if (props.base64Image) {
+        if (props.base64Image && props.arrayBase64.length === 0) {
           const backgroundImage = `url('${props.base64Image}')`
           setBackground(backgroundImage)
         }
@@ -176,8 +206,38 @@ export default defineComponent({
       filePickerRef,
       handleDrop,
       filesBase64,
+      deleteFile,
       openFilePicker
     }
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.images-grid {
+  margin-top: -80px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(70px, auto);
+  gap: 10px;
+  justify-content: center;
+}
+
+.products-category-image {
+  width: 60px;
+  max-height: 60px;
+  border-radius: 8px;
+
+  &:hover {
+    .show-hover {
+      display: flex !important;
+    }
+  }
+}
+
+.q-img__content  {
+  display: flex;
+  justify-content: center;
+  align-items: center !important;
+}
+</style>

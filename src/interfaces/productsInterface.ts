@@ -17,7 +17,7 @@ export interface AdditionalField {
     power: string;
     licenseType: string;
     storage: string;
-    testDrive: boolean;
+    testDrive: string;
     colors: string[];
   }
   

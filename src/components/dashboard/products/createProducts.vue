@@ -1,6 +1,7 @@
 <template>
   <div class="full-width q-py-md q-my-xs q-pr-sm">
     <q-form class="row" @submit="createProduct">
+      {{ product }}
       <div class="col-12">
         <div class="d-flex">
           <q-btn style="margin-left: -10px" @click="$router.go(-1)" rounded flat dense
@@ -51,7 +52,7 @@
               <generalFields :product="product" />
             </q-tab-panel>
             <q-tab-panel name="details">
-              e
+              <detailFields :product="product" />
             </q-tab-panel>
             <q-tab-panel name="aditional">
               i
@@ -69,7 +70,7 @@
             </div>
             <div class="col-12 col-md-6 q-mt-sm"
               :class="{ 'q-pr-md q-pl-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
-              <q-btn v-close-popup outline square label="Cancelar" class="full-width q-mt-md btn-cancel"></q-btn>
+              <q-btn @click="$router.go(-1)" v-close-popup outline square label="Cancelar" class="full-width q-mt-md btn-cancel"></q-btn>
             </div>
           </div>
         </div>
@@ -83,7 +84,8 @@
 <script lang="ts" setup>
 // imports
 import { computed, ref, watch } from 'vue'
-import generalFields from './partials/generalFields.vue';
+import detailFields from './partials/detailFields.vue'
+import generalFields from './partials/generalFields.vue'
 import { ProductsInterface } from '@/interfaces/productsInterface'
 import FilePickerMotowork from '../partials/filePickerMotowork.vue'
 
@@ -108,7 +110,7 @@ const product = ref<ProductsInterface>({
     power: '',
     licenseType: '',
     storage: '',
-    testDrive: false,
+    testDrive: '',
     colors: []
   },
   additionalInfo: [],
@@ -136,7 +138,18 @@ watch(
 
 // computed
 const enableSaveButton = computed(() => {
-  return product.value.name && product.value.model && product.value.state && product.value.brand && product.value.price && product.value.description && product.value.category
+  return product.value.name &&
+    product.value.model &&
+    product.value.state &&
+    product.value.brand &&
+    product.value.price &&
+    product.value.description &&
+    product.value.category &&
+    product.value.details.power &&
+    product.value.details.licenseType &&
+    product.value.details.storage &&
+    product.value.details.testDrive &&
+    product.value.details.colors.length > 0
 })
 
 // methods

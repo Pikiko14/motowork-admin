@@ -1,39 +1,47 @@
 <template>
   <div class="row">
-    <div class="col-12 q-mt-lg" v-for="(section, idx) in product.additionalInfo">
-      <!--Additional section-->
-      <div class="aditional-section-detail">
-        <ToggleInput class="q-mt-xs" size="sm" v-model="section.enable" />
-        <span class="section-name" :class="{ 'text-gray-2': !section.enable }">
-          {{ section.sectionName }}
-          <span>
-            <q-btn size="8pt" style="margin-top: -5px" icon="img:/images/trash.svg" flat dense @click="deleteSection(idx)"></q-btn>
+    <q-scroll-area style="width: 100%; height: 450px" v-if="product.additionalInfo && product?.additionalInfo.length > 0">
+      <div class="col-12 q-mt-lg" v-for="(section, idx) in product.additionalInfo">
+        <!--Additional section-->
+        <div class="aditional-section-detail">
+          <ToggleInput class="q-mt-xs" size="sm" v-model="section.enable" />
+          <p class="section-name" :class="{ 'text-gray-2': !section.enable }">
+            <div class="ellipsis-1-lines" style="max-width:300px; display: inline-block">{{ section.sectionName }}</div>
+            <span>
+              <q-btn size="8pt" style="margin-top: -5px" icon="img:/images/trash.svg" flat dense @click="deleteSection(idx)"></q-btn>
+            </span>
+          </p>
+          <span class="add-aditional-fields" @click="openSubSectionModal(idx)">
+            <q-icon size="14pt" name="img:/images/add_sub_section.svg"></q-icon>
+            <span class="label">
+              Agregar subsección
+            </span>
           </span>
-        </span>
-        <span class="add-aditional-fields" @click="openSubSectionModal(idx)">
-          <q-icon size="14pt" name="img:/images/add_sub_section.svg"></q-icon>
-          <span class="label">
-            Agregar subsección
-          </span>
-        </span>
-      </div>
-      <!--Add aditional section-->
-
-      <!-- Additional sub section -->
-       <div class="row q-mt-md" v-if="section.subsections.length > 0">
-        <div class="col-12 col-md-6" v-for="(subSection, idxSub) in section.subsections" :key="idxSub">
-          <div class="col-12 col-md-6" :class="{ 'q-pr-md': $q.screen.gt.sm && idxSub % 2 == 0, 'q-pl-md': $q.screen.gt.sm && idxSub % 2 == 1  }">
-            <label for="">{{ subSection.name }} <span class="text-secondary">*</span></label>
-            <q-input square :rules="[
-              val => (val && val.length > 0) || 'Por favor ingrese el nombre de la información',
-              val => (val && val.length >= 1) || 'Mayor a 1 caracteres',
-              val => (val && val.length <= 90) || 'Menor a 90 caracteres',
-            ]" placeholder="Ingresa un nombre" class="q-mt-sm" outlined dense v-model="subSection.value"></q-input>
-          </div>
         </div>
-       </div>
-       <!--End additional sub section-->
-    </div>
+        <!--Add aditional section-->
+  
+        <!-- Additional sub section -->
+         <div class="row q-mt-md" v-if="section.subsections.length > 0">
+          <div class="col-12 col-md-6" v-for="(subSection, idxSub) in section.subsections" :key="idxSub" :class="{ 'q-pr-md': $q.screen.gt.sm && idxSub % 2 == 0, 'q-pl-md': $q.screen.gt.sm && idxSub % 2 == 1  }">
+            <div class="col-12 col-md-6 relative">
+              <label for="">
+                {{ subSection.name }}
+                <span class="text-secondary">*</span>
+                <span class="add-aditional-fields">
+                  <q-btn size="8pt" style="margin-top: -25px; right: 0px" icon="img:/images/trash.svg" flat dense @click="deleteSection(idx)"></q-btn>
+                </span>
+              </label>
+              <q-input square :rules="[
+                val => (val && val.length > 0) || 'Por favor ingrese el nombre de la información',
+                val => (val && val.length >= 1) || 'Mayor a 1 caracteres',
+                val => (val && val.length <= 90) || 'Menor a 90 caracteres',
+              ]" placeholder="Ingresa un nombre" class="q-mt-sm" outlined dense v-model="subSection.value"></q-input>
+            </div>
+          </div>
+         </div>
+         <!--End additional sub section-->
+      </div>
+    </q-scroll-area>
 
     <!--Add aditional section-->
     <div class="col-12" :class="{ 'q-mt-lg': product.additionalInfo && product.additionalInfo.length > 0 }">
@@ -223,6 +231,10 @@ const handlerAddSubSection = () => {
     font-style: normal;
     font-weight: 400;
     line-height: 125%;
+
+    @media (max-width: 1299px) {
+      display: none;
+    }
   }
 }
 

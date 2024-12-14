@@ -1,5 +1,5 @@
 <template>
-  <div class="full-width q-py-md q-my-xs q-pr-md">
+  <div class="full-width q-py-md q-my-xs" :class="{ 'q-pr-md': $q.screen.gt.sm }">
     <q-form class="row" @submit="createProduct">
       <div class="col-12">
         <div class="d-flex">
@@ -62,12 +62,12 @@
         <!--botones-->
         <div class="buttons-section">
           <div class="row">
-            <div class="col-12 col-md-6 q-mt-sm"
+            <div class="col-12 col-md-6"
               :class="{ 'q-pl-md q-pr-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
               <q-btn :disabled="!enableSaveButton" :loading="loading" type="submit" unelevated square label="Crear"
                 class="full-width q-mt-md btn-cancel-solid"></q-btn>
             </div>
-            <div class="col-12 col-md-6 q-mt-sm"
+            <div class="col-12 col-md-6"
               :class="{ 'q-pr-md q-pl-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
               <q-btn @click="$router.go(-1)" v-close-popup outline square label="Cancelar" class="full-width q-mt-md btn-cancel"></q-btn>
             </div>
@@ -85,6 +85,8 @@
 import { computed, ref, watch } from 'vue'
 import detailFields from './partials/detailFields.vue'
 import generalFields from './partials/generalFields.vue'
+import { notification } from '../../../boot/notification'
+import { useProductsStore } from '../../../stores/products'
 import { ProductsInterface } from '@/interfaces/productsInterface'
 import FilePickerMotowork from '../partials/filePickerMotowork.vue'
 import infoAditionalFields from './partials/infoAditionalFields.vue'
@@ -92,6 +94,7 @@ import infoAditionalFields from './partials/infoAditionalFields.vue'
 // references
 const tab = ref('desktop')
 const tabFields = ref('general')
+const store = useProductsStore()
 const loading = ref<boolean>(false)
 const renderFilePickerSection = ref<boolean>(true)
 const product = ref<ProductsInterface>({
@@ -202,8 +205,23 @@ const deleteFile = (idx: number) => {
   }
 }
 
-const createProduct = () => {
-  console.log(product.value, bannerMobile.value, bannerDesktop.value, imagesMobile.value, imagesDesktop.value);
+const createProduct = async () => {
+  try {
+    await handlerSaveProduct(product.value); // save product json
+  } catch (error) {
+  } finally {
+    loading.value = false
+  }
+}
+
+const handlerSaveProduct = async (params: ProductsInterface) => {
+  try {
+    const response = await store.doSaveProduct(params);
+    if (response?.success) {
+      notification('success', response?.message, 'success')
+    }
+  } catch (error) {
+  }
 }
 </script>
 
@@ -234,6 +252,6 @@ const createProduct = () => {
 }
 
 .fields-section {
-  height: 515px;
+  min-height: 515px;
 }
 </style>

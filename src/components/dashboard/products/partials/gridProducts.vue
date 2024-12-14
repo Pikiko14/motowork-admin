@@ -79,7 +79,7 @@ const currentPage = ref<number>(1)
 const doPagination = (page: number): void => {
   currentPage.value = page
   const search = route.query.search ? route.query.search as string : ''
-  const perPage = route.query.perPage ? parseInt(route.query.perPage as string) : 7
+  const perPage = route.query.perPage ? parseInt(route.query.perPage as string) : 10
   const type = route.query.type ? route.query.type as string : ''
   const sortBy = route.query.sortBy ? route.query.sortBy as string : ''
   const order = route.query.order ? route.query.order as string : ''
@@ -103,7 +103,6 @@ const doNextPage = (): void => {
 
 const getBannerUrl = (idx: number): string => {
   const { banner } = props.products[idx];
-  console.log(banner)
   let url = '';
   const mobileBanner = banner.find((banner: ProductsBanners) => banner.type_banner === 'mobile')
   if (mobileBanner) {

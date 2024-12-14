@@ -23,7 +23,7 @@
           <gridProducts :products="products" :totalPages="totalPages" />
         </q-tab-panel>
         <q-tab-panel name="product">
-          {{ products }}
+          <gridProducts :products="products" :totalPages="totalPages" />
         </q-tab-panel>
       </q-tab-panels>
     </div>
@@ -91,7 +91,7 @@ const totalPages = computed(() => {
 // watch
 watch(tab, async (value) => {
   const page = 1
-  const perPage = 7
+  const perPage = 10
   const type = value
   const sortBy = 'name'
   const order = 'asc'

@@ -1,5 +1,6 @@
 <template>
   <div class="full-width q-py-md q-my-xs" :class="{ 'q-pr-md': $q.screen.gt.sm }">
+    <!--Formulario-->
     <q-form class="row" @submit="createProduct">
       <div class="col-12">
         <div class="d-flex">
@@ -69,7 +70,8 @@
             </div>
             <div class="col-12 col-md-6"
               :class="{ 'q-pr-md q-pl-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
-              <q-btn @click="$router.go(-1)" v-close-popup outline square label="Cancelar" class="full-width q-mt-md btn-cancel"></q-btn>
+              <q-btn @click="$router.go(-1)" v-close-popup outline square label="Cancelar"
+                class="full-width q-mt-md btn-cancel"></q-btn>
             </div>
           </div>
         </div>
@@ -77,16 +79,29 @@
       </div>
       <!--End Form Fields-->
     </q-form>
+    <!--End Formulario-->
+
+    <!--Modal status-->
+    <q-dialog v-model="openModalStatus">
+      <CardModalMotowork :title="statusTitle">
+        <template v-slot:content>
+          <statusModal @do-try-egaint="openModalStatus = false" @do-continue="handlerSuccessCreation" :status="statusCreation" :description="statusDescription"></statusModal>
+        </template>
+      </CardModalMotowork>
+    </q-dialog>
+    <!--End modal status-->
   </div>
 </template>
 
 <script lang="ts" setup>
 // imports
-import { useRoute } from 'vue-router'
 import { computed, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import statusModal from '../partials/statusModal.vue'
 import detailFields from './partials/detailFields.vue'
 import generalFields from './partials/generalFields.vue'
 import { useProductsStore } from '../../../stores/products'
+import CardModalMotowork from '../partials/cardModalMotowork.vue'
 import { ProductsInterface } from '@/interfaces/productsInterface'
 import FilePickerMotowork from '../partials/filePickerMotowork.vue'
 import infoAditionalFields from './partials/infoAditionalFields.vue'
@@ -94,10 +109,14 @@ import infoAditionalFields from './partials/infoAditionalFields.vue'
 // references
 const route = useRoute()
 const tab = ref('desktop')
+const router = useRouter()
+const hasFile = ref<boolean>()
 const tabFields = ref('general')
 const store = useProductsStore()
+const statusTitle = ref<string>('')
 const loading = ref<boolean>(false)
-const hasFile = ref<boolean>()
+const openModalStatus = ref<boolean>(false)
+const statusCreation = ref<string>('success')
 const renderFilePickerSection = ref<boolean>(true)
 const product = ref<ProductsInterface>({
   name: '',
@@ -109,7 +128,7 @@ const product = ref<ProductsInterface>({
   discount: null,
   category: '',
   description: '',
-  banner: '',
+  banner: [],
   images: [],
   type: '',
   enableDiscount: false,
@@ -122,6 +141,7 @@ const product = ref<ProductsInterface>({
   },
   additionalInfo: [],
 })
+const statusDescription = ref<string>('¡Felicitaciones! Has creado un nuevo producto. Has agregado detalles, imágenes y  precios correctamente.')
 
 // banners references
 const bannerMobile = ref(null)
@@ -216,11 +236,18 @@ const createProduct = async () => {
     const { type } = route.query
     product.value.type = type as string
     const saveProductObject = await handlerSaveProduct(product.value) // save product json
-    let uploadFiles: any = false
+    let uploadFiles = null
     if (hasFile.value === true) {
       uploadFiles = await handlerUploadFiles(saveProductObject._id)
     }
-    console.log(saveProductObject, uploadFiles)
+    if (saveProductObject._id || uploadFiles._id) {
+      statusTitle.value = 'Producto creado exitosamente'
+      openModalStatus.value = true
+      return true;
+    }
+    statusCreation.value = 'error'
+    statusTitle.value = '¡UPS! ALGO HA FALLADO'
+    statusDescription.value = 'Parece que ha habido un problema al crear tu producto. Asegúrate de que has completado toda la información requerida en los campos obligatorios (*) antes de volver a intentarlo.'
   } catch (error) {
   } finally {
     loading.value = false
@@ -251,12 +278,23 @@ const handlerUploadFiles = async (id: string) => {
     imagesMobile.value.forEach((file) => form.append("imagesMobile", file))
     imagesDesktop.value.forEach((file) => form.append("imagesDesktop", file))
     const response = await store.doUploadFiles(form)
+    console.log(response)
     if (response.success) {
       return response.data
     }
     return false
   } catch (error) {
   }
+}
+
+const handlerSuccessCreation = () => {
+  openModalStatus.value = false
+  router.push({
+    name: 'products',
+    query: {
+      type: route.query.type
+    }
+  })
 }
 </script>
 

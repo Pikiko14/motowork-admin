@@ -34,6 +34,7 @@ export interface AdditionalField {
     description: string;
     banner: string;
     images: string[];
+    type: string;
     details: DetailsProducts;
     additionalInfo?: AdditionalInfoInterface[];
     createdAt?: Date;

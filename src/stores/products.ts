@@ -15,7 +15,7 @@ export const useProductsStore = defineStore("productsStore", () => {
   // references
   const totalItems = ref<number>(0);
   const totalPages = ref<number>(0);
-  const utils = new Utils("brand");
+  const utils = new Utils("products");
   const products = ref<ProductsInterface[]>([]);
 
   // methods
@@ -43,10 +43,29 @@ export const useProductsStore = defineStore("productsStore", () => {
     }
   };
 
+  const doListProducts = async (query: string) => {
+    try {
+      const response = (await handlerRequest.doGetRequest(
+        `${path}`,
+        query,
+        true
+      )) as ResponseObj;
+      if (response.success) {
+        products.value = response.data.brands;
+        totalItems.value = response.data.totalItems;
+        totalPages.value = response.data.totalPages;
+        return response;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // return statement
   return {
     products,
     totalItems,
     doSaveProduct,
+    doListProducts,
   };
 });

@@ -38,14 +38,14 @@ export default boot(({ app }) => {
         if (error) {
           const { data } = error.response.data;
           const { msg } = data.shift();
-          notification("negative", msg, "red");
+          notification("red", msg, "red");
         }
       } else {
         error.response.data.message
-          ? notification("negative", error.response.data.message, "red")
+          ? notification("red", error.response.data.message, "red")
           : error.response.data.error
-          ? notification("negative", error.response.data.error, "red")
-          : notification("negative", error.response.statusText, "red");
+          ? notification("red", error.response.data.error, "red")
+          : notification("red", error.response.statusText, "red");
       }
     } else {
       notification(

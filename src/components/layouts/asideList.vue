@@ -47,7 +47,7 @@
           </q-tooltip>
         </q-item-section>
       </q-item>
-      <q-item clickable class="q-mt-sm" to="/dashboard/products?page=1&perPage=10&search=">
+      <q-item clickable class="q-mt-sm" to="/dashboard/products?page=1&perPage=10&search=&type=vehicle&sortBy=name&order=1">
         <q-item-section class="text-center">
           <q-icon
             :name="$route.path == '/dashboard/products' ? 'img:/images/products-primary.svg' : 'img:/images/products.svg'"

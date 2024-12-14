@@ -87,6 +87,7 @@ import { useCategoriesStore } from '../../../../stores/category'
 import { BrandsInterface } from '@/interfaces/brands.interface'
 import ToggleInput from 'src/components/commons/ToggleInput.vue'
 import { ProductsInterface } from '@/interfaces/productsInterface'
+import { useRoute } from 'vue-router'
 
 // props
 defineProps({
@@ -100,6 +101,8 @@ defineProps({
 
 // references
 const $q = useQuasar()
+const route = useRoute()
+const { type } = route.query
 const brandsStore = useBrandsStore()
 const categoriesStore = useCategoriesStore()
 const statesOptions = ref(['Nueva', 'Usada'])
@@ -126,26 +129,26 @@ const categoriesOptions = computed(() => {
 const filterBrands = (val: string, update: any) => {
   if (val === '') {
     update(() => {
-      brandsStore.doListBrands('?page=1&perPage=100&fields=name,id')
+      brandsStore.doListBrands(`?page=1&perPage=100&type=${type}&fields=name,id`)
     })
     return
   }
   update(() => {
     const needle = val.toLowerCase()
-    brandsStore.doListBrands(`?page=1&perPage=100&fields=name,id&search=${needle}`)
+    brandsStore.doListBrands(`?page=1&perPage=100&type=${type}&fields=name,id&search=${needle}`)
   })
 }
 
 const filterCategory = (val: string, update: any) => {
   if (val === '') {
     update(() => {
-      categoriesStore.doListCategories('?page=1&perPage=100&fields=name,id')
+      categoriesStore.doListCategories(`?page=1&perPage=100&type=${type}&fields=name,id`)
     })
     return
   }
   update(() => {
     const needle = val.toLowerCase()
-    categoriesStore.doListCategories(`?page=1&perPage=100&fields=name,id&search=${needle}`)
+    categoriesStore.doListCategories(`?page=1&perPage=100&type=${type}&fields=name,id&search=${needle}`)
   })
 }
 

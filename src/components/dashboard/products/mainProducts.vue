@@ -14,18 +14,58 @@
       </q-tabs>
     </div>
     <!--End tab-->
+
+    <!--tab content-->
+    <div class="col-12">
+      {{ products }}
+    </div>
+    <!--End tab content-->
   </div>
 </template>
 
 <script setup lang="ts">
 // imports
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { ref, computed, watch, onBeforeMount } from 'vue'
+import { useProductsStore } from '../../../stores/products'
 import HeadersMotowork from '../partials/headersMotowork.vue'
 
 // references
+const route = useRoute()
 const tab = ref('vehicle')
 const router = useRouter()
+const store = useProductsStore()
+
+
+// computed
+const products = computed(() => {
+  return store.products
+})
+
+const totalPages = computed(() => {
+  return store.totalPages
+})
+
+// watch
+watch(tab, async (value) => {
+  const page = 1
+  const perPage = 7
+  const type = value
+  const sortBy = 'name'
+  const order = 'asc'
+  const search = route.query.search ? route.query.search as string : ''
+  router.push({
+    name: 'products',
+    query: {
+      page,
+      perPage,
+      search,
+      type,
+      sortBy,
+      order
+    }
+  })
+})
 
 // methods
 const pushRouter = (routeName: string) => {
@@ -37,6 +77,27 @@ const pushRouter = (routeName: string) => {
   });
 };
 
+const lisProducts = async (): Promise<void> => {
+  try {
+    const page = route.query.page || 1
+    const perPage = route.query.perPage || 7
+    const search = route.query.search || ''
+    const type = route.query.type || 'vehicle'
+    const sortBy = route.query.sortBy || 'name'
+    const order = route.query.order || 'asc'
+    const query = `?page=${page}&perPage=${perPage}&search=${search}&type=${type}&sortBy=${sortBy}&order=${order}`
+    await store.doListProducts(query)
+  } catch (error) {
+  }
+}
+
+// hooks
+onBeforeMount(async () => {
+  if (route.query.type) {
+    tab.value = route.query.type as string;
+  }
+  await lisProducts()
+})
 </script>
 
 <style></style>

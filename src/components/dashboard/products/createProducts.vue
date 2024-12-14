@@ -82,6 +82,7 @@
 
 <script lang="ts" setup>
 // imports
+import { useRoute } from 'vue-router'
 import { computed, ref, watch } from 'vue'
 import detailFields from './partials/detailFields.vue'
 import generalFields from './partials/generalFields.vue'
@@ -92,6 +93,7 @@ import FilePickerMotowork from '../partials/filePickerMotowork.vue'
 import infoAditionalFields from './partials/infoAditionalFields.vue'
 
 // references
+const route = useRoute()
 const tab = ref('desktop')
 const tabFields = ref('general')
 const store = useProductsStore()
@@ -108,6 +110,7 @@ const product = ref<ProductsInterface>({
   description: '',
   banner: '',
   images: [],
+  type: '',
   enableDiscount: false,
   details: {
     power: '',
@@ -207,6 +210,8 @@ const deleteFile = (idx: number) => {
 
 const createProduct = async () => {
   try {
+    const { type } = route.query;
+    product.value.type = type as string;
     await handlerSaveProduct(product.value); // save product json
   } catch (error) {
   } finally {

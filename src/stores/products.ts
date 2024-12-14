@@ -67,6 +67,22 @@ export const useProductsStore = defineStore("productsStore", () => {
     totalPages.value = 0;
   };
 
+  const doUploadFiles = async (params: FormData): Promise<ResponseObj | void> => {
+    try {
+      const response = (await handlerRequest.doPostRequest(
+        `${path}/upload-files`,
+        params,
+        true,
+        true
+      )) as ResponseObj;
+      if (response.success) {
+        return response;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // return statement
   return {
     products,
@@ -74,6 +90,7 @@ export const useProductsStore = defineStore("productsStore", () => {
     totalPages,
     clearProducts,
     doSaveProduct,
+    doUploadFiles,
     doListProducts,
   };
 });

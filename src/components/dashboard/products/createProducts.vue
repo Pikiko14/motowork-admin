@@ -37,7 +37,7 @@
       <!--End Files-->
 
       <!--form field-->
-      <div class="col-12 col-md-7" :class="{ 'q-pl-lg': $q.screen.gt.sm }">
+      <div class="col-12 col-md-7" :class="{ 'q-pl-lg': $q.screen.gt.sm, 'q-mt-xl': $q.screen.lt.md }">
         <q-tabs class="text-grey-7" v-model="tabFields" active-color="primary" indicator-color="primary" ina
           align="justify">
           <q-tab name="general" label="INFO. GENERAL" />
@@ -86,7 +86,6 @@ import { useRoute } from 'vue-router'
 import { computed, ref, watch } from 'vue'
 import detailFields from './partials/detailFields.vue'
 import generalFields from './partials/generalFields.vue'
-import { notification } from '../../../boot/notification'
 import { useProductsStore } from '../../../stores/products'
 import { ProductsInterface } from '@/interfaces/productsInterface'
 import FilePickerMotowork from '../partials/filePickerMotowork.vue'
@@ -98,6 +97,7 @@ const tab = ref('desktop')
 const tabFields = ref('general')
 const store = useProductsStore()
 const loading = ref<boolean>(false)
+const hasFile = ref<boolean>()
 const renderFilePickerSection = ref<boolean>(true)
 const product = ref<ProductsInterface>({
   name: '',
@@ -161,6 +161,7 @@ const enableSaveButton = computed(() => {
 
 // methods
 const setFile = (data: any) => {
+  hasFile.value = true
   switch (data.type) {
     case 'banner':
       handlerBannerFile(data)
@@ -210,10 +211,16 @@ const deleteFile = (idx: number) => {
 }
 
 const createProduct = async () => {
+  loading.value = true
   try {
-    const { type } = route.query;
-    product.value.type = type as string;
-    await handlerSaveProduct(product.value); // save product json
+    const { type } = route.query
+    product.value.type = type as string
+    const saveProductObject = await handlerSaveProduct(product.value) // save product json
+    let uploadFiles: any = false
+    if (hasFile.value === true) {
+      uploadFiles = await handlerUploadFiles(saveProductObject._id)
+    }
+    console.log(saveProductObject, uploadFiles)
   } catch (error) {
   } finally {
     loading.value = false
@@ -222,10 +229,32 @@ const createProduct = async () => {
 
 const handlerSaveProduct = async (params: ProductsInterface) => {
   try {
-    const response = await store.doSaveProduct(params);
+    const response = await store.doSaveProduct(params)
     if (response?.success) {
-      notification('success', response?.message, 'success')
+      return response.data
     }
+    return false
+  } catch (error) {
+  }
+}
+
+const handlerUploadFiles = async (id: string) => {
+  try {
+    const form = new FormData()
+
+    // validate banners
+    form.append('id', id)
+    form.append('bannerMobile', bannerMobile.value ? bannerMobile.value : '')
+    form.append('bannerDesktop', bannerDesktop.value ? bannerDesktop.value : '')
+
+    // validate images products
+    imagesMobile.value.forEach((file) => form.append("imagesMobile", file))
+    imagesDesktop.value.forEach((file) => form.append("imagesDesktop", file))
+    const response = await store.doUploadFiles(form)
+    if (response.success) {
+      return response.data
+    }
+    return false
   } catch (error) {
   }
 }

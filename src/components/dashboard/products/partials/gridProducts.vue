@@ -4,10 +4,10 @@
       <article class="product-item" :class="{ 'item-white': idx % 2 === 0, 'item-gray': idx % 2 !== 0 }"
         v-for="(product, idx) in products" :key="idx">
         <!--Image-->
-        <q-img :ratio="16 / 9"
+        <img
           :src="product?.image_default || 'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930'"
           class="product-img">
-        </q-img>
+        </img>
         <!--End image-->
 
         <!--Product title-->
@@ -73,8 +73,10 @@ const doPagination = (page: number): void => {
   const search = route.query.search ? route.query.search as string : ''
   const perPage = route.query.perPage ? parseInt(route.query.perPage as string) : 7
   const type = route.query.type ? route.query.type as string : ''
+  const sortBy = route.query.sortBy ? route.query.sortBy as string : ''
+  const order = route.query.order ? route.query.order as string : ''
   const { path } = route
-  router.push({ path: path, query: { page, perPage, search, type } })
+  router.push({ path: path, query: { page, perPage, search, type, sortBy, order } })
 }
 
 const doPreviewPage = (): void => {
@@ -115,22 +117,18 @@ onBeforeMount(() => {
   padding: 8px;
   flex-direction: column;
   align-items: flex-start;
-  flex-shrink: 0;
   border-radius: 12px;
 
   .product-img {
     width: 100%;
-    height: 132px;
-    flex-shrink: 0;
+    max-height: 132px;
+    object-fit: cover;
     border-radius: 8px;
   }
 
   .product-title {
     margin-top: 8px;
-    overflow: hidden;
     color: #000;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     font-family: Play;
     font-size: 12pt;
     font-style: normal;

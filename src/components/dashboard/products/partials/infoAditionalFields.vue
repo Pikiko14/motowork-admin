@@ -28,14 +28,14 @@
                 {{ subSection.name }}
                 <span class="text-secondary">*</span>
                 <span class="add-aditional-fields">
-                  <q-btn size="8pt" style="margin-top: -25px; right: 0px" icon="img:/images/trash.svg" flat dense @click="deleteSection(idx)"></q-btn>
+                  <q-btn size="8pt" style="margin-top: -25px; right: 0px" icon="img:/images/trash.svg" flat dense @click="deleteSubSection(idx, idxSub)"></q-btn>
                 </span>
               </label>
               <q-input square :rules="[
-                val => (val && val.length > 0) || 'Por favor ingrese el nombre de la información',
+                val => (val && val.length > 0) || 'Por favor ingrese el valor de la información',
                 val => (val && val.length >= 1) || 'Mayor a 1 caracteres',
                 val => (val && val.length <= 90) || 'Menor a 90 caracteres',
-              ]" placeholder="Ingresa un nombre" class="q-mt-sm" outlined dense v-model="subSection.value"></q-input>
+              ]" placeholder="Ingresa un valor" class="q-mt-sm" outlined dense v-model="subSection.value"></q-input>
             </div>
           </div>
          </div>
@@ -187,6 +187,12 @@ const handlerAddSubSection = () => {
       value: '',
     }
     openSubAdditionalInforModal.value = false
+  }
+}
+
+const deleteSubSection = (idx: number, subIdx: number) => {
+  if (props.product.additionalInfo && props.product.additionalInfo?.length >= 0) {
+    props.product.additionalInfo[idx].subsections.splice(subIdx, 1)
   }
 }
 </script>

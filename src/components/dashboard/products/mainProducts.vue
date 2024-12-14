@@ -128,7 +128,7 @@ const lisProducts = async (): Promise<void> => {
     const type = route.query.type || 'vehicle'
     const sortBy = route.query.sortBy || 'name'
     const order = route.query.order || 'asc'
-    const query = `?page=${page}&perPage=${perPage}&search=${search}&type=${type}&sortBy=${sortBy}&order=${order}&fields=name,category,price,discount,state,brand_icon`
+    const query = `?page=${page}&perPage=${perPage}&search=${search}&type=${type}&sortBy=${sortBy}&order=${order}&fields=name,category,price,discount,state,brand_icon,model,banner`
     await store.doListProducts(query)
   } catch (error) {
   }

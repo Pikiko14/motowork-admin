@@ -4,10 +4,16 @@
       <article class="product-item" :class="{ 'item-white': idx % 2 === 0, 'item-gray': idx % 2 !== 0 }"
         v-for="(product, idx) in products" :key="idx">
         <!--Image-->
-        <img
-          :src="product?.image_default || 'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930'"
-          class="product-img">
-        </img>
+        <div class="product-item-img">
+          <img
+            :src="product?.banner ? getBannerUrl(idx) : 'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930'"
+            class="product-img">
+          </img>
+
+          <div class="chip" :class="{ 'news': product.state === 'Nueva', 'used': product.state === 'Usada' }">
+            {{ product.state }}
+          </div>
+        </div>
         <!--End image-->
 
         <!--Product title-->
@@ -35,8 +41,9 @@
     <div class="full-width q-mt-lg d-flex space-between" v-if="totalPages > 0">
       <q-pagination @update:model-value="doPagination" color="secondary" v-model="currentPage" :max="totalPages" />
       <div>
-        <q-btn :disabled="currentPage === 1" flat dense icon="img:/images/left.png" @click="doPreviewPage" ></q-btn>
-        <q-btn :disabled="currentPage === totalPages" flat dense icon="img:/images/right.png" @click="doNextPage" ></q-btn>
+        <q-btn :disabled="currentPage === 1" flat dense icon="img:/images/left.png" @click="doPreviewPage"></q-btn>
+        <q-btn :disabled="currentPage === totalPages" flat dense icon="img:/images/right.png"
+          @click="doNextPage"></q-btn>
       </div>
     </div>
     <!--End Paginator section-->
@@ -47,6 +54,7 @@
 import { defineProps, onBeforeMount, ref } from 'vue'
 import { Utils } from '../../../../utils/utils'
 import { useRoute, useRouter } from 'vue-router'
+import { ProductsBanners } from '@/interfaces/productsInterface';
 import { ProductsInterface } from '@/interfaces/productsInterface'
 
 const props = defineProps({
@@ -93,6 +101,22 @@ const doNextPage = (): void => {
   }
 }
 
+const getBannerUrl = (idx: number): string => {
+  const { banner } = props.products[idx];
+  console.log(banner)
+  let url = '';
+  const mobileBanner = banner.find((banner: ProductsBanners) => banner.type_banner === 'mobile')
+  if (mobileBanner) {
+    url = mobileBanner.path
+  } else {
+    const desktopBanner = banner.find((banner: ProductsBanners) => banner.type_banner === 'desktop')
+    if (desktopBanner) {
+      url = desktopBanner.path
+    }
+  }
+  return url;
+}
+
 // hook
 onBeforeMount(() => {
   currentPage.value = route.query.page ? parseInt(route.query.page as string) : 1
@@ -124,6 +148,18 @@ onBeforeMount(() => {
     max-height: 132px;
     object-fit: cover;
     border-radius: 8px;
+    display: relative;
+  }
+
+  .product-item-img {
+    position: relative;
+    width: 100%;
+  }
+
+  .chip {
+    position: absolute;
+    top: 8px;
+    right: 8px;
   }
 
   .product-title {

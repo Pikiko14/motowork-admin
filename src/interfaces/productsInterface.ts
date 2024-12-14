@@ -1,3 +1,5 @@
+import { BannerImageInterface } from "./bannersInterface";
+
 export interface AdditionalField {
     name: string;
     value: string;
@@ -32,7 +34,7 @@ export interface AdditionalField {
     enableDiscount?: boolean;
     category: string;
     description: string;
-    banner: string;
+    banner: ProductsBanners[];
     images: string[];
     type: string;
     details: DetailsProducts;
@@ -41,4 +43,20 @@ export interface AdditionalField {
     brand_icon?: string
     image_default?: string;
   }
+
+  export interface ProductsBanners {
+    path: string;
+    type_banner: BannerType;
+  }
+  
+  export interface ProductImagesInterface {
+    path: string;
+    type: BannerType;
+  }
+
+  export enum BannerType {
+    mobile = "mobile",
+    desktop = "desktop",
+  }
+  
   

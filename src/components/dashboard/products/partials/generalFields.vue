@@ -31,7 +31,7 @@
       <label for="">Marca <span class="text-secondary">*</span></label>
       <q-select hide-dropdown-icon use-input input-debounce="1500" @filter="filterBrands" class="q-mt-sm" square
         emit-value map-options :rules="[(val) => !!val || 'Selecciona una opción']" outlined dense
-        v-model="product.brand" :options="brandsOptions"></q-select>
+        v-model="product.brand" @update:model-value="getIconBrand" :options="brandsOptions"></q-select>
       <div class="select-custom-icom" style="right: 0px">
         <q-icon name="img:/images/chevron_right.svg"></q-icon>
       </div>
@@ -81,16 +81,16 @@ import {
   ref
 } from 'vue'
 import { useQuasar } from 'quasar'
+import { useRoute } from 'vue-router'
 import mdiIconSet from 'quasar/icon-set/mdi-v7.js'
 import { useBrandsStore } from '../../../../stores/brands'
 import { useCategoriesStore } from '../../../../stores/category'
 import { BrandsInterface } from '@/interfaces/brands.interface'
 import ToggleInput from 'src/components/commons/ToggleInput.vue'
 import { ProductsInterface } from '@/interfaces/productsInterface'
-import { useRoute } from 'vue-router'
 
 // props
-defineProps({
+const props = defineProps({
   product: {
     type: Object() as () => ProductsInterface,
     default: () => {
@@ -129,13 +129,13 @@ const categoriesOptions = computed(() => {
 const filterBrands = (val: string, update: any) => {
   if (val === '') {
     update(() => {
-      brandsStore.doListBrands(`?page=1&perPage=100&type=${type}&fields=name,id`)
+      brandsStore.doListBrands(`?page=1&perPage=100&type=${type}&fields=name,id,icon`)
     })
     return
   }
   update(() => {
     const needle = val.toLowerCase()
-    brandsStore.doListBrands(`?page=1&perPage=100&type=${type}&fields=name,id&search=${needle}`)
+    brandsStore.doListBrands(`?page=1&perPage=100&type=${type}&fields=name,id,icon&search=${needle}`)
   })
 }
 
@@ -150,6 +150,13 @@ const filterCategory = (val: string, update: any) => {
     const needle = val.toLowerCase()
     categoriesStore.doListCategories(`?page=1&perPage=100&type=${type}&fields=name,id&search=${needle}`)
   })
+}
+
+const getIconBrand = (value: string) => {
+  const brand = brandsStore.brands.find((item: BrandsInterface) => item.name === value)
+  if (brand) {
+    props.product.brand_icon = brand.icon
+  }
 }
 
 // hook

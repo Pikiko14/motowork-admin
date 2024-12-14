@@ -61,10 +61,18 @@ export const useProductsStore = defineStore("productsStore", () => {
     }
   };
 
+  const clearProducts = () => {
+    products.value = [];
+    totalItems.value = 0;
+    totalPages.value = 0;
+  };
+
   // return statement
   return {
     products,
     totalItems,
+    totalPages,
+    clearProducts,
     doSaveProduct,
     doListProducts,
   };

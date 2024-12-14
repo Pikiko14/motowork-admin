@@ -104,6 +104,7 @@ const product = ref<ProductsInterface>({
   model: '',
   state: 'Nueva',
   brand: '',
+  brand_icon: '',
   price: null,
   discount: null,
   category: '',

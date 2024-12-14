@@ -32,7 +32,6 @@
         val => (val && val.length > 0) || 'Por favor ingrese un link de prueba de manejo',
         val => (val && val.length >= 1) || 'Mayor a 1 caracteres',
         val => (val && val.length <= 90) || 'Menor a 90 caracteres',
-        val => /^(https?:\/\/)?([\w\-]+\.)+[a-z]{2,6}(:\d+)?(\/[^\s?]*)?(\?[^\s#]*)?(#[^\s]*)?$/.test(val) || 'Ingresa un link valido',
       ]" placeholder="Agrega un enlace de redirección" class="q-mt-sm" outlined dense
         v-model="product.details.testDrive"></q-input>
     </div>

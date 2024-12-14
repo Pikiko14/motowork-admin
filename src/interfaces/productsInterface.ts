@@ -38,5 +38,7 @@ export interface AdditionalField {
     details: DetailsProducts;
     additionalInfo?: AdditionalInfoInterface[];
     createdAt?: Date;
+    brand_icon?: string
+    image_default?: string;
   }
   

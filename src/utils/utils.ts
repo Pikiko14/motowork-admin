@@ -9,11 +9,22 @@ export class Utils {
   }
 
   formatPrice(price: number | undefined): string {
-    if (!price) {
-      return "";
+    // Convertir el valor en un número si es necesario
+    const number = Number(price);
+    if (isNaN(number)) {
+        throw new Error("El valor proporcionado no es un número válido.");
     }
-    const val = (price / 1).toFixed(2).replace(".", ".");
-    return "$" + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "’");
+
+    // Formatear el número con separadores de miles (')
+    const formatter = new Intl.NumberFormat('es-CO', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+    });
+
+    const formattedNumber = formatter.format(number).replace(/\./g, "'");
+
+    // Agregar el símbolo de moneda
+    return `$ ${formattedNumber}`;
   }
 
   validatePermission(available: string): boolean {

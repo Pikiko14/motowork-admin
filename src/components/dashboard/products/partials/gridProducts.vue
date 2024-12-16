@@ -2,7 +2,7 @@
   <section class="product-list full-width" v-if="products && products.length > 0">
     <div class="products-grid">
       <article class="product-item" :class="{ 'item-white': idx % 2 === 0, 'item-gray': idx % 2 !== 0 }"
-        v-for="(product, idx) in products" :key="idx">
+        v-for="(product, idx) in products" :key="idx" @click="$router.push({ name: 'productShow', params: { id: product._id } })">
         <!--Image-->
         <div class="product-item-img">
           <img
@@ -143,6 +143,7 @@ onBeforeMount(() => {
   flex-direction: column;
   align-items: flex-start;
   border-radius: 12px;
+  cursor: pointer;
 
   .product-img {
     width: 100%;

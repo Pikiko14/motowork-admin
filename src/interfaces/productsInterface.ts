@@ -25,6 +25,7 @@ export interface AdditionalField {
   }
   
   export interface ProductsInterface {
+    _id?: string;
     name: string;
     model: string;
     state: "Nueva" | "Usada";

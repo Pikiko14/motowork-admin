@@ -2,8 +2,8 @@
   <div class="row q-py-md q-my-xs">
     <!--Header-->
     <div class="col-12">
-      <HeadersMotowork :orderMenu="orderMenu" :show-order-button="true" @do-order="doOrder"
-        @open-modal="pushRouter('createProduct')" :title="'Productos'" />
+      <HeadersMotowork :orderMenu="orderMenu" :filterItems="filterMenu" :show-order-button="true" @do-order="doOrder"
+        @open-modal="pushRouter('createProduct')" :title="'Productos'" @do-filter="doFilter" />
     </div>
     <!--End header-->
 
@@ -92,7 +92,23 @@ const orderMenu = ref<SortGroup[]>([
     ]
   }
 ])
-
+const filterMenu = ref([
+  {
+    label: 'ESTADO',
+    items: [
+      {
+        label: 'Activos',
+        value: true,
+        key: 'active'
+      },
+      {
+        label: 'Inactivos',
+        value: false,
+        key: 'active'
+      }
+    ]
+  }
+])
 
 // computed
 const products = computed(() => {
@@ -143,7 +159,8 @@ const lisProducts = async (): Promise<void> => {
     const type = route.query.type || 'vehicle'
     const sortBy = route.query.sortBy || 'name'
     const order = route.query.order || 'asc'
-    const query = `?page=${page}&perPage=${perPage}&search=${search}&type=${type}&sortBy=${sortBy}&order=${order}&fields=name,category,price,discount,state,brand_icon,model,banner`
+    const filter = route.query.filter || '' 
+    const query = `?page=${page}&perPage=${perPage}&search=${search}&type=${type}&sortBy=${sortBy}&order=${order}&filter=${filter}&fields=name,category,price,discount,state,brand_icon,model,banner`
     await store.doListProducts(query)
   } catch (error) {
   }
@@ -156,6 +173,7 @@ const doOrder = (item: SortOption): void => {
   const type = route.query.type || 'vehicle'
   const sortBy = item.by
   const order = item.value
+  const filter = route.query.filter || ''
   router.push({
     name: 'products',
     query: {
@@ -164,10 +182,35 @@ const doOrder = (item: SortOption): void => {
       search,
       type,
       sortBy,
-      order
+      order,
+      filter
     }
   })
+}
 
+const doFilter = (item: any) => {
+  const page = 1;
+  const perPage = route.query.perPage || 7
+  const search = route.query.search || ''
+  const type = route.query.type || 'vehicle'
+  const sortBy = route.query.sortBy || 'name'
+  const order = route.query.order || '1'
+  const filter: any = {
+    [item.key]: item.value
+  }
+
+  router.push({
+    name: 'products',
+    query: {
+      page,
+      perPage,
+      search,
+      type,
+      sortBy,
+      order,
+      filter: JSON.stringify(filter)
+    }
+  })
 }
 
 // hooks

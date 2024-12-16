@@ -34,6 +34,33 @@
             </q-menu>
           </q-btn>
         </div>
+        <div class="col-12 col-md-1 q-pt-sm" v-if="filterItems.length > 0">
+          <q-btn :class="{ 'full-width q-mb-md': $q.screen.lt.md }" color="primary" icon="img:/images/filter.svg"
+            unelevated>
+            <q-menu>
+              <q-list class="menu-list">
+                <q-item-label header>
+                  <span class="sort-title">Filtro</span>
+                </q-item-label>
+                <q-item v-for="(item, idx) in filterItems" :key="idx">
+                  <q-item-section>
+                    <q-item-label>
+                      <span class="sort-item-label">
+                        {{ item.label }}
+                      </span>
+                      <div class="list-subitems cursor-pointer">
+                        <div class="list-subitem-label" v-close-popup @click="handleDoFilter(subitem)"
+                          v-for="(subitem, idx2) in item.items" :key="idx2">
+                          {{ subitem.label }}
+                        </div>
+                      </div>
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn>
+        </div>
         <div class=" col-12 col-md-6">
           <q-input clearable debounce="1000" @update:model-value="doSearch" placeholder="Buscar" color="dark-page"
             class="input-search" v-model="search" dense>
@@ -74,9 +101,17 @@ export default defineComponent({
     orderMenu: {
       type: Array as () => SortGroup[],
       default: () => []
+    },
+    filterItems: {
+      type: Array as () => any[],
+      default: () => []
     }
   },
-  emits: ['open-modal', 'do-order'],
+  emits: [
+    'open-modal',
+    'do-order',
+    'do-filter'
+  ],
   setup(props, { emit }) {
     // data
     const route = useRoute()
@@ -86,12 +121,13 @@ export default defineComponent({
     // methods
     const doSearch = (searchString: string | number | null) => {
       const type = route.query.type ? route.query.type as string : ''
+
       const { path } = route
       router.push({
         path: path,
         query: {
           page: 1,
-          perPage: 12,
+          perPage: 10,
           search: searchString,
           type,
         }
@@ -106,6 +142,10 @@ export default defineComponent({
       emit('do-order', item)
     }
 
+    const handleDoFilter = (item: any) => {
+      emit('do-filter', item)
+    }
+
     // hook.
     onBeforeMount(() => {
       search.value = route.query.search ? route.query.search as string : ''
@@ -116,6 +156,7 @@ export default defineComponent({
       doSearch,
       doOpenModal,
       handleDoOrder,
+      handleDoFilter,
     }
   }
 })

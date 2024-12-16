@@ -43,6 +43,7 @@ export interface AdditionalField {
     createdAt?: Date;
     brand_icon?: string
     image_default?: string;
+    active?: boolean;
   }
 
   export interface ProductsBanners {

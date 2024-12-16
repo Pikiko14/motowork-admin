@@ -24,6 +24,62 @@
       </div>
       <!--End Gallery section-->
 
+      <!--Data section-->
+      <div class="col-12 col-md-7" :class="{ 'q-pl-lg q-pr-lg': $q.screen.gt.sm, 'q-mt-xl': $q.screen.lt.md }">
+        <!--Title section-->
+        <div class="col-12">
+          <div class="title-section">
+            <ToggleInput v-model="product.active" size="sm" />
+            <span class="title-section__title">
+              {{ product.name }}
+            </span>
+            <div class="chip" :class="{ 'news': product.state === 'Nueva', 'used': product.state === 'Usada' }">
+              {{ product.state }}
+            </div>
+          </div>
+        </div>
+        <!--End title section-->
+
+        <q-tabs class="text-grey-7 q-mt-lg" v-model="tabFields" active-color="primary" indicator-color="primary" ina
+          align="justify">
+          <q-tab name="general" label="INFO. GENERAL" />
+          <q-tab name="details" label="DETALLES" />
+          <q-tab name="aditional" label="INFO. ADICIONAL" />
+        </q-tabs>
+
+        <section class="fields-section q-mt-lg">
+          <q-tab-panels v-model="tabFields" animated class="q-pa-none">
+            <q-tab-panel name="general" class="q-pa-none">
+              <GeneralShowData :product="product" />
+            </q-tab-panel>
+            <q-tab-panel name="details">
+              2
+            </q-tab-panel>
+            <q-tab-panel name="aditional">
+              3
+            </q-tab-panel>
+          </q-tab-panels>
+        </section>
+
+        <!--buttons-->
+        <div class="col-12 q-mt-xl">
+          <div class="row">
+            <div class="col-12 col-md-6"
+              :class="{ 'q-pr-md': $q.screen.gt.sm, 'full-width': $q.screen.lt.md }">
+              <q-btn unelevated square label="Editar"
+                class="full-width q-mt-md btn-cancel-solid"></q-btn>
+            </div>
+            <div class="col-12 col-md-6"
+              :class="{ 'q-pl-md': $q.screen.gt.sm, 'full-width': $q.screen.lt.md }">
+              <q-btn @click="$router.go(-1)" color="secondary" unelevated square label="Eliminar"
+                class="full-width q-mt-md btn-cancel"></q-btn>
+            </div>
+          </div>
+        </div>
+        <!--End buttons-->
+      </div>
+      <!--End data section-->
+
     </div>
   </section>
 </template>
@@ -32,13 +88,16 @@
 // imports
 import { useRoute } from 'vue-router';
 import { onBeforeMount, ref } from 'vue';
-import ProductsGallery from './partials/productsGallery.vue';
 import { useProductsStore } from '../../../stores/products';
+import GeneralShowData from './partials/generalShowData.vue';
+import ProductsGallery from './partials/productsGallery.vue';
+import ToggleInput from 'src/components/commons/ToggleInput.vue'
 import { ProductsInterface } from '@/interfaces/productsInterface';
 
 // references
 const route = useRoute()
 const tab = ref('desktop')
+const tabFields = ref('general')
 const product = ref<ProductsInterface>({
   name: '',
   model: '',
@@ -79,7 +138,7 @@ onBeforeMount(async () => {
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .title {
   color: #000;
   font-family: Play;
@@ -89,5 +148,26 @@ onBeforeMount(async () => {
   line-height: 125%;
   /* 30px */
   text-transform: uppercase;
+}
+
+.fields-section {
+  min-height: auto;
+}
+
+.title-section {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: center;
+
+  &__title {
+    color: #000;
+    font-family: Play;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 125%; /* 30px */
+    text-transform: uppercase;
+  }
 }
 </style>

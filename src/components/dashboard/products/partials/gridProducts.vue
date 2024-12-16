@@ -52,9 +52,9 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, onBeforeMount, ref } from 'vue'
 import { Utils } from '../../../../utils/utils'
 import { useRoute, useRouter } from 'vue-router'
+import { defineProps, onBeforeMount, ref } from 'vue'
 import { ProductsBanners } from '@/interfaces/productsInterface';
 import { ProductsInterface } from '@/interfaces/productsInterface'
 

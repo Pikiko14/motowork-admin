@@ -4,7 +4,7 @@
     <q-img class="product-gallery__banner" :src="getBannerByTab"></q-img>
     <!--End banner image-->
 
-    <div class="product-gallery__carousel">
+    <div class="product-gallery__carousel q-mt-lg">
       <q-carousel
         animated
         v-model="slide"

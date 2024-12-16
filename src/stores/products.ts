@@ -67,7 +67,9 @@ export const useProductsStore = defineStore("productsStore", () => {
     totalPages.value = 0;
   };
 
-  const doUploadFiles = async (params: FormData): Promise<ResponseObj | void> => {
+  const doUploadFiles = async (
+    params: FormData
+  ): Promise<ResponseObj | void> => {
     try {
       const response = (await handlerRequest.doPostRequest(
         `${path}/upload-files`,
@@ -93,10 +95,38 @@ export const useProductsStore = defineStore("productsStore", () => {
       if (response.success) {
         return response.data;
       }
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
+  const doDeleteProduct = async (id: string): Promise<ResponseObj | void> => {
+    try {
+      const response = await handlerRequest.doDeleteRequest(
+        `${path}/${id}`,
+        true
+      );
+      if (response.success) {
+        const queryParams = utils.getCurrentQueryParams();
+        const perPage = queryParams.perPage || 10;
+
+        // delete from store
+        const index = products.value.findIndex(
+          (brand: ProductsInterface) => brand._id === id
+        );
+        if (index !== -1) products.value.splice(index, 1);
+
+        // up total items
+        totalItems.value--;
+
+        // set total pages
+        totalPages.value = Math.ceil(totalItems.value / perPage);
+      }
+      return response;
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   // return statement
   return {
@@ -108,5 +138,6 @@ export const useProductsStore = defineStore("productsStore", () => {
     doUploadFiles,
     doListProducts,
     doFilterProduct,
+    doDeleteProduct,
   };
 });

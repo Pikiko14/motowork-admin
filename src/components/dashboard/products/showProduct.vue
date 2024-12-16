@@ -1,6 +1,6 @@
 <template>
   <section class="full-width q-py-md q-my-xs" :class="{ 'q-pr-md': $q.screen.gt.sm }">
-    <div class="row">
+    <div class="row" v-if="product && product._id">
       <!--header-->
       <div class="col-12">
         <div class="d-flex">
@@ -39,7 +39,7 @@
           </div>
         </div>
         <!--End title section-->
-        
+
         <!--Tabs-->
         <q-tabs class="text-grey-7 q-mt-lg" v-model="tabFields" active-color="primary" indicator-color="primary" ina
           align="justify">
@@ -56,10 +56,10 @@
               <GeneralShowData :product="product" />
             </q-tab-panel>
             <q-tab-panel name="details" class="q-pa-none">
-              <DetailShowData :product="product" class="q-pa-none"/>
+              <DetailShowData :product="product" class="q-pa-none" />
             </q-tab-panel>
             <q-tab-panel name="aditional" class="q-pa-none">
-              <AditionalShowData :product="product"/>
+              <AditionalShowData :product="product" />
             </q-tab-panel>
           </q-tab-panels>
         </section>
@@ -68,14 +68,11 @@
         <!--buttons-->
         <div class="col-12 q-mt-xl">
           <div class="row">
-            <div class="col-12 col-md-6"
-              :class="{ 'q-pr-md': $q.screen.gt.sm, 'full-width': $q.screen.lt.md }">
-              <q-btn unelevated square label="Editar"
-                class="full-width q-mt-md btn-cancel-solid"></q-btn>
+            <div class="col-12 col-md-6" :class="{ 'q-pr-md': $q.screen.gt.sm, 'full-width': $q.screen.lt.md }">
+              <q-btn unelevated square label="Editar" class="full-width q-mt-md btn-cancel-solid"></q-btn>
             </div>
-            <div class="col-12 col-md-6"
-              :class="{ 'q-pl-md': $q.screen.gt.sm, 'full-width': $q.screen.lt.md }">
-              <q-btn @click="$router.go(-1)" color="secondary" unelevated square label="Eliminar"
+            <div class="col-12 col-md-6" :class="{ 'q-pl-md': $q.screen.gt.sm, 'full-width': $q.screen.lt.md }">
+              <q-btn @click="deleteProducts(product._id as string)" color="secondary" unelevated square label="Eliminar"
                 class="full-width q-mt-md btn-cancel"></q-btn>
             </div>
           </div>
@@ -84,24 +81,40 @@
       </div>
       <!--End data section-->
 
+      <!--delete dialog-->
+      <q-dialog v-model="openDeleteDialog" persistent>
+        <CardModalMotowork title="Eliminar producto">
+          <template v-slot:content>
+            <DeleteModal :showDiabledBtn="true" @delete="confirmDeleteProduct" :idDelete="productToDelete"
+              entity="Producto" />
+          </template>
+        </CardModalMotowork>
+      </q-dialog>
+      <!--End delete dialog-->
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
 // imports
-import { useRoute } from 'vue-router'
+import { useQuasar } from 'quasar'
 import { onBeforeMount, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { notification } from 'src/boot/notification'
 import DetailShowData from './partials/detailShowData.vue'
 import { useProductsStore } from '../../../stores/products'
 import GeneralShowData from './partials/generalShowData.vue'
 import ProductsGallery from './partials/productsGallery.vue'
 import ToggleInput from 'src/components/commons/ToggleInput.vue'
 import AditionalShowData from './partials/aditionalShowData.vue'
+import DeleteModal from 'src/components/commons/DeleteModal.vue'
+import CardModalMotowork from '../partials/cardModalMotowork.vue'
 import { ProductsInterface } from '@/interfaces/productsInterface'
 
 // references
+const q = useQuasar()
 const route = useRoute()
+const router = useRouter()
 const tab = ref('desktop')
 const tabFields = ref('general')
 const product = ref<ProductsInterface>({
@@ -128,13 +141,67 @@ const product = ref<ProductsInterface>({
   additionalInfo: [],
 })
 const store = useProductsStore()
+const productToDelete = ref<string>('')
+const openDeleteDialog = ref<boolean>(false)
 
 // methods
 const loadProduct = async (id: string) => {
-  const dataProduct = await store.doFilterProduct(id)
-  if (dataProduct && dataProduct.product) {
-    product.value = dataProduct.product
+  try {
+    const dataProduct = await store.doFilterProduct(id)
+    if (dataProduct && dataProduct.product) {
+      product.value = dataProduct.product
+    }
+  } catch (error: any) {
+    router.push({
+      name: 'products',
+      query: {
+        page: 1,
+        perPage: 10,
+        search: '',
+        type: route.query.type || 'vehicle',
+        sortBy: 'name',
+        order: '1'
+      }
+    });
   }
+}
+
+const confirmDeleteProduct = (id: string) => {
+  q.dialog({
+    dark: false,
+    title: `Eliminar producto`,
+    message: `¿Deseas ejecutar esta acción?`,
+    cancel: true,
+    persistent: true
+  }).onOk(async () => {
+    await doDeleteProduct(id);
+  })
+}
+
+const doDeleteProduct = async (id: string) => {
+  try {
+    const response = await store.doDeleteProduct(id)
+    if (response.success) {
+      notification('success', response.message, 'success')
+      router.push({
+        name: 'products',
+        query: {
+          page: 1,
+          perPage: 10,
+          search: '',
+          type: route.query.type || 'vehicle',
+          sortBy: 'name',
+          order: '1'
+        }
+      })
+    }
+  } catch (error) {
+  }
+}
+
+const deleteProducts = async (id: string): Promise<void> => {
+  openDeleteDialog.value = !openDeleteDialog.value
+  productToDelete.value = id
 }
 
 // hook
@@ -172,7 +239,8 @@ onBeforeMount(async () => {
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
-    line-height: 125%; /* 30px */
+    line-height: 125%;
+    /* 30px */
     text-transform: uppercase;
   }
 }

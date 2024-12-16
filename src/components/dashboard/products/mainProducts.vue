@@ -75,6 +75,21 @@ const orderMenu = ref<SortGroup[]>([
         by: 'createdAt',
       },
     ]
+  },
+  {
+    label: 'Precio',
+    items: [
+      {
+        label: 'Menor precio',
+        value: '1',
+        by: 'price',
+      },
+      {
+        label: 'Mayor precio',
+        value: '-1',
+        by: 'price',
+      },
+    ]
   }
 ])
 
@@ -93,9 +108,9 @@ watch(tab, async (value) => {
   const page = 1
   const perPage = 10
   const type = value
-  const sortBy = 'name'
-  const order = 'asc'
-  const search = route.query.search ? route.query.search as string : ''
+  const sortBy = route.query.sortBy ? route.query.sortBy : ''
+  const order = route.query.order ? route.query.order : ''
+  const search = route.query.search ? route.query.search : ''
   store.clearProducts()
   router.push({
     name: 'products',

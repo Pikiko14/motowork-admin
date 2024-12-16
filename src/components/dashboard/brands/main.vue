@@ -168,8 +168,8 @@ export default defineComponent({
       const page = 1
       const perPage = 7
       const type = value
-      const sortBy = 'name'
-      const order = 'asc'
+      const sortBy = route.query.sortBy ? route.query.sortBy : ''
+      const order = route.query.order ? route.query.order : ''
       const search = route.query.search ? route.query.search as string : ''
       router.push({
         name: 'brands',

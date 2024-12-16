@@ -31,7 +31,8 @@
 
         <!--price-->
         <div class="price">
-          <p>{{ utils.formatPrice(product.price as number) }}</p>
+          <p v-if="product.discount" class="text-secondary">{{ utils.formatPrice(product.discount as number) }}</p>
+          <p :class="{ 'price-with-discount': product.discount }">{{ utils.formatPrice(product.price as number) }}</p>
         </div>
         <!--End price-->
       </article>
@@ -189,10 +190,8 @@ onBeforeMount(() => {
     align-items: center;
     gap: 8px;
     background: #F5F5F5;
-    overflow: hidden;
     color: #898384;
     text-align: center;
-    text-overflow: ellipsis;
 
     /* Mobile/Body/Title/Small */
     font-family: Play;
@@ -205,10 +204,11 @@ onBeforeMount(() => {
   }
 
   .price {
+    display: flex;
+    gap: 8px;
     margin-top: 12px;
     margin-bottom: 8px;
     color: #000;
-    text-overflow: ellipsis;
     font-family: Ubuntu;
     font-size: 12pt;
     font-style: normal;
@@ -255,5 +255,10 @@ onBeforeMount(() => {
 .item-gray {
   border: 1px solid #F5F5F5;
   background: #F5F5F5;
+}
+
+.price-with-discount {
+  color: #CCCBCB;
+  text-decoration: line-through !important;
 }
 </style>

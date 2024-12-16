@@ -84,8 +84,9 @@ const doPagination = (page: number): void => {
   const type = route.query.type ? route.query.type as string : ''
   const sortBy = route.query.sortBy ? route.query.sortBy as string : ''
   const order = route.query.order ? route.query.order as string : ''
+  const filter = route.query.filter || ''
   const { path } = route
-  router.push({ path: path, query: { page, perPage, search, type, sortBy, order } })
+  router.push({ path: path, query: { page, perPage, search, type, sortBy, order, filter } })
 }
 
 const doPreviewPage = (): void => {

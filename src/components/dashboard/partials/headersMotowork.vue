@@ -57,6 +57,13 @@
                     </q-item-label>
                   </q-item-section>
                 </q-item>
+                <q-item>
+                  <q-item-section>
+                    <q-item-label>
+                      <q-btn @click="clearFilter" color="secondary" label="Limpiar filtro" unelevated v-if="$route.query.filter"></q-btn>
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
               </q-list>
             </q-menu>
           </q-btn>
@@ -146,6 +153,22 @@ export default defineComponent({
       emit('do-filter', item)
     }
 
+    const clearFilter = () => {
+      const type = route.query.type ? route.query.type as string : ''
+      const { path } = route
+      router.push({
+        path: path,
+        query: {
+          page: 1,
+          perPage: 10,
+          search: '',
+          sortBy: 'name',
+          order: '1',
+          type,
+        }
+      })
+    }
+
     // hook.
     onBeforeMount(() => {
       search.value = route.query.search ? route.query.search as string : ''
@@ -155,6 +178,7 @@ export default defineComponent({
       search,
       doSearch,
       doOpenModal,
+      clearFilter,
       handleDoOrder,
       handleDoFilter,
     }

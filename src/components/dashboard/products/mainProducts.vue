@@ -35,10 +35,12 @@
 // imports
 import { useRouter, useRoute } from 'vue-router'
 import gridProducts from './partials/gridProducts.vue'
+import { useBrandsStore } from '../../../stores/brands'
 import { SortGroup, SortOption } from '@/interfaces/api'
 import { ref, computed, watch, onBeforeMount } from 'vue'
 import { useProductsStore } from '../../../stores/products'
 import HeadersMotowork from '../partials/headersMotowork.vue'
+import { BrandsInterface } from '@/interfaces/brands.interface'
 
 // references
 const route = useRoute()
@@ -95,6 +97,7 @@ const orderMenu = ref<SortGroup[]>([
 const filterMenu = ref([
   {
     label: 'ESTADO',
+    value: [],
     items: [
       {
         label: 'Activos',
@@ -109,10 +112,15 @@ const filterMenu = ref([
     ]
   }
 ])
+const brandStore = useBrandsStore()
 
 // computed
 const products = computed(() => {
   return store.products
+})
+
+const brands = computed(() => {
+  return brandStore.brands
 })
 
 const totalPages = computed(() => {
@@ -120,13 +128,14 @@ const totalPages = computed(() => {
 })
 
 // watch
-watch(tab, async (value) => {
+watch(tab, (value) => {
   const page = 1
   const perPage = 10
   const type = value
   const sortBy = route.query.sortBy ? route.query.sortBy : ''
   const order = route.query.order ? route.query.order : ''
   const search = route.query.search ? route.query.search : ''
+  const filter = route.query.filter || ''
   store.clearProducts()
   router.push({
     name: 'products',
@@ -136,9 +145,31 @@ watch(tab, async (value) => {
       search,
       type,
       sortBy,
-      order
+      order,
+      filter
     }
   })
+})
+
+watch(brands, (newValues: BrandsInterface[]) => {
+  const filterObject: any = {
+    label: 'MARCA',
+    items: []
+  }
+
+
+  for (const brand of newValues) {
+    const obj = {
+      label: brand.name,
+      value: brand.name,
+      key: 'brand'
+    }
+    filterObject.items.push(obj);
+  }
+  const issetBrandFilterOption = filterMenu.value.find((item: any) => item.label === 'MARCA')
+  if (!issetBrandFilterOption) {
+    filterMenu.value.unshift(filterObject)
+  }
 })
 
 // methods
@@ -159,7 +190,7 @@ const lisProducts = async (): Promise<void> => {
     const type = route.query.type || 'vehicle'
     const sortBy = route.query.sortBy || 'name'
     const order = route.query.order || 'asc'
-    const filter = route.query.filter || '' 
+    const filter = route.query.filter || ''
     const query = `?page=${page}&perPage=${perPage}&search=${search}&type=${type}&sortBy=${sortBy}&order=${order}&filter=${filter}&fields=name,category,price,discount,state,brand_icon,model,banner`
     await store.doListProducts(query)
   } catch (error) {
@@ -216,9 +247,10 @@ const doFilter = (item: any) => {
 // hooks
 onBeforeMount(async () => {
   if (route.query.type) {
-    tab.value = route.query.type as string;
+    tab.value = route.query.type as string
   }
   await lisProducts()
+  await brandStore.doListBrands(`?page=1&perPage=100&type=${tab.value}&fields=name`)
 })
 </script>
 

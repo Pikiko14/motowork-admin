@@ -55,11 +55,11 @@
             <q-tab-panel name="general" class="q-pa-none">
               <GeneralShowData :product="product" />
             </q-tab-panel>
-            <q-tab-panel name="details">
-              <DetailShowData :product="product" />
+            <q-tab-panel name="details" class="q-pa-none">
+              <DetailShowData :product="product" class="q-pa-none"/>
             </q-tab-panel>
-            <q-tab-panel name="aditional">
-              3
+            <q-tab-panel name="aditional" class="q-pa-none">
+              <AditionalShowData :product="product"/>
             </q-tab-panel>
           </q-tab-panels>
         </section>
@@ -90,14 +90,15 @@
 
 <script lang="ts" setup>
 // imports
-import { useRoute } from 'vue-router';
-import { onBeforeMount, ref } from 'vue';
-import DetailShowData from './partials/detailShowData.vue';
-import { useProductsStore } from '../../../stores/products';
-import GeneralShowData from './partials/generalShowData.vue';
-import ProductsGallery from './partials/productsGallery.vue';
+import { useRoute } from 'vue-router'
+import { onBeforeMount, ref } from 'vue'
+import DetailShowData from './partials/detailShowData.vue'
+import { useProductsStore } from '../../../stores/products'
+import GeneralShowData from './partials/generalShowData.vue'
+import ProductsGallery from './partials/productsGallery.vue'
 import ToggleInput from 'src/components/commons/ToggleInput.vue'
-import { ProductsInterface } from '@/interfaces/productsInterface';
+import AditionalShowData from './partials/aditionalShowData.vue'
+import { ProductsInterface } from '@/interfaces/productsInterface'
 
 // references
 const route = useRoute()

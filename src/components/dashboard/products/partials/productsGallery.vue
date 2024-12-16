@@ -39,7 +39,7 @@ const props = defineProps({
 })
 
 // references
-const slide = ref(1)
+const slide = ref(0)
 
 // computed
 const getBannerByTab = computed(() => {

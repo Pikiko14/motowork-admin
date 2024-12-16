@@ -103,7 +103,6 @@ const utils = new Utils('product')
   }
 
   &__description {
-    display: flex;
     padding: 12px 16px;
     align-items: center;
     gap: 10px;
@@ -115,7 +114,6 @@ const utils = new Utils('product')
 
     &--text {
       color: #9F9C9C;
-      white-space: nowrap;
       font-family: Ubuntu;
       font-size: 12pt;
       font-style: normal;

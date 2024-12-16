@@ -292,7 +292,12 @@ const handlerSuccessCreation = () => {
   router.push({
     name: 'products',
     query: {
-      type: route.query.type
+      type: route.query.type,
+      page: 1,
+      perPage: 10,
+      search: '',
+      sortBy: 'name',
+      order: '1'
     }
   })
 }

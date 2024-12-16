@@ -1,17 +1,17 @@
 <template>
     <q-page class="banners-page">
-      <CreateProducts />
+      <ShowProducts />
     </q-page>
   </template>
   
   <script lang="ts">
   import { defineComponent } from 'vue'
-  import CreateProducts from 'src/components/dashboard/products/createProducts.vue';
+  import ShowProducts from 'src/components/dashboard/products/showProduct.vue';
   
   export default defineComponent({
     name: 'ShowProductPage',
     components: {
-        CreateProducts
+        ShowProducts
     }
   })
   </script>

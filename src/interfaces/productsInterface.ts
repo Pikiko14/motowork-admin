@@ -36,7 +36,7 @@ export interface AdditionalField {
     category: string;
     description: string;
     banner: ProductsBanners[];
-    images: string[];
+    images: ProductImagesInterface[];
     type: string;
     details: DetailsProducts;
     additionalInfo?: AdditionalInfoInterface[];

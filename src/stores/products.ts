@@ -83,6 +83,21 @@ export const useProductsStore = defineStore("productsStore", () => {
     }
   };
 
+  const doFilterProduct = async (id: string) => {
+    try {
+      const response = (await handlerRequest.doGetRequest(
+        `${path}/`,
+        id,
+        true
+      )) as ResponseObj;
+      if (response.success) {
+        return response.data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   // return statement
   return {
     products,
@@ -92,5 +107,6 @@ export const useProductsStore = defineStore("productsStore", () => {
     doSaveProduct,
     doUploadFiles,
     doListProducts,
+    doFilterProduct,
   };
 });

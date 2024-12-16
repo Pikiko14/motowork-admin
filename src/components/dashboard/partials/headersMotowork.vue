@@ -57,10 +57,10 @@
                     </q-item-label>
                   </q-item-section>
                 </q-item>
-                <q-item>
+                <q-item v-if="$route.query.filter">
                   <q-item-section>
                     <q-item-label>
-                      <q-btn @click="clearFilter" color="secondary" label="Limpiar filtro" unelevated v-if="$route.query.filter"></q-btn>
+                      <q-btn @click="clearFilter" color="secondary" label="Limpiar filtro" unelevated></q-btn>
                     </q-item-label>
                   </q-item-section>
                 </q-item>

@@ -39,27 +39,31 @@
           </div>
         </div>
         <!--End title section-->
-
+        
+        <!--Tabs-->
         <q-tabs class="text-grey-7 q-mt-lg" v-model="tabFields" active-color="primary" indicator-color="primary" ina
           align="justify">
           <q-tab name="general" label="INFO. GENERAL" />
           <q-tab name="details" label="DETALLES" />
           <q-tab name="aditional" label="INFO. ADICIONAL" />
         </q-tabs>
+        <!--End tab section-->
 
+        <!--Tabs data section-->
         <section class="fields-section q-mt-lg">
           <q-tab-panels v-model="tabFields" animated class="q-pa-none">
             <q-tab-panel name="general" class="q-pa-none">
               <GeneralShowData :product="product" />
             </q-tab-panel>
             <q-tab-panel name="details">
-              2
+              <DetailShowData :product="product" />
             </q-tab-panel>
             <q-tab-panel name="aditional">
               3
             </q-tab-panel>
           </q-tab-panels>
         </section>
+        <!--End tab data section-->
 
         <!--buttons-->
         <div class="col-12 q-mt-xl">
@@ -88,6 +92,7 @@
 // imports
 import { useRoute } from 'vue-router';
 import { onBeforeMount, ref } from 'vue';
+import DetailShowData from './partials/detailShowData.vue';
 import { useProductsStore } from '../../../stores/products';
 import GeneralShowData from './partials/generalShowData.vue';
 import ProductsGallery from './partials/productsGallery.vue';
@@ -151,7 +156,7 @@ onBeforeMount(async () => {
 }
 
 .fields-section {
-  min-height: auto;
+  min-height: 400px;
 }
 
 .title-section {

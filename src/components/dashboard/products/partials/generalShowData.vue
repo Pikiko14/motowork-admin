@@ -53,7 +53,7 @@ import { defineProps } from 'vue';
 import { Utils } from '../../../../utils/utils'
 import { ProductsInterface } from '@/interfaces/productsInterface';
 
-// utils
+// props
 defineProps({
   product: {
     type: Object as () => ProductsInterface,

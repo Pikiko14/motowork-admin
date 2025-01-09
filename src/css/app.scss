@@ -775,3 +775,13 @@ p,h1,h2,h3,h4,h5,h6 {
 .flex-end {
   justify-content: flex-end;
 }
+
+.q-img__content {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  div {
+    background-color: transparent;
+  }
+}

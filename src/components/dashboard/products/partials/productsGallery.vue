@@ -1,7 +1,11 @@
 <template>
   <div class="product-gallery">
     <!--Banner image-->
-    <q-img class="product-gallery__banner" :src="getBannerByTab"></q-img>
+    <q-img class="product-gallery__banner" :src="getBannerByTab">
+      <div>
+        <q-btn v-if="getBannerByTab" unelevated flat dense class="relative" color="secondary" icon="img:/images/trash.svg" @click="deleteImageBanner"></q-btn>
+      </div>
+    </q-img>
     <!--End banner image-->
 
     <div class="product-gallery__carousel q-mt-lg">
@@ -68,14 +72,25 @@ const slideCarousel = computed(() => {
   return images
 })
 
-const deleteImage = async (item: ProductImagesInterface) => {
+const deleteImage = (item: ProductImagesInterface) => {
   q.dialog({
     title: 'Eliminar',
     message: '¿Deseas eliminar esta imagen?',
     cancel: true,
     persistent: true
   }).onOk(() => {
-    emit('do-delete-img', item)
+    emit('do-delete-img', item, 'image')
+  })
+}
+
+const deleteImageBanner = () => {
+  q.dialog({
+    title: 'Eliminar',
+    message: '¿Deseas eliminar esta imagen?',
+    cancel: true,
+    persistent: true
+  }).onOk(() => {
+    emit('do-delete-img', getBannerByTab.value, 'banner')
   })
 }
 </script>

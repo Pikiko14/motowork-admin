@@ -146,10 +146,10 @@ export const useProductsStore = defineStore("productsStore", () => {
     }
   };
 
-  const doDeleteProductImage = async (id: string, imageId: string): Promise<ResponseObj | void> => {
+  const doDeleteProductImage = async (id: string, imageId: string, type: string): Promise<ResponseObj | void> => {
     try {
       const response = await handlerRequest.doDeleteRequest(
-        `${path}/${id}/delete-image?imageId=${imageId}`,
+        `${path}/${id}/delete-image?imageId=${imageId}&type=${type}`,
         true
       );
       return response;

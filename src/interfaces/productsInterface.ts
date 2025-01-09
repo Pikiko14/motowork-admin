@@ -18,9 +18,10 @@ export interface AdditionalField {
   
   export interface DetailsProducts {
     power: string;
-    licenseType: string;
-    storage: string;
-    testDrive: string;
+    weight: string;
+    max_power: string;
+    torque: string;
+    type_engine: string;
     colors: string[];
   }
   
@@ -54,6 +55,7 @@ export interface AdditionalField {
   export interface ProductImagesInterface {
     path: string;
     type: BannerType;
+    _id?: string;
   }
 
   export enum BannerType {

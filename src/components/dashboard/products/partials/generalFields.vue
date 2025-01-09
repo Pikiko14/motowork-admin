@@ -45,7 +45,7 @@
     </div>
     <div class="col-12">
       <q-input square :rules="[
-        val => (val && val.length > 0) || 'Por favor ingrese el valor del producto',
+        val => (val && val > 0) || 'Por favor ingrese el valor del producto',
         val => /^\d+(\.\d+)?$/.test(val) || 'Ingresa un valor valido',
       ]" placeholder="Ingresa un valor" class="q-mt-sm" outlined dense v-model="product.price"></q-input>
     </div>
@@ -66,7 +66,7 @@
       </div>
     </div>
     <div class="col-12">
-      <label for="">Descripción <span class="text-secondary">*</span></label>
+      <label for="">Descripción</label>
       <q-input v-model="product.description" placeholder="Descripción del producto" class="q-mt-sm" square rows="3" outlined dense type="textarea"></q-input>
     </div>
   </div>

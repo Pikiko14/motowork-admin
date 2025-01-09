@@ -9,31 +9,40 @@
       ]" placeholder="Ingresa un cilindraje" class="q-mt-sm" outlined dense v-model="product.details.power"></q-input>
     </div>
     <div class="col-12 col-md-6" :class="{ 'q-pl-sm': $q.screen.gt.sm }">
-      <label for="">Tipo licencia <span class="text-secondary">*</span></label>
+      <label for="">Peso (Con aceite y gasolina) <span class="text-secondary">*</span></label>
       <q-input square :rules="[
         val => (val && val.length > 0) || 'Por favor ingrese el tipo de licencia',
         val => (val && val.length >= 1) || 'Mayor a 1 caracteres',
         val => (val && val.length <= 90) || 'Menor a 90 caracteres',
       ]" placeholder="Ingresa un tipo de licencia" class="q-mt-sm" outlined dense
-        v-model="product.details.licenseType"></q-input>
+        v-model="product.details.weight"></q-input>
     </div>
-    <div class="col-12">
-      <label for="">Almacenamiento <span class="text-secondary">*</span></label>
+    <div class="col-12 col-md-6 ¿" :class="{'q-pr-sm': $q.screen.gt.sm}">
+      <label for="">Potencia máxima <span class="text-secondary">*</span></label>
       <q-input square :rules="[
         val => (val && val.length > 0) || 'Por favor ingrese el almacenamiento',
         val => (val && val.length >= 1) || 'Mayor a 1 caracteres',
         val => (val && val.length <= 90) || 'Menor a 90 caracteres',
       ]" placeholder="Ingresa el almacenamiento" class="q-mt-sm" outlined dense
-        v-model="product.details.storage"></q-input>
+        v-model="product.details.max_power"></q-input>
     </div>
-    <div class="col-12">
-      <label for="">Test drive <span class="text-secondary">*</span></label>
+    <div class="col-12 col-md-6" :class="{'q-pl-sm': $q.screen.gt.sm}">
+      <label for="">Torque maximo <span class="text-secondary">*</span></label>
       <q-input square :rules="[
         val => (val && val.length > 0) || 'Por favor ingrese un link de prueba de manejo',
         val => (val && val.length >= 1) || 'Mayor a 1 caracteres',
         val => (val && val.length <= 90) || 'Menor a 90 caracteres',
       ]" placeholder="Agrega un enlace de redirección" class="q-mt-sm" outlined dense
-        v-model="product.details.testDrive"></q-input>
+        v-model="product.details.torque"></q-input>
+    </div>
+    <div class="col-12">
+      <label for="">Tipo de motor <span class="text-secondary">*</span></label>
+      <q-input square :rules="[
+        val => (val && val.length > 0) || 'Por favor ingrese un link de prueba de manejo',
+        val => (val && val.length >= 1) || 'Mayor a 1 caracteres',
+        val => (val && val.length <= 90) || 'Menor a 90 caracteres',
+      ]" placeholder="Agrega un enlace de redirección" class="q-mt-sm" outlined dense
+        v-model="product.details.type_engine"></q-input>
     </div>
     <div class="col-12">
       <label for="">Colores disponibles <span class="text-secondary">*</span></label>

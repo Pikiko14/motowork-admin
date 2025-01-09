@@ -128,6 +128,36 @@ export const useProductsStore = defineStore("productsStore", () => {
     }
   };
 
+  const doUpdateProduct = async (
+    params: ProductsInterface,
+  ): Promise<ResponseObj | void> => {
+    try {
+      const response = (await handlerRequest.doPutRequest(
+        `${path}/${params._id}`,
+        params,
+        true,
+        false
+      )) as ResponseObj;
+      if (response.success) {
+        return response;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const doDeleteProductImage = async (id: string, imageId: string): Promise<ResponseObj | void> => {
+    try {
+      const response = await handlerRequest.doDeleteRequest(
+        `${path}/${id}/delete-image?imageId=${imageId}`,
+        true
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // return statement
   return {
     products,
@@ -139,5 +169,7 @@ export const useProductsStore = defineStore("productsStore", () => {
     doListProducts,
     doFilterProduct,
     doDeleteProduct,
+    doUpdateProduct,
+    doDeleteProductImage,
   };
 });

@@ -19,7 +19,7 @@
         </q-tabs>
 
         <div class="full-width q-mt-lg">
-          <ProductsGallery :tab="tab" :images="product?.images" :banners="product?.banner" />
+          <ProductsGallery @do-delete-img="deleteImgProduct" :tab="tab" :images="product?.images" :banners="product?.banner" />
         </div>
       </div>
       <!--End Gallery section-->
@@ -69,7 +69,7 @@
         <div class="col-12 q-mt-xl">
           <div class="row">
             <div class="col-12 col-md-6" :class="{ 'q-pr-md': $q.screen.gt.sm, 'full-width': $q.screen.lt.md }">
-              <q-btn unelevated square label="Editar" class="full-width q-mt-md btn-cancel-solid"></q-btn>
+              <q-btn :to="`/dashboard/products/${product._id}/edit`" unelevated square label="Editar" class="full-width q-mt-md btn-cancel-solid"></q-btn>
             </div>
             <div class="col-12 col-md-6" :class="{ 'q-pl-md': $q.screen.gt.sm, 'full-width': $q.screen.lt.md }">
               <q-btn @click="deleteProducts(product._id as string)" color="secondary" unelevated square label="Eliminar"
@@ -109,7 +109,7 @@ import ToggleInput from 'src/components/commons/ToggleInput.vue'
 import AditionalShowData from './partials/aditionalShowData.vue'
 import DeleteModal from 'src/components/commons/DeleteModal.vue'
 import CardModalMotowork from '../partials/cardModalMotowork.vue'
-import { ProductsInterface } from '@/interfaces/productsInterface'
+import { ProductImagesInterface, ProductsInterface } from '@/interfaces/productsInterface'
 
 // references
 const q = useQuasar()
@@ -133,9 +133,10 @@ const product = ref<ProductsInterface>({
   enableDiscount: false,
   details: {
     power: '',
-    licenseType: '',
-    storage: '',
-    testDrive: '',
+    weight: '',
+    max_power: '',
+    torque: '',
+    type_engine: '',
     colors: []
   },
   additionalInfo: [],
@@ -202,6 +203,20 @@ const doDeleteProduct = async (id: string) => {
 const deleteProducts = async (id: string): Promise<void> => {
   openDeleteDialog.value = !openDeleteDialog.value
   productToDelete.value = id
+}
+
+const deleteImgProduct = async (img: ProductImagesInterface) => {
+  const imgIndex = product.value.images.findIndex((item: ProductImagesInterface) => {
+    return item._id === img._id
+  })
+  try {
+    const response = await store.doDeleteProductImage(product.value._id, img._id);
+    if (response.success) {
+      notification('positive', 'Se ha eliminado la imagen del producto.', 'primary')
+      product.value.images.splice(imgIndex, 1)
+    }
+  } catch (error) {
+  }
 }
 
 // hook

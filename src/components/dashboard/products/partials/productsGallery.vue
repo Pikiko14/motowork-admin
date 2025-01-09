@@ -11,7 +11,9 @@
         autoplay
         infinite
       >
-      <q-carousel-slide v-for="(img, idx) in slideCarousel" :key="idx" class="product-gallery__carousel--image" :name="idx" :img-src="img.path" />
+        <q-carousel-slide v-for="(img, idx) in slideCarousel" :key="idx" class="product-gallery__carousel--image" :name="idx" :img-src="img.path">
+          <q-btn unelevated flat dense class="relative" color="secondary" icon="img:/images/trash.svg" @click="deleteImage(img)"></q-btn>
+        </q-carousel-slide>
       </q-carousel>
     </div>
   </div>
@@ -19,8 +21,15 @@
 
 <script lang="ts" setup>
 // imports
-import { computed, defineProps, ref } from 'vue'
+import { useQuasar } from 'quasar'
+import { computed, defineProps, ref, defineEmits } from 'vue'
 import { ProductImagesInterface, ProductsBanners } from '@/interfaces/productsInterface'
+
+// references
+const q = useQuasar()
+
+// emit
+const emit = defineEmits(['do-delete-img'])
 
 // props
 const props = defineProps({
@@ -58,6 +67,17 @@ const slideCarousel = computed(() => {
   }
   return images
 })
+
+const deleteImage = async (item: ProductImagesInterface) => {
+  q.dialog({
+    title: 'Eliminar',
+    message: '¿Deseas eliminar esta imagen?',
+    cancel: true,
+    persistent: true
+  }).onOk(() => {
+    emit('do-delete-img', item)
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -75,6 +95,12 @@ const slideCarousel = computed(() => {
   &__carousel {
     .q-carousel {
       height: 280px;
+    }
+
+    &--image {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
     }
   }
 }

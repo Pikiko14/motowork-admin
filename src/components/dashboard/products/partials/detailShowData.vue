@@ -8,18 +8,18 @@
         </div>
 
         <div class="container__item">
-          <span class="container__item--bold text-uppercase">Tipo licencia</span>
-          <span class="container__item--normal">{{ product.details.licenseType }}</span>
+          <span class="container__item--bold text-uppercase">Peso</span>
+          <span class="container__item--normal">{{ product.details.weight }}</span>
         </div>
 
         <div class="container__item">
-          <span class="container__item--bold text-uppercase">Almacenamiento</span>
-          <span class="container__item--normal">{{ product.details.storage }}</span>
+          <span class="container__item--bold text-uppercase">Potencia maxima</span>
+          <span class="container__item--normal">{{ product.details.max_power }}</span>
         </div>
 
         <div class="container__item">
-          <span class="container__item--bold text-uppercase">Test drive</span>
-          <span class="container__item--normal">{{ product.details.testDrive }}</span>
+          <span class="container__item--bold text-uppercase">Tipo de motor</span>
+          <span class="container__item--normal">{{ product.details.type_engine }}</span>
         </div>
 
         <div class="container__item">

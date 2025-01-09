@@ -6,7 +6,8 @@
         <div class="d-flex">
           <q-btn style="margin-left: -10px" @click="$router.go(-1)" rounded flat dense
             icon="img:/images/back_chevron.svg"></q-btn>
-          <h2 class="title q-pl-sm">NUEVO PRODUCTO</h2>
+          <h2 class="title q-pl-sm" v-if="!product._id">NUEVO PRODUCTO</h2>
+          <h2 class="title q-pl-sm" v-if="product._id">MODIFICAR PRODUCTO</h2>
         </div>
       </div>
       <!--Files-->
@@ -25,12 +26,12 @@
             específico para cada dispositivo, respetando sus dimensiones nativas.</p>
         </div>
         <div class="banner-picker" v-if="renderFilePickerSection">
-          <FilePickerMotowork :base64Image="tab === 'desktop' ? desktopBannerBase64 : mobileBannerBase64"
+          <FilePickerMotowork :productImages="product.banner as any" :base64Image="tab === 'desktop' ? desktopBannerBase64 : mobileBannerBase64"
             :type="'banner'" @set-file="setFile" :maxFile="1" :entity="'Banner producto'"
             :resolutionLabel="'Resolución mínima 1280 X 450 Px'" />
         </div>
         <div class="banner-picker q-mt-20" v-if="renderFilePickerSection">
-          <FilePickerMotowork @delete-file="deleteFile" :isBackgroundImage="false" :type="'images'" @set-file="setFile"
+          <FilePickerMotowork :productImages="product.images" @delete-file="deleteFile" :isBackgroundImage="false" :type="'images'" @set-file="setFile"
             :maxFile="5" :entity="'Imágenes del producto'" :resolutionLabel="'Resolución mínima 1080 X 1080 Px'"
             :base64Image="''" :arrayBase64="tab === 'desktop' ? imagesDesktopBase64 : imagesMobileBase64" />
         </div>
@@ -65,7 +66,7 @@
           <div class="row">
             <div class="col-12 col-md-6"
               :class="{ 'q-pl-md q-pr-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
-              <q-btn :disabled="!enableSaveButton" :loading="loading" type="submit" unelevated square label="Crear"
+              <q-btn :disabled="!enableSaveButton" :loading="loading" type="submit" unelevated square :label="product._id ? 'Guardar' : 'Crear'"
                 class="full-width q-mt-md btn-cancel-solid"></q-btn>
             </div>
             <div class="col-12 col-md-6"
@@ -95,7 +96,7 @@
 
 <script lang="ts" setup>
 // imports
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeMount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import statusModal from '../partials/statusModal.vue'
 import detailFields from './partials/detailFields.vue'
@@ -134,9 +135,10 @@ const product = ref<ProductsInterface>({
   enableDiscount: false,
   details: {
     power: '',
-    licenseType: '',
-    storage: '',
-    testDrive: '',
+    weight: '',
+    max_power: '',
+    torque: '',
+    type_engine: '',
     colors: []
   },
   additionalInfo: [],
@@ -170,12 +172,11 @@ const enableSaveButton = computed(() => {
     product.value.state &&
     product.value.brand &&
     product.value.price &&
-    product.value.description &&
     product.value.category &&
     product.value.details.power &&
-    product.value.details.licenseType &&
-    product.value.details.storage &&
-    product.value.details.testDrive &&
+    product.value.details.max_power &&
+    product.value.details.power &&
+    product.value.details.type_engine &&
     product.value.details.colors.length > 0
 })
 
@@ -231,13 +232,17 @@ const deleteFile = (idx: number) => {
 }
 
 const createProduct = async () => {
+  if (product.value && product.value._id) {
+    await updateProduct();
+    return true;
+  }
   loading.value = true
   try {
     const { type } = route.query
     product.value.type = type as string
     const saveProductObject = await handlerSaveProduct(product.value) // save product json
     let uploadFiles = null
-    if (hasFile.value === true) {
+    if (hasFile.value === true && saveProductObject._id) {
       uploadFiles = await handlerUploadFiles(saveProductObject._id)
     }
     if (saveProductObject._id || uploadFiles._id) {
@@ -251,6 +256,38 @@ const createProduct = async () => {
   } catch (error) {
   } finally {
     loading.value = false
+  }
+}
+
+const updateProduct = async () => {
+  const { type } = route.query
+  product.value.type = type as string
+  loading.value = true
+  try {
+    const updateProductObject = await handlerUpdateProduct(product.value) // save product json
+    let uploadFiles = null
+    if (hasFile.value === true && updateProductObject._id) {
+      uploadFiles = await handlerUploadFiles(updateProductObject._id)
+    }
+    if (updateProductObject._id || uploadFiles._id) {
+      statusTitle.value = 'Producto modificado exitosamente'
+      openModalStatus.value = true
+      return true;
+    }
+  } catch (error) {
+  } finally {
+    loading.value = false
+  }
+}
+
+const handlerUpdateProduct = async (params: ProductsInterface) => {
+  try {
+    const response = await store.doUpdateProduct(params)
+    if (response?.success) {
+      return response.data
+    }
+    return false
+  } catch (error) {
   }
 }
 
@@ -278,7 +315,7 @@ const handlerUploadFiles = async (id: string) => {
     imagesMobile.value.forEach((file) => form.append("imagesMobile", file))
     imagesDesktop.value.forEach((file) => form.append("imagesDesktop", file))
     const response = await store.doUploadFiles(form)
-    console.log(response)
+
     if (response.success) {
       return response.data
     }
@@ -301,6 +338,34 @@ const handlerSuccessCreation = () => {
     }
   })
 }
+
+const loadProduct = async (id: string) => {
+  try {
+    const dataProduct = await store.doFilterProduct(id)
+    if (dataProduct && dataProduct.product) {
+      product.value = JSON.parse(JSON.stringify(dataProduct.product))
+    }
+  } catch (error: any) {
+    router.push({
+      name: 'products',
+      query: {
+        page: 1,
+        perPage: 10,
+        search: '',
+        type: route.query.type || 'vehicle',
+        sortBy: 'name',
+        order: '1'
+      }
+    });
+  }
+}
+
+// hook
+onBeforeMount(async () => {
+  if (route.params.id) {
+    await loadProduct(route.params.id as string)
+  }
+})
 </script>
 
 <style lang="scss" scoped>

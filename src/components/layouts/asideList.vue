@@ -52,6 +52,9 @@
           <q-icon
             :name="$route.path == '/dashboard/products' ? 'img:/images/products-primary.svg' : 'img:/images/products.svg'"
             size="24px"></q-icon>
+            <q-tooltip class="bg-secondary" :offset="[10, 10]">
+              Productos
+            </q-tooltip>
         </q-item-section>
       </q-item>
       <q-item clickable class="q-mt-sm" to="/dashboard/blogs?page=1&perPage=7&search=">

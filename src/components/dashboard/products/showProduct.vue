@@ -210,15 +210,18 @@ const deleteImgProduct = async (img: ProductImagesInterface, type: string) => {
     return item._id === img._id
   })
 
+  let banner: any = {}
   if (imgIndex === -1) {
-    console.log(product.value.banner);
     imgIndex = product.value.banner.findIndex((item: any) => {
       return item.path === img
     })
+    banner = product.value.banner[imgIndex]
+    console.log(banner)
   }
 
   try {
-    const response = await store.doDeleteProductImage(product.value._id, img._id, type);
+    const idToDelete = img._id || banner._id;
+    const response = await store.doDeleteProductImage(product.value._id, idToDelete, type);
     if (response.success) {
       notification('success', 'Se ha eliminado la imagen del producto.', 'primary')
       if (type !== 'banner') {

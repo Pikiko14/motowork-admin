@@ -83,6 +83,21 @@ export const useBlogsStore = defineStore("blogsStore", () => {
     }
   };
 
+  const doFilterBlog = async (id: string) => {
+    try {
+      const response = (await handlerRequest.doGetRequest(
+        `${path}/`,
+        id,
+        true
+      )) as ResponseObj;
+      if (response.success) {
+        return response.data;
+      }
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  };
+
   // return statement
   return {
     blogs,
@@ -91,6 +106,7 @@ export const useBlogsStore = defineStore("blogsStore", () => {
     clearBlogs,
     doSaveBlogs,
     doListBlogs,
+    doFilterBlog,
     doUploadFiles,
   };
 });

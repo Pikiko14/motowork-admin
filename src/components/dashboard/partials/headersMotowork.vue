@@ -162,7 +162,7 @@ export default defineComponent({
           page: 1,
           perPage: 10,
           search: '',
-          sortBy: 'name',
+          sortBy: route.query.sortBy || 'name',
           order: '1',
           type,
         }

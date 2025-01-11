@@ -66,19 +66,34 @@ const orderMenu = ref<SortGroup[]>([
 ])
 const filterMenu = ref([
   {
-    label: 'ESTADO',
+    label: 'CATEGORÍA',
     value: [],
     items: [
       {
-        label: 'Activos',
-        value: true,
-        key: 'active'
+        label: 'Noticias',
+        value: 'Noticias',
+        key: 'category'
       },
       {
-        label: 'Inactivos',
-        value: false,
-        key: 'active'
-      }
+        label: 'Consejos y Guías',
+        value: 'Consejos y Guías',
+        key: 'category'
+      },
+      {
+        label: 'Técnicos',
+        value: 'Técnicos',
+        key: 'category'
+      },
+      {
+        label: 'Estilo de vida',
+        value: 'Estilo de vida',
+        key: 'category'
+      },
+      {
+        label: 'Comunidad',
+        value: 'Comunidad',
+        key: 'category'
+      },
     ]
   }
 ])
@@ -119,7 +134,7 @@ const doFilter = (item: any) => {
   const page = 1;
   const perPage = route.query.perPage || 7
   const search = route.query.search || ''
-  const sortBy = route.query.sortBy || 'name'
+  const sortBy = route.query.sortBy || 'title'
   const order = route.query.order || '1'
   const filter: any = {
     [item.key]: item.value

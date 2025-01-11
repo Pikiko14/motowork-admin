@@ -13,7 +13,7 @@
         </div>
 
         <div class="container__item">
-          <span class="container__item--bold text-uppercase">Categoria</span>
+          <span class="container__item--bold text-uppercase">Categoría</span>
           <span class="container__item--normal">{{ product.category }}</span>
         </div>
 

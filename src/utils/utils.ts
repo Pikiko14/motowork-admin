@@ -114,4 +114,16 @@ export class Utils {
     const formattedDate = date.formatDate(dateString, 'DD-DD-YYYY');
     return formattedDate
   }
+
+  formatDateIso(isoDate: Date) {
+    const date = new Date(isoDate);
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+    const formattedDate = date.toLocaleDateString('es-ES', options);
+    const dateSplit = formattedDate.split(" ");
+    return `${dateSplit[2] ? dateSplit[2].toUpperCase() : ''} ${dateSplit[0] ? dateSplit[0] : ''}, ${dateSplit[4]}`;
+  }
 }

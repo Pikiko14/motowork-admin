@@ -25,8 +25,8 @@
         <q-btn @click="doDisable" v-close-popup unelevated square label="Desactivar"
           class="full-width q-mt-md btn-cancel-solid"></q-btn>
       </div>
-      <div class="col-12 col-md-6 q-mt-sm"
-        :class="{ 'q-pl-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
+      <div class="col-12 q-mt-sm"
+        :class="{ 'q-pl-md': $q.screen.gt.sm && showDiabledBtn, 'full-width q-mt-md': $q.screen.lt.md, 'col-md-6': showDiabledBtn }">
         <q-btn @click="doDelete" unelevated color="secondary" v-close-popup square label="Eliminar"
           class="full-width q-mt-md btn-cancel"></q-btn>
       </div>

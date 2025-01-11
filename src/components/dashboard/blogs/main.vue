@@ -16,8 +16,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useBlogsStore } from '../../../stores/blog'
 import { SortGroup, SortOption } from '@/interfaces/api'
 import HeadersMotowork from '../partials/headersMotowork.vue'
 
@@ -31,12 +32,12 @@ const orderMenu = ref<SortGroup[]>([
       {
         label: 'De la A - Z',
         value: '1',
-        by: 'name',
+        by: 'title',
       },
       {
         label: 'De la Z- A',
         value: '-1',
-        by: 'name',
+        by: 'title',
       },
     ]
   },
@@ -74,6 +75,7 @@ const filterMenu = ref([
     ]
   }
 ])
+const store = useBlogsStore()
 
 // methods
 const doOrder = (item: SortOption): void => {
@@ -108,7 +110,7 @@ const doFilter = (item: any) => {
   }
 
   router.push({
-    name: 'products',
+    name: 'blogs',
     query: {
       page,
       perPage,
@@ -119,10 +121,29 @@ const doFilter = (item: any) => {
     }
   })
 }
-// methods
+
 const pushRouter = (routeName: string) => {
   router.push({
     name: routeName,
   });
 };
+
+const listBlogs = async (): Promise<void> => {
+  try {
+    const page = route.query.page || 1
+    const perPage = route.query.perPage || 7
+    const search = route.query.search || ''
+    const sortBy = route.query.sortBy || 'name'
+    const order = route.query.order || 'asc'
+    const filter = route.query.filter || ''
+    const query = `?page=${page}&perPage=${perPage}&search=${search}&sortBy=${sortBy}&order=${order}&filter=${filter}&fields=title,description,category,subcategory,createdAt`
+    await store.doListBlogs(query)
+  } catch (error) {
+  }
+}
+
+// hooks
+onBeforeMount(async () => {
+  await listBlogs()
+})
 </script>

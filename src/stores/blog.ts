@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 import { Request } from "src/api/api";
 import { Utils } from "src/utils/utils";
 import { ResponseObj } from "src/interfaces/api";
-import { BlogsInterface } from './../interfaces/blogs.interface';
+import { BlogsInterface } from "./../interfaces/blogs.interface";
 
 const path = "blogs";
 const handlerRequest = new Request({
@@ -25,9 +25,7 @@ export const useBlogsStore = defineStore("blogsStore", () => {
    * @param { BlogsInterface } params params of creation
    * @returns
    */
-  const doSaveBlogs = async (
-    params: FormData
-  ): Promise<ResponseObj | void> => {
+  const doSaveBlogs = async (params: FormData): Promise<ResponseObj | void> => {
     try {
       const response = (await handlerRequest.doPostRequest(
         `${path}`,
@@ -44,27 +42,45 @@ export const useBlogsStore = defineStore("blogsStore", () => {
   };
 
   const doUploadFiles = async (
-      params: FormData
-    ): Promise<ResponseObj | void> => {
-      try {
-        const response = (await handlerRequest.doPostRequest(
-          `${path}/upload-files`,
-          params,
-          true,
-          true
-        )) as ResponseObj;
-        if (response.success) {
-          return response;
-        }
-      } catch (error) {
-        console.log(error);
+    params: FormData
+  ): Promise<ResponseObj | void> => {
+    try {
+      const response = (await handlerRequest.doPostRequest(
+        `${path}/upload-files`,
+        params,
+        true,
+        true
+      )) as ResponseObj;
+      if (response.success) {
+        return response;
       }
-    };
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const clearBlogs = () => {
     blogs.value = [];
     totalItems.value = 0;
     totalPages.value = 0;
+  };
+
+  const doListBlogs = async (query: string) => {
+    try {
+      const response = (await handlerRequest.doGetRequest(
+        `${path}`,
+        query,
+        true
+      )) as ResponseObj;
+      if (response.success) {
+        blogs.value = response.data.brands;
+        totalItems.value = response.data.totalItems;
+        totalPages.value = response.data.totalPages;
+        return response;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // return statement
@@ -74,6 +90,7 @@ export const useBlogsStore = defineStore("blogsStore", () => {
     totalPages,
     clearBlogs,
     doSaveBlogs,
+    doListBlogs,
     doUploadFiles,
   };
 });

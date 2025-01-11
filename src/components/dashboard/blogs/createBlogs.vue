@@ -216,9 +216,9 @@ const handlerSuccessCreation = () => {
     name: 'blogs',
     query: {
       page: 1,
-      perPage: 10,
+      perPage: 8,
       search: '',
-      sortBy: 'name',
+      sortBy: 'title',
       order: '1'
     }
   })

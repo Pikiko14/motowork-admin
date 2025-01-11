@@ -86,6 +86,7 @@ import { ref, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useBlogsStore } from '../../../stores/blog'
 import BlodGallery from './partials/blodGallery.vue'
+import { notification } from '../../../boot/notification'
 import MoreDetailsShow from './partials/MoreDetailsShow.vue'
 import GeneralDataShow from './partials/GeneralDataShow.vue'
 import { BlogsInterface } from '@/interfaces/blogs.interface'
@@ -142,9 +143,28 @@ const confirmDeleteProduct = (id: string) => {
     cancel: true,
     persistent: true
   }).onOk(async () => {
-    alert(id)
-    // await doDeleteProduct(id);
+    await doDeleteBlog(id);
   })
+}
+
+const doDeleteBlog = async (id: string) => {
+  try {
+    const response = await store.doDeleteBlog(id)
+    if (response.success) {
+      notification('success', response.message, 'success')
+      router.push({
+        name: 'blogs',
+        query: {
+          page: 1,
+          perPage: 8,
+          search: '',
+          sortBy: 'title',
+          order: '1'
+        }
+      })
+    }
+  } catch (error) {
+  }
 }
 
 // hook

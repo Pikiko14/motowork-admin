@@ -111,7 +111,7 @@ const totalPages = computed(() => {
 // methods
 const doOrder = (item: SortOption): void => {
   const page = 1
-  const perPage = route.query.perPage || 7
+  const perPage = route.query.perPage || 8
   const search = route.query.search || ''
   const sortBy = item.by
   const order = item.value
@@ -132,7 +132,7 @@ const doOrder = (item: SortOption): void => {
 
 const doFilter = (item: any) => {
   const page = 1;
-  const perPage = route.query.perPage || 7
+  const perPage = route.query.perPage || 8
   const search = route.query.search || ''
   const sortBy = route.query.sortBy || 'title'
   const order = route.query.order || '1'

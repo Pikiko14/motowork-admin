@@ -98,6 +98,34 @@ export const useBlogsStore = defineStore("blogsStore", () => {
     }
   };
 
+  const doDeleteBlog = async (id: string): Promise<ResponseObj | void> => {
+      try {
+        const response = await handlerRequest.doDeleteRequest(
+          `${path}/${id}`,
+          true
+        );
+        if (response.success) {
+          const queryParams = utils.getCurrentQueryParams();
+          const perPage = queryParams.perPage || 8;
+  
+          // delete from store
+          const index = blogs.value.findIndex(
+            (blog: BlogsInterface) => blog._id === id
+          );
+          if (index !== -1) blogs.value.splice(index, 1);
+  
+          // up total items
+          totalItems.value--;
+  
+          // set total pages
+          totalPages.value = Math.ceil(totalItems.value / perPage);
+        }
+        return response;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
   // return statement
   return {
     blogs,
@@ -107,6 +135,7 @@ export const useBlogsStore = defineStore("blogsStore", () => {
     doSaveBlogs,
     doListBlogs,
     doFilterBlog,
+    doDeleteBlog,
     doUploadFiles,
   };
 });

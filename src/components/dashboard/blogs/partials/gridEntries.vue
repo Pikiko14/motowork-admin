@@ -6,9 +6,36 @@
         <!--Image-->
         <img
           class="blog-img"
-          :src="blog?.img_default ? getImage(blog) : 'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930'">
+          :src="blog?.images ? getImage(blog) : ''">
         </img>
         <!--end image-->
+
+        <!--Blog title-->
+        <p class="blog-title">
+          {{ blog.title }}
+        </p>
+        <!--End Blog title-->
+
+        <!--Blog description-->
+        <p class="blog-description ellipsis-3-lines">
+          {{ blog.description }}
+        </p>
+        <!--End Blog title-->
+
+        <!--Blog description-->
+        <div class="row full-width">
+          <div class="col-8">
+            <p class="blog-category">
+              {{ blog.category }} / {{ blog.subcategory }}
+            </p>
+          </div>
+          <div class="col-4">
+            <p class="blog-description ">
+              {{ utils.formatDate(blog.createdAt) }}
+            </p>
+          </div>
+        </div>
+        <!--End Blog title-->
       </article>
     </div>
 
@@ -43,7 +70,6 @@ const props = defineProps({
 })
 
 // references
-
 const route = useRoute()
 const router = useRouter()
 const utils = new Utils('blogs');
@@ -76,7 +102,10 @@ const doNextPage = (): void => {
 }
 
 const getImage = (blog: BlogsInterface) => {
-  console.log(blog)
+  if (blog.images && blog.images.length > 0) {
+    return blog.images[0].path
+  }
+  return 'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930'
 }
 
 // hook
@@ -99,7 +128,6 @@ onBeforeMount(() => {
   padding: 8px;
   display: flex;
   width: 100%;
-  max-height: 240px;
   flex-direction: column;
   align-items: flex-start;
   border-radius: 12px;
@@ -108,28 +136,16 @@ onBeforeMount(() => {
 
   .blog-img {
     width: 100%;
-    max-height: 132px;
-    object-fit: contain;
+    height: 150px;
+    object-fit: cover;
     border-radius: 8px;
     display: relative;
   }
 
-  .blog-item-img {
-    position: relative;
-    width: 100%;
-  }
-
-  .chip {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-  }
-
   .blog-title {
-    margin-top: 8px;
     color: #000;
     font-family: Play;
-    font-size: 12pt;
+    font-size: 14pt;
     font-style: normal;
     font-weight: 700;
     line-height: 125%;
@@ -138,32 +154,29 @@ onBeforeMount(() => {
     display: flex;
     align-items: center;
     gap: 8px;
-
-    .q-img {
-      width: 16px;
-      height: 16px;
-    }
   }
 
-  .category {
-    margin-top: 12px;
-    display: flex;
-    padding: 4px 12px;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    background: #F5F5F5;
-    color: #898384;
-    text-align: center;
+  .blog-description {
+    overflow: hidden;
+    color: #9F9C9C;
+    font-family: Ubuntu;
+    font-size: 12pt;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%; /* 15px */
+  }
+
+  .blog-category {
+    color: #ED1C24;
 
     /* Mobile/Body/Title/Small */
     font-family: Play;
-    font-size: 10pt;
+    font-size: 12pt;
     font-style: normal;
-    font-weight: 700;
+    font-weight: 400;
     line-height: 125%;
     /* 12.5px */
-    text-transform: uppercase;
+    text-transform: capitalize;
   }
 
   .price {
@@ -182,9 +195,9 @@ onBeforeMount(() => {
 }
 
 /* Responsividad */
-@media (max-width: 1200px) {
+@media (max-width: 1199px) {
   .blogs-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     /* 4 columnas */
   }
 }

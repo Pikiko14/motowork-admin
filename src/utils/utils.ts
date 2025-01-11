@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { date } from 'quasar';
 import { useAuthStore } from "src/stores/auth";
 
 export class Utils {
@@ -107,5 +108,10 @@ export class Utils {
       queryParams[key] = value;
     });
     return queryParams;
+  }
+
+  formatDate(dateString: string) {
+    const formattedDate = date.formatDate(dateString, 'DD-DD-YYYY');
+    return formattedDate
   }
 }

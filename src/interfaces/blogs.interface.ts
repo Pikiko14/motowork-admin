@@ -7,6 +7,7 @@ export interface BlogsInterface {
   more_details: string;
   images?: BlogsImagesInterface[];
   img_default?: string;
+  createdAt?: any;
 }
 
 export interface BlogsImagesInterface {

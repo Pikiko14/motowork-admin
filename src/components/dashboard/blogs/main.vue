@@ -14,7 +14,7 @@
     <!--End header-->
 
     <!--entries-->
-    <div class="col-12 q-mt-lg">
+    <div class="col-12 q-mt-lg" :class="{ 'q-pr-lg': $q.screen.gt.sm }">
       <GridEntries :blogs="blogs" :totalPages="totalPages" />
     </div>
     <!--end entries-->
@@ -149,10 +149,10 @@ const listBlogs = async (): Promise<void> => {
     const page = route.query.page || 1
     const perPage = route.query.perPage || 7
     const search = route.query.search || ''
-    const sortBy = route.query.sortBy || 'name'
+    const sortBy = route.query.sortBy || 'title'
     const order = route.query.order || 'asc'
     const filter = route.query.filter || ''
-    const query = `?page=${page}&perPage=${perPage}&search=${search}&sortBy=${sortBy}&order=${order}&filter=${filter}&fields=title,description,category,subcategory,createdAt`
+    const query = `?page=${page}&perPage=${perPage}&search=${search}&sortBy=${sortBy}&order=${order}&filter=${filter}&fields=title,description,category,subcategory,createdAt,images`
     await store.doListBlogs(query)
   } catch (error) {
   }

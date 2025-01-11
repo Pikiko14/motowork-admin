@@ -12,7 +12,7 @@
       <!--end header-->
 
       <!--Gallery section-->
-      <div class="col-12 col-md-5" v-if="blog && blog?._id" :class="{ 'q-pr-lg': $q.screen.gt.sm }">
+      <div class="col-12 col-md-5" v-if="blog && blog?._id && blog.images && blog.images?.length > 0" :class="{ 'q-pr-lg': $q.screen.gt.sm }">
         <div class="full-width q-mt-lg">
           <BlodGallery :images="blog?.images" />
         </div>
@@ -20,7 +20,7 @@
       <!--End Gallery section-->
 
       <!--Data section-->
-      <div class="col-12 col-md-7" :class="{ 'q-pl-lg q-pr-lg': $q.screen.gt.sm, 'q-mt-xl': $q.screen.lt.md }">
+      <div class="col-12" :class="{ 'q-pl-lg q-pr-lg': $q.screen.gt.sm, 'q-mt-xl': $q.screen.lt.md, 'col-md-7': blog.images && blog.images?.length > 0 }">
         <!--Title section-->
         <div class="col-12">
           <div class="title-section">

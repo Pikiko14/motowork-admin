@@ -88,6 +88,24 @@ const routes: RouteRecordRaw[] = [
         },
         name: "updateProducts",
       },
+      {
+        path: "blogs",
+        component: () => import("src/pages/dashboard/blogs/mainBlogs.vue"),
+        meta: {
+          available: ["list-blog"],
+          auth: true,
+        },
+        name: "blogs",
+      },
+      {
+        path: "blogs/create",
+        component: () => import("src/pages/dashboard/blogs/createBlogs.vue"),
+        meta: {
+          available: ["create-blog"],
+          auth: true,
+        },
+        name: "createBlogs",
+      },
     ],
   },
   // Always leave this as last one,

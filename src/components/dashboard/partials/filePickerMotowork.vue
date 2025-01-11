@@ -1,7 +1,7 @@
 <template>
   <section class="file-selector">
     <div ref="filePickerRef" class="file-picker"
-      :class="{ 'd-flex flex-row': maxFile >= 1 && !isBackgroundImage && arrayBase64.length > 0 }" @click="openFilePicker"
+      :class="{ 'd-flex flex-row': maxFile >= 1 && !isBackgroundImage && arrayBase64.length > 0, 'large': fullHeight }" @click="openFilePicker"
       @dragover.prevent @drop="handleDrop">
       <q-img src="/images/upload.svg" width="60px" height="60px"></q-img>
       <span class="entity-file-picker" v-if="entity && arrayBase64.length === 0">
@@ -77,6 +77,10 @@ export default defineComponent({
     arrayBase64: {
       type: Array as () => any[],
       default: () => [],
+    },
+    fullHeight: {
+      type: Boolean,
+      default: () => false
     }
   },
   emits: ['set-file', 'delete-file'],
@@ -239,5 +243,13 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center !important;
+}
+
+.large {
+  height: 500px !important;
+
+  @media(max-width: 767px) {
+    height: 260px !important;
+  }
 }
 </style>

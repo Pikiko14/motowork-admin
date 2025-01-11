@@ -61,6 +61,9 @@
         <q-item-section class="text-center">
           <q-icon :name="$route.path == '/dashboard/blogs' ? 'img:/images/blogs-primary.svg' : 'img:/images/blogs.svg'"
             size="24px"></q-icon>
+            <q-tooltip class="bg-secondary" :offset="[10, 10]">
+              Blogs
+            </q-tooltip>
         </q-item-section>
       </q-item>
       <q-item clickable class="q-mt-sm" to="/dashboard/schedule?page=1&perPage=7&search=">

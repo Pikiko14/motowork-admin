@@ -1,0 +1,128 @@
+<template>
+  <div class="row q-py-md q-my-xs">
+    <!--Header-->
+    <div class="col-12">
+      <HeadersMotowork
+        :orderMenu="orderMenu"
+        :filterItems="filterMenu"
+        :show-order-button="true"
+        @do-order="doOrder"
+        :title="'Experiencias'"
+        @do-filter="doFilter"
+        @open-modal="pushRouter('createBlogs')" />
+    </div>
+    <!--End header-->
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { SortGroup, SortOption } from '@/interfaces/api'
+import HeadersMotowork from '../partials/headersMotowork.vue'
+
+// references
+const route = useRoute()
+const router = useRouter()
+const orderMenu = ref<SortGroup[]>([
+  {
+    label: 'Alfabeticamente',
+    items: [
+      {
+        label: 'De la A - Z',
+        value: '1',
+        by: 'name',
+      },
+      {
+        label: 'De la Z- A',
+        value: '-1',
+        by: 'name',
+      },
+    ]
+  },
+  {
+    label: 'Creación',
+    items: [
+      {
+        label: 'Agregados recientemente',
+        value: '-1',
+        by: 'createdAt',
+      },
+      {
+        label: 'Agregados anteriormente',
+        value: '1',
+        by: 'createdAt',
+      },
+    ]
+  },
+])
+const filterMenu = ref([
+  {
+    label: 'ESTADO',
+    value: [],
+    items: [
+      {
+        label: 'Activos',
+        value: true,
+        key: 'active'
+      },
+      {
+        label: 'Inactivos',
+        value: false,
+        key: 'active'
+      }
+    ]
+  }
+])
+
+// methods
+const doOrder = (item: SortOption): void => {
+  const page = 1
+  const perPage = route.query.perPage || 7
+  const search = route.query.search || ''
+  const sortBy = item.by
+  const order = item.value
+  const filter = route.query.filter || ''
+
+  router.push({
+    name: 'blogs',
+    query: {
+      page,
+      perPage,
+      search,
+      sortBy,
+      order,
+      filter
+    }
+  })
+}
+
+const doFilter = (item: any) => {
+  const page = 1;
+  const perPage = route.query.perPage || 7
+  const search = route.query.search || ''
+  const sortBy = route.query.sortBy || 'name'
+  const order = route.query.order || '1'
+  const filter: any = {
+    [item.key]: item.value
+  }
+
+  router.push({
+    name: 'products',
+    query: {
+      page,
+      perPage,
+      search,
+      sortBy,
+      order,
+      filter: JSON.stringify(filter)
+    }
+  })
+}
+// methods
+const pushRouter = (routeName: string) => {
+  router.push({
+    name: routeName,
+  });
+};
+</script>

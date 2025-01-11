@@ -6,6 +6,7 @@ export interface BlogsInterface {
   subcategory?: string;
   more_details: string;
   images?: BlogsImagesInterface[];
+  img_default?: string;
 }
 
 export interface BlogsImagesInterface {

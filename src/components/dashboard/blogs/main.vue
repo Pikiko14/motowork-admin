@@ -12,13 +12,20 @@
         @open-modal="pushRouter('createBlogs')" />
     </div>
     <!--End header-->
+
+    <!--entries-->
+    <div class="col-12 q-mt-lg">
+      <GridEntries :blogs="blogs" :totalPages="totalPages" />
+    </div>
+    <!--end entries-->
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onBeforeMount } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { ref, onBeforeMount, computed } from 'vue'
 import { useBlogsStore } from '../../../stores/blog'
+import GridEntries from './partials/gridEntries.vue';
 import { SortGroup, SortOption } from '@/interfaces/api'
 import HeadersMotowork from '../partials/headersMotowork.vue'
 
@@ -76,6 +83,15 @@ const filterMenu = ref([
   }
 ])
 const store = useBlogsStore()
+
+// computed
+const blogs = computed(() => {
+  return store.blogs
+})
+
+const totalPages = computed(() => {
+  return store.totalPages
+})
 
 // methods
 const doOrder = (item: SortOption): void => {

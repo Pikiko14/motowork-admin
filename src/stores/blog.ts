@@ -43,6 +43,24 @@ export const useBlogsStore = defineStore("blogsStore", () => {
     }
   };
 
+  const doUploadFiles = async (
+      params: FormData
+    ): Promise<ResponseObj | void> => {
+      try {
+        const response = (await handlerRequest.doPostRequest(
+          `${path}/upload-files`,
+          params,
+          true,
+          true
+        )) as ResponseObj;
+        if (response.success) {
+          return response;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
   const clearBlogs = () => {
     blogs.value = [];
     totalItems.value = 0;
@@ -56,5 +74,6 @@ export const useBlogsStore = defineStore("blogsStore", () => {
     totalPages,
     clearBlogs,
     doSaveBlogs,
+    doUploadFiles,
   };
 });

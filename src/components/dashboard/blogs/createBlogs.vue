@@ -50,7 +50,7 @@
               <GeneralData :blog="blog" />
             </q-tab-panel>
             <q-tab-panel name="details">
-              <MoreDetails />
+              <MoreDetails :blog="blog" />
             </q-tab-panel>
           </q-tab-panels>
         </section>
@@ -74,16 +74,29 @@
       </div>
       <!--End form field-->
     </q-form>
+
+    <!--Modal status-->
+    <q-dialog v-model="openModalStatus">
+      <CardModalMotowork :title="statusTitle">
+        <template v-slot:content>
+          <statusModal @do-try-egaint="openModalStatus = false" @do-continue="handlerSuccessCreation" :status="statusCreation" :description="statusDescription"></statusModal>
+        </template>
+      </CardModalMotowork>
+    </q-dialog>
+    <!--End modal status-->
   </div>
 </template>
 
 <script lang="ts" setup>
 // imports
 import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useBlogsStore } from '../../../stores/blog'
 import GeneralData from './partials/generalData.vue'
 import MoreDetails from './partials/moreDetails.vue'
+import statusModal from '../partials/statusModal.vue'
 import { BlogsInterface } from '@/interfaces/blogs.interface'
+import CardModalMotowork from '../partials/cardModalMotowork.vue'
 import FilePickerMotowork from '../partials/filePickerMotowork.vue'
 
 // references
@@ -102,11 +115,16 @@ const hasFile = ref<boolean>()
 const loading = ref<boolean>(false)
 
 // images references
+const router = useRouter()
+const statusTitle = ref<string>('')
 const imagesMobile = ref<File[]>([])
 const imagesDesktop = ref<File[]>([])
+const openModalStatus = ref<boolean>(false)
 const imagesMobileBase64 = ref<string[]>([])
 const imagesDesktopBase64 = ref<string[]>([])
+const statusCreation = ref<string>('success')
 const renderFilePickerSection = ref<boolean>(true)
+const statusDescription = ref<string>('¡Felicitaciones! Has creado una nueva entrada. Has agregado detalles e imágenes correctamente.')
 
 // computed 
 const enableSaveButton = computed(() => {
@@ -118,7 +136,18 @@ const createBlogs = async () => {
   try {
     loading.value = true
     const blogObjectResponse = await handlerSaveProduct(blog.value)
-    console.log(blogObjectResponse)
+    let uploadFiles = null
+    if (hasFile.value === true && blogObjectResponse._id) {
+      uploadFiles = await handlerUploadFiles(blogObjectResponse._id)
+    }
+    if (blogObjectResponse._id || uploadFiles._id) {
+      statusTitle.value = 'Entrada creada exitosamente'
+      openModalStatus.value = true
+      return true;
+    }
+    statusCreation.value = 'error'
+    statusTitle.value = '¡UPS! ALGO HA FALLADO'
+    statusDescription.value = 'Parece que ha habido un problema al crear tu entrada. Asegúrate de que has completado toda la información requerida en los campos obligatorios (*) antes de volver a intentarlo.'
   } catch (error) {
   } finally {
     loading.value = false
@@ -129,6 +158,26 @@ const handlerSaveProduct = async (params: BlogsInterface) => {
   try {
     const response = await store.doSaveBlogs(params)
     if (response?.success) {
+      return response.data
+    }
+    return false
+  } catch (error) {
+  }
+}
+
+const handlerUploadFiles = async (id: string) => {
+  try {
+    const form = new FormData()
+
+    // validate banners
+    form.append('id', id)
+
+    // validate images products
+    imagesMobile.value.forEach((file) => form.append("imagesMobile", file))
+    imagesDesktop.value.forEach((file) => form.append("imagesDesktop", file))
+    const response = await store.doUploadFiles(form)
+
+    if (response.success) {
       return response.data
     }
     return false
@@ -159,6 +208,20 @@ const handlerDefaultImages = (data: any) => {
     imagesDesktop.value.push(data.filePicker)
     imagesDesktopBase64.value.push(data.base64)
   }
+}
+
+const handlerSuccessCreation = () => {
+  openModalStatus.value = false
+  router.push({
+    name: 'blogs',
+    query: {
+      page: 1,
+      perPage: 10,
+      search: '',
+      sortBy: 'name',
+      order: '1'
+    }
+  })
 }
 </script>
 

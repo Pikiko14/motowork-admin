@@ -158,6 +158,21 @@ export const useProductsStore = defineStore("productsStore", () => {
     }
   };
 
+  const loadCountProduct = async () => {
+    try {
+      const response = (await handlerRequest.doGetRequest(
+        `${path}/count-products/get`,
+        '',
+        true
+      )) as ResponseObj;
+      if (response.success) {
+        return response.data;
+      }
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
+
   // return statement
   return {
     products,
@@ -170,6 +185,7 @@ export const useProductsStore = defineStore("productsStore", () => {
     doFilterProduct,
     doDeleteProduct,
     doUpdateProduct,
+    loadCountProduct,
     doDeleteProductImage,
   };
 });

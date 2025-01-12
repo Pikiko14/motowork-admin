@@ -13,10 +13,10 @@
       </q-tabs>
       <q-tab-panels class="full-width" v-model="tab" dense align="justify" narrow-indicator>
         <q-tab-panel name="vehicle" v-if="tab === 'vehicle'">
-          <ListItems :items="motorcyclesRecently" />
+          <ListItems :items="lastVehicles" />
         </q-tab-panel>
         <q-tab-panel name="accesories" v-if="tab === 'accesories'">
-          <ListItems :showBrandIcon="false" :items="accesoriesRecently" />
+          <ListItems :showBrandIcon="false" :items="lastAccesories" />
         </q-tab-panel>
       </q-tab-panels>
     </div>
@@ -26,6 +26,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import ListItems from './listItems.vue'
+import { ProductsInterface } from '@/interfaces/productsInterface'
 import { RecentlyItemsInterface } from 'src/interfaces/dashboardInterface'
 
 export default defineComponent({
@@ -33,35 +34,19 @@ export default defineComponent({
   components: {
     ListItems
   },
+  props: {
+    lastVehicles: {
+      type: Array as () => ProductInterface[],
+      default: () => []
+    },
+    lastAccesories: {
+      type: Array as () => ProductInterface[],
+      default: () => []
+    }
+  },
   setup() {
     // data
     const tab = ref<string>('vehicle')
-    const motorcyclesRecently = ref<RecentlyItemsInterface[]>([
-      {
-        category: "spr. deportiva",
-        img: 'images/moto-01.svg',
-        item_type: "new",
-        name: "Motocicleta 01",
-        price: 1000000,
-        brand: "images/yamaha.svg"
-      },
-      {
-        category: "deportiva",
-        img: 'images/moto-02.svg',
-        item_type: "used",
-        name: "Motocicleta 02",
-        price: 1000000,
-        brand: "images/susuki.svg"
-      },
-      {
-        category: "media. deportiva",
-        img: 'images/moto-03.svg',
-        item_type: "new",
-        name: "Motocicleta 03",
-        price: 1000000,
-        brand: "images/honda.svg"
-      },
-    ])
 
     const accesoriesRecently = ref<RecentlyItemsInterface[]>([
       {
@@ -90,7 +75,6 @@ export default defineComponent({
     return {
       tab,
       accesoriesRecently,
-      motorcyclesRecently,
     }
   }
 })

@@ -109,12 +109,12 @@ export default defineComponent({
         field: 'createdAt',
         align: 'left'
       },
-      {
-        name: 'asociated_items',
-        label: 'Motocicletas Asociadas',
-        field: 'asociated',
-        align: 'left'
-      },
+      //{
+      //  name: 'asociated_items',
+      //  label: 'Motocicletas Asociadas',
+      //  field: 'asociated',
+      //  align: 'left'
+      //},
       {
         name: 'options',
         label: '',

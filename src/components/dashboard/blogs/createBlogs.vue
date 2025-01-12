@@ -89,8 +89,8 @@
 
 <script lang="ts" setup>
 // imports
-import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { computed, ref, onBeforeMount } from 'vue'
 import { useBlogsStore } from '../../../stores/blog'
 import GeneralData from './partials/generalData.vue'
 import MoreDetails from './partials/moreDetails.vue'
@@ -115,6 +115,7 @@ const hasFile = ref<boolean>()
 const loading = ref<boolean>(false)
 
 // images references
+const route = useRoute()
 const router = useRouter()
 const statusTitle = ref<string>('')
 const imagesMobile = ref<File[]>([])
@@ -223,6 +224,34 @@ const handlerSuccessCreation = () => {
     }
   })
 }
+
+const loadBlog = async (id: string) => {
+  try {
+    const dataBlog = await store.doFilterBlog(id)
+    if (dataBlog && dataBlog.blog) {
+      blog.value = dataBlog.blog
+    }
+  } catch (error: any) {
+    router.push({
+      name: 'blogs',
+      query: {
+        page: 1,
+        perPage: 10,
+        search: '',
+        sortBy: 'title',
+        order: '1'
+      }
+    });
+  }
+}
+
+// hook
+onBeforeMount(async () => {
+  if (route.params.id) {
+    const { id } = route.params
+    await loadBlog(id as string)
+  }
+})
 </script>
 
 <style lang="scss" scoped>

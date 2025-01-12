@@ -115,6 +115,15 @@ const routes: RouteRecordRaw[] = [
         },
         name: "blogShow",
       },
+      {
+        path: "blogs/:id/edit",
+        component: () => import("src/pages/dashboard/blogs/createBlogs.vue"),
+        meta: {
+          available: ["create-blog"],
+          auth: true,
+        },
+        name: "updateBlogs",
+      },
     ],
   },
   // Always leave this as last one,

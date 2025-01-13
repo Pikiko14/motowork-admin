@@ -33,6 +33,7 @@ export interface AdditionalField {
     brand: string;
     price: number | null;
     discount?: number | null;
+    sku?: string;
     enableDiscount?: boolean;
     category: string;
     description: string;

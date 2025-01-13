@@ -71,7 +71,7 @@
         val => (val && val.length > 0) || 'Por favor ingrese el sku',
         val => (val && val.length >= 1) || 'Mayor a 1 caracteres',
         val => (val && val.length <= 90) || 'Menor a 90 caracteres',
-      ]" placeholder="ACCESORIO-001" class="q-mt-sm" outlined dense v-model="product.name"></q-input>
+      ]" placeholder="ACCESORIO-001" class="q-mt-sm" outlined dense v-model="product.sku"></q-input>
     </div>
     <div class="col-12">
       <label for="">Descripción</label>

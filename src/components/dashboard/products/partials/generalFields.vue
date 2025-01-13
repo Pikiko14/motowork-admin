@@ -65,6 +65,14 @@
         <q-icon name="img:/images/chevron_right.svg"></q-icon>
       </div>
     </div>
+    <div class="col-12 col-md-12" :class="{ 'q-pr-sm': $q.screen.gt.sm }" v-if="type === 'product'">
+      <label for="">SKU Software Contable <span class="text-secondary">*</span></label>
+      <q-input square :rules="[
+        val => (val && val.length > 0) || 'Por favor ingrese el sku',
+        val => (val && val.length >= 1) || 'Mayor a 1 caracteres',
+        val => (val && val.length <= 90) || 'Menor a 90 caracteres',
+      ]" placeholder="ACCESORIO-001" class="q-mt-sm" outlined dense v-model="product.name"></q-input>
+    </div>
     <div class="col-12">
       <label for="">Descripción</label>
       <q-input v-model="product.description" placeholder="Descripción del producto" class="q-mt-sm" square rows="3" outlined dense type="textarea"></q-input>

@@ -53,7 +53,7 @@
               <generalFields :product="product" />
             </q-tab-panel>
             <q-tab-panel name="details">
-              <detailFields :product="product" />
+              <detailFields v-if="type === 'vehicle'" :product="product" />
             </q-tab-panel>
             <q-tab-panel name="aditional">
               <infoAditionalFields :product="product" />
@@ -111,6 +111,7 @@ import infoAditionalFields from './partials/infoAditionalFields.vue'
 const route = useRoute()
 const tab = ref('desktop')
 const router = useRouter()
+const type = route.query.type
 const hasFile = ref<boolean>()
 const tabFields = ref('general')
 const store = useProductsStore()
@@ -131,6 +132,7 @@ const product = ref<ProductsInterface>({
   description: '',
   banner: [],
   images: [],
+  sku: '',
   type: '',
   enableDiscount: false,
   details: {
@@ -167,17 +169,27 @@ watch(
 
 // computed
 const enableSaveButton = computed(() => {
-  return product.value.name &&
-    product.value.model &&
-    product.value.state &&
-    product.value.brand &&
-    product.value.price &&
-    product.value.category &&
-    product.value.details.power &&
-    product.value.details.max_power &&
-    product.value.details.power &&
-    product.value.details.type_engine &&
-    product.value.details.colors.length > 0
+  if (type === 'vehicle') {
+    return product.value.name &&
+      product.value.model &&
+      product.value.state &&
+      product.value.brand &&
+      product.value.price &&
+      product.value.category &&
+      product.value.details.power &&
+      product.value.details.max_power &&
+      product.value.details.power &&
+      product.value.details.type_engine &&
+      product.value.details.colors.length > 0
+  } else {
+    return product.value.name &&
+      product.value.model &&
+      product.value.state &&
+      product.value.brand &&
+      product.value.price &&
+      product.value.category &&
+      product.value.sku
+  }
 })
 
 // methods

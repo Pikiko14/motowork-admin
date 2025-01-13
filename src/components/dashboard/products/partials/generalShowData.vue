@@ -32,9 +32,14 @@
           <span class="container__item--normal" :class="{ 'have-discount': product.discount }">{{ utils.formatPrice(product.price as number) }}</span>
         </div>
 
-        <div class="container__item">
+        <div class="container__item" v-if="product.discount > 0">
           <span class="container__item--bold text-uppercase">Descuento</span>
           <span class="container__item--normal">{{ utils.formatPrice(product.discount as number) }}</span>
+        </div>
+
+        <div class="container__item" v-if="product.sku">
+          <span class="container__item--bold text-uppercase">SKU</span>
+          <span class="container__item--normal">{{ product.sku }}</span>
         </div>
 
         <div class="container__description">

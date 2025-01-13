@@ -65,7 +65,7 @@
         <q-icon name="img:/images/chevron_right.svg"></q-icon>
       </div>
     </div>
-    <div class="col-12 col-md-12" :class="{ 'q-pr-sm': $q.screen.gt.sm }" v-if="type === 'product'">
+    <div class="col-12 col-md-12" :class="{ 'q-pr-sm': $q.screen.gt.sm }" v-if="type === 'product' || product.type === 'product'">
       <label for="">SKU Software Contable <span class="text-secondary">*</span></label>
       <q-input square :rules="[
         val => (val && val.length > 0) || 'Por favor ingrese el sku',

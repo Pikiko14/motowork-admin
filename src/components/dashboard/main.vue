@@ -19,6 +19,33 @@
     <div class="col-12 col-md-4" :class="{ 'q-px-md': $q.screen.gt.sm }">
       <RecentlyProducts :lastVehicles="lastVehicles" :lastAccesories="lastAccesories" />
     </div>
+    <div class="col-12 col-md-3 q-mt-xl">
+      <q-card square class="shadow-0 bordered">
+        <q-card-section class="title-section">
+          <p class="title">Sesión Instagram</p>
+          <q-icon size="16pt" name="img:images/instagram.png"></q-icon>
+        </q-card-section>
+        <q-card-section v-if="!instagramData.userId && sessionLoaded" class="d-flex justify-center">
+          <q-btn type="a" target="__blank" :href="`${url}/api/v1/instagrams/auth`" v-if="!instagramData.userId" color="secondary" unelevated label="Iniciar sesión"></q-btn>
+        </q-card-section>
+        <q-card-section v-if="instagramData.userId && sessionLoaded" class="title-section">
+          <p class="title d-flex space-between">
+            <span class="text-bold">
+              Usuario:
+            </span>
+            <span class="no-bold q-pl-sm">
+              {{ instagramData.response.username }}
+            </span>
+          </p>
+
+          <q-btn type="a" target="__blank" :href="`${url}/api/v1/instagrams/validate-and-extend-token`" rounded size="8pt" class="float-right" flat dense icon="img:images/rotate.png" color="secondary">
+            <q-tooltip class="bg-secondary">
+              Refrescar sesión
+            </q-tooltip>
+          </q-btn>
+        </q-card-section>
+      </q-card>
+    </div>
   </div>
 </template>
 
@@ -45,6 +72,9 @@ export default defineComponent({
       vehicle: 0,
       accesories: 0,
     })
+    const instagramData = ref<any>({})
+    const sessionLoaded = ref<boolean>(false)
+    const loadingInstragram = ref<boolean>(false)
     const lastVehicles = ref<ProductsInterface[]>([])
     const lastAccesories = ref<ProductsInterface[]>([])
     const productStore = useProductsStore()
@@ -63,17 +93,65 @@ export default defineComponent({
       lastAccesories.value = response.lastProduct	
     }
 
+    const validateInstagramSession = async () => {
+      loadingInstragram.value = true
+      try {
+        const response = await authStore.doValidateInstagramSession()
+        console.log(response)
+        instagramData.value = response
+      } catch (error) {
+      } finally {
+        loadingInstragram.value = false
+        sessionLoaded.value = true
+      }
+    }
+
     // hook
     onBeforeMount(async () => {
       await loadProductCount()
+      await validateInstagramSession()
     })
 
     return {
       user,
+      instagramData,
       countVehicles,
       lastVehicles,
-      lastAccesories
+      lastAccesories,
+      sessionLoaded,
+      loadingInstragram,
+      url: process.env.API_URL
     }
   }
 })
 </script>
+
+<style scoped>
+.bordered {
+  border: 1px solid var(--Neutrals-Neutrals100, #e3e3e3);
+}
+
+.title-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  color: var(--Primary-Primary, #000);
+  font-family: Play;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 125%;
+  text-transform: uppercase;
+}
+
+.bordered p {
+  font-size: 14px;
+}
+
+.title .no-bold {
+  font-weight: 400;
+}
+</style>

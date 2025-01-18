@@ -130,6 +130,26 @@ export const useAuthStore = defineStore("authStore", () => {
     }
   };
 
+  /**
+   * Validate instagram session
+   * @param params
+   * @returns
+   */
+  const doValidateInstagramSession = async () => {
+    try {
+      const response = (await handlerRequest.doGetRequest(
+        `/instagrams/session/status`,
+        '',
+        false,
+      )) as ResponseObj;
+      if (response) {
+        return response;
+      }
+    } catch (error: any) {
+      throw new Error(error)
+    }
+  };
+
   // return statement
   return {
     user,
@@ -140,5 +160,6 @@ export const useAuthStore = defineStore("authStore", () => {
     doLogout,
     doChangePassword,
     initRecoveryPassword,
+    doValidateInstagramSession,
   };
 });

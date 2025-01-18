@@ -141,6 +141,9 @@ export const useAuthStore = defineStore("authStore", () => {
         `/instagrams/session/status`,
         '',
         false,
+        {
+          instagram_token: process.env.INSTAGRAM_TOKEN
+        }
       )) as ResponseObj;
       if (response) {
         return response;

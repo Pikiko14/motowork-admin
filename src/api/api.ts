@@ -26,7 +26,8 @@ class Request {
   doGetRequest(
     url: string,
     params: string,
-    auth: boolean
+    auth: boolean,
+    headers?: any
   ): Promise<ResponseObj> {
     if (auth) {
       const isSupervisor = storage.getItemStorage(
@@ -40,6 +41,12 @@ class Request {
         }`,
         "Is-Supervisor": isSupervisor ? "Si" : "No",
       };
+    }
+    if (headers) {
+      this.headers = {
+        ...this.headers,
+        ...headers
+      }
     }
     return new Promise((resolve, reject) => {
       api

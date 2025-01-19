@@ -19,6 +19,10 @@
     <div class="col-12 q-mt-lg">
       <q-scroll-area style="width: 100%; height: 450px" v-if="product.variants && product?.variants.length > 0">
         <div class="row full-width relative" v-for="(variant, idx) in product.variants" :key="idx" :class="{ 'q-mt-lg': idx > 0 }">
+          {{ variant }}
+          <div class="col-12 q-pb-lg">
+            <span class="text-bold label-variable">VARIABLE {{ idx + 1 }}</span>
+          </div>
           <div class="col-12 col-md-6" :class="{ 'q-pr-sm': $q.screen.gt.sm }">
             <label for="">SKU <span class="text-secondary">*</span></label>
             <q-input square :rules="[
@@ -37,15 +41,19 @@
               v-model="variant.attribute"></q-input>
           </div>
           <div class="col-12 col-md-12">
-            <label for="">Descripción <span class="text-secondary">*</span></label>
+            <label for="">Descripción</label>
             <q-input square type="textarea" class="q-mt-sm" outlined dense v-model="variant.description"></q-input>
           </div>
 
           <div class="col-12 col-md-12 q-mt-lg" v-if="product.images && product.images.length > 0">
-            <label for="">Selecciona una imagen <span class="text-secondary">*</span></label>
+            <label for="">Selecciona una imagen</label>
             <div class="gally-images">
-              <div class="gally-images__item" v-for="(img, idxImg) in product.images" :key="idxImg">
-                {{ img }}
+              <div class="gally-images__item" v-for="(img, idxImg) in product.images" :key="idxImg" @click="setVariantImage(idx, img.path)">
+                <q-img :src="img.path" :alt="`Imagen de la variable ${variant.sku}`">
+                  <div class="overflow-img" v-if="variant.image === img.path">
+                    <q-icon name="img:/images/check.png"></q-icon>
+                  </div>
+                </q-img>
               </div>
             </div>
           </div>
@@ -68,7 +76,8 @@ import { ProductsInterface } from '@/interfaces/productsInterface'
 // emit
 const emit = defineEmits([
   'add-variant',
-  'remove-variant'
+  'remove-variant',
+  'set-image-variant'
 ])
 
 // props
@@ -88,6 +97,10 @@ const addNewVariant = () => {
 
 const deleteVariable = (idx: number) => {
   emit('remove-variant', idx)
+}
+
+const setVariantImage = (variantIdx: number, imgPath: string) => {
+  emit('set-image-variant', { variantIdx, imgPath })
 }
 </script>
 
@@ -142,7 +155,22 @@ const deleteVariable = (idx: number) => {
 .gally-images {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+  margin-top: 12px;
 
+  &__item {
+    flex: 1 1 calc(15% - 16px);
+    max-width: calc(15% - 16px);
+    box-sizing: border-box;
+    cursor: pointer;
+
+    .q-img {
+      width: 100%;
+      height: 100%;
+    }
+  }
 }
 
 .text-gray-2 {
@@ -151,5 +179,18 @@ const deleteVariable = (idx: number) => {
 
 .relative {
   position: relative;
+}
+
+.label-variable {
+  font-size: 14pt;
+}
+
+.overflow-img {
+  background: #0000004a;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

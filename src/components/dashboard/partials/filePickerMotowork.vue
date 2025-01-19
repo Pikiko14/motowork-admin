@@ -105,7 +105,7 @@ export default defineComponent({
         event.preventDefault()
         if (filesBase64.value.length === maxFile) {
           notification(
-            'negative',
+            '',
             `Solo puedes agregar ${maxFile} imágenes.`,
             'warning'
           )
@@ -122,7 +122,7 @@ export default defineComponent({
         const fileData = files[i]
         if (fileData.size > maxSizeInBytes) {
           file.value = null
-          notification('negative', 'El archivo excede el tamaño maximo permitido (1MB).', 'warning')
+          notification('', 'El archivo excede el tamaño maximo permitido (1MB).', 'warning')
           return false
         }
         if (fileData.type.startsWith('image/')) {
@@ -130,7 +130,7 @@ export default defineComponent({
           setFile(fileData)
           return true
         } else {
-          notification('negative', 'El archivo debe ser tipo jpg, png, webp.', 'warning')
+          notification('', 'El archivo debe ser tipo jpg, png, webp.', 'warning')
           return false
           // Aquí puedes mostrar un mensaje de error al usuario si es necesario
         }
@@ -140,7 +140,7 @@ export default defineComponent({
     const setFile = (filePicker: FileObject) => {
       if (filesBase64.value.length === maxFile || arrayBase64.length === maxFile) {
         notification(
-          'negative',
+          '',
           `Solo puedes agregar ${maxFile} imágenes`,
           'warning'
         )
@@ -151,13 +151,13 @@ export default defineComponent({
       // validate type file
       if (!isValidFile) {
         file.value = null
-        notification('negative', 'El archivo debe ser tipo jpg, png, webp.', 'warning')
+        notification('', 'El archivo debe ser tipo jpg, png, webp.', 'warning')
         return false
       }
       // validamos el tamaño del archivo
       if (filePicker.size > maxSizeInBytes) {
         file.value = null
-        notification('negative', 'El archivo excede el tamaño maximo permitido (1MB).', 'warning')
+        notification('', 'El archivo excede el tamaño maximo permitido (1MB).', 'warning')
         return false
       }
       if (filePicker.type.startsWith('image/')) {

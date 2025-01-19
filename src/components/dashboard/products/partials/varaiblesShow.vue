@@ -17,7 +17,9 @@
         </div>
         <div class="container__item" v-if="variant.image">
           <span class="container__item--bold text-uppercase">Imagen</span>
-          <span class="container__item--normal q-pl-md">{{ variant.description }} </span>
+          <span class="container__item--normal q-pl-md">
+            <q-img :src="variant.image"></q-img>
+          </span>
         </div>
       </div>
     </div>
@@ -52,6 +54,7 @@ defineProps({
     display: flex;
     width: 100%;
     justify-content: space-between;
+    align-items: center;
 
     &--bold {
       color: #000;
@@ -75,6 +78,10 @@ defineProps({
       line-height: 125%;
       /* 15px */
       display: flex;
+
+      .q-img {
+        width: 80px;
+      }
 
       &__color {
         width: 24px;

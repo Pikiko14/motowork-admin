@@ -57,7 +57,7 @@
             <q-tab-panel name="details">
               <detailFields v-if="type === 'vehicle' || product.type === 'vehicle'" :product="product" />
               <VariablesProduct v-if="type === 'product' || product.type === 'product'" :product="product" @add-variant="handleAddVariant"
-                @remove-variant="removeVariant" />
+                @remove-variant="removeVariant" @set-image-variant="setImgVariant" />
             </q-tab-panel>
             <q-tab-panel name="aditional">
               <infoAditionalFields :product="product" />
@@ -395,6 +395,12 @@ const removeVariant = (idx: number) => {
   }
 }
 
+const setImgVariant = (data: any) => {
+  if (product.value.variants) {
+    product.value.variants[data.variantIdx].image = data.imgPath
+  }
+}
+ 
 // hook
 onBeforeMount(async () => {
   if (route.params.id) {

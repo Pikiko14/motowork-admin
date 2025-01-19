@@ -40,6 +40,15 @@
             <label for="">Descripción <span class="text-secondary">*</span></label>
             <q-input square type="textarea" class="q-mt-sm" outlined dense v-model="variant.description"></q-input>
           </div>
+
+          <div class="col-12 col-md-12 q-mt-lg" v-if="product.images && product.images.length > 0">
+            <label for="">Selecciona una imagen <span class="text-secondary">*</span></label>
+            <div class="gally-images">
+              <div class="gally-images__item" v-for="(img, idxImg) in product.images" :key="idxImg">
+                {{ img }}
+              </div>
+            </div>
+          </div>
         </div>
       </q-scroll-area>
     </div>
@@ -118,6 +127,12 @@ const addNewVariant = () => {
       display: none;
     }
   }
+}
+
+.gally-images {
+  width: 100%;
+  display: flex;
+
 }
 
 .text-gray-2 {

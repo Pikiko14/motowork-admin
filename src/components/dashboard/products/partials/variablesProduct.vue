@@ -18,7 +18,7 @@
 
     <div class="col-12 q-mt-lg">
       <q-scroll-area style="width: 100%; height: 450px" v-if="product.variants && product?.variants.length > 0">
-        <div class="row full-width" v-for="(variant, idx) in product.variants" :key="idx">
+        <div class="row full-width relative" v-for="(variant, idx) in product.variants" :key="idx" :class="{ 'q-mt-lg': idx > 0 }">
           <div class="col-12 col-md-6" :class="{ 'q-pr-sm': $q.screen.gt.sm }">
             <label for="">SKU <span class="text-secondary">*</span></label>
             <q-input square :rules="[
@@ -49,6 +49,11 @@
               </div>
             </div>
           </div>
+          <q-btn size="8pt" class="absolute-top-right" style="margin-top: -5px" icon="img:/images/trash.svg" flat dense @click="deleteVariable(idx)">
+            <q-tooltip class="bg-secondary">
+              Eliminar
+            </q-tooltip>
+          </q-btn>
         </div>
       </q-scroll-area>
     </div>
@@ -62,7 +67,8 @@ import { ProductsInterface } from '@/interfaces/productsInterface'
 
 // emit
 const emit = defineEmits([
-  'add-variant'
+  'add-variant',
+  'remove-variant'
 ])
 
 // props
@@ -78,6 +84,10 @@ const props = defineProps({
 // methods
 const addNewVariant = () => {
   emit('add-variant')
+}
+
+const deleteVariable = (idx: number) => {
+  emit('remove-variant', idx)
 }
 </script>
 
@@ -137,5 +147,9 @@ const addNewVariant = () => {
 
 .text-gray-2 {
   color: #9F9C9C;
+}
+
+.relative {
+  position: relative;
 }
 </style>

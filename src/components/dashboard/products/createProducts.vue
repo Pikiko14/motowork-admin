@@ -26,14 +26,16 @@
             específico para cada dispositivo, respetando sus dimensiones nativas.</p>
         </div>
         <div class="banner-picker" v-if="renderFilePickerSection">
-          <FilePickerMotowork :productImages="product.banner as any" :base64Image="tab === 'desktop' ? desktopBannerBase64 : mobileBannerBase64"
-            :type="'banner'" @set-file="setFile" :maxFile="1" :entity="'Banner producto'"
+          <FilePickerMotowork :productImages="product.banner as any"
+            :base64Image="tab === 'desktop' ? desktopBannerBase64 : mobileBannerBase64" :type="'banner'"
+            @set-file="setFile" :maxFile="1" :entity="'Banner producto'"
             :resolutionLabel="'Resolución mínima 1280 X 450 Px'" />
         </div>
         <div class="banner-picker q-mt-20" v-if="renderFilePickerSection">
-          <FilePickerMotowork :productImages="product.images" @delete-file="deleteFile" :isBackgroundImage="false" :type="'images'" @set-file="setFile"
-            :maxFile="5" :entity="'Imágenes del producto'" :resolutionLabel="'Resolución mínima 1080 X 1080 Px'"
-            :base64Image="''" :arrayBase64="tab === 'desktop' ? imagesDesktopBase64 : imagesMobileBase64" />
+          <FilePickerMotowork :productImages="product.images" @delete-file="deleteFile" :isBackgroundImage="false"
+            :type="'images'" @set-file="setFile" :maxFile="5" :entity="'Imágenes del producto'"
+            :resolutionLabel="'Resolución mínima 1080 X 1080 Px'" :base64Image="''"
+            :arrayBase64="tab === 'desktop' ? imagesDesktopBase64 : imagesMobileBase64" />
         </div>
       </div>
       <!--End Files-->
@@ -54,7 +56,8 @@
             </q-tab-panel>
             <q-tab-panel name="details">
               <detailFields v-if="type === 'vehicle'" :product="product" />
-              <VariablesProduct v-if="type === 'product'" :product="product" @add-variant="handleAddVariant" />
+              <VariablesProduct v-if="type === 'product'" :product="product" @add-variant="handleAddVariant"
+                @remove-variant="removeVariant" />
             </q-tab-panel>
             <q-tab-panel name="aditional">
               <infoAditionalFields :product="product" />
@@ -67,8 +70,8 @@
           <div class="row">
             <div class="col-12 col-md-6"
               :class="{ 'q-pl-md q-pr-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
-              <q-btn :disabled="!enableSaveButton" :loading="loading" type="submit" unelevated square :label="product._id ? 'Guardar' : 'Crear'"
-                class="full-width q-mt-md btn-cancel-solid"></q-btn>
+              <q-btn :disabled="!enableSaveButton" :loading="loading" type="submit" unelevated square
+                :label="product._id ? 'Guardar' : 'Crear'" class="full-width q-mt-md btn-cancel-solid"></q-btn>
             </div>
             <div class="col-12 col-md-6"
               :class="{ 'q-pr-md q-pl-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
@@ -87,7 +90,8 @@
     <q-dialog v-model="openModalStatus">
       <CardModalMotowork :title="statusTitle">
         <template v-slot:content>
-          <statusModal @do-try-egaint="openModalStatus = false" @do-continue="handlerSuccessCreation" :status="statusCreation" :description="statusDescription"></statusModal>
+          <statusModal @do-try-egaint="openModalStatus = false" @do-continue="handlerSuccessCreation"
+            :status="statusCreation" :description="statusDescription"></statusModal>
         </template>
       </CardModalMotowork>
     </q-dialog>
@@ -384,6 +388,12 @@ const handleAddVariant = () => {
   }
   if (product.value.variants) {
     product.value.variants.push(variant)
+  }
+}
+
+const removeVariant = (idx: number) => {
+  if (product.value.variants) {
+    product.value.variants.splice(idx, 1)
   }
 }
 

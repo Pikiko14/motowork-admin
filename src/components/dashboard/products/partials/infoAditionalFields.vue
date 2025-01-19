@@ -8,7 +8,11 @@
           <p class="section-name" :class="{ 'text-gray-2': !section.enable }">
             <div class="ellipsis-1-lines" style="max-width:300px; display: inline-block">{{ section.sectionName }}</div>
             <span>
-              <q-btn size="8pt" style="margin-top: -5px" icon="img:/images/trash.svg" flat dense @click="deleteSection(idx)"></q-btn>
+              <q-btn size="8pt" style="margin-top: -5px" icon="img:/images/trash.svg" flat dense @click="deleteSection(idx)">
+                <q-tooltip class="bg-secondary">
+                  Eliminar
+                </q-tooltip>
+              </q-btn>
             </span>
           </p>
           <span class="add-aditional-fields" @click="openSubSectionModal(idx)">

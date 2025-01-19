@@ -24,7 +24,7 @@
             <q-input square :rules="[
               val => (val && val.length > 0) || 'Por favor ingrese el sku',
               val => (val && val.length >= 1) || 'Mayor a 1 caracteres',
-              val => (val && val.length <= 90) || 'Menor a 90 caracteres',
+              val => (val && val.length <= 60) || 'Menor a 90 caracteres',
             ]" placeholder="SKU-001" class="q-mt-sm" outlined dense v-model="variant.sku"></q-input>
           </div>
           <div class="col-12 col-md-6" :class="{ 'q-pl-sm': $q.screen.gt.sm }">
@@ -32,7 +32,7 @@
             <q-input square :rules="[
               val => (val && val.length > 0) || 'Por favor ingrese el atributo',
               val => (val && val.length >= 1) || 'Mayor a 1 caracteres',
-              val => (val && val.length <= 90) || 'Menor a 90 caracteres',
+              val => (val && val.length <= 60) || 'Menor a 90 caracteres',
             ]" placeholder="S / Rojo" class="q-mt-sm" outlined dense
               v-model="variant.attribute"></q-input>
           </div>

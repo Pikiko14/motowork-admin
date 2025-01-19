@@ -44,7 +44,7 @@
         <q-tabs class="text-grey-7 q-mt-lg" v-model="tabFields" active-color="primary" indicator-color="primary" ina
           align="justify">
           <q-tab name="general" label="INFO. GENERAL" />
-          <q-tab name="details" label="DETALLES" />
+          <q-tab name="details" :label="product.type === 'vehicle' ? 'DETALLES' : 'VARIABLES'" />
           <q-tab name="aditional" label="INFO. ADICIONAL" />
         </q-tabs>
         <!--End tab section-->
@@ -56,7 +56,8 @@
               <GeneralShowData :product="product" />
             </q-tab-panel>
             <q-tab-panel name="details" class="q-pa-none">
-              <DetailShowData :product="product" class="q-pa-none" />
+              <DetailShowData v-if="product.type === 'vehicle'" :product="product" class="q-pa-none" />
+              <VaraiblesShow v-if="product.type === 'product'" :product="product" class="q-pa-none" />
             </q-tab-panel>
             <q-tab-panel name="aditional" class="q-pa-none">
               <AditionalShowData :product="product" />
@@ -101,6 +102,7 @@ import { useQuasar } from 'quasar'
 import { onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { notification } from 'src/boot/notification'
+import VaraiblesShow from './partials/varaiblesShow.vue'
 import DetailShowData from './partials/detailShowData.vue'
 import { useProductsStore } from '../../../stores/products'
 import GeneralShowData from './partials/generalShowData.vue'

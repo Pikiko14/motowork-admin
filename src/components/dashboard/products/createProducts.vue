@@ -55,8 +55,8 @@
               <generalFields :product="product" />
             </q-tab-panel>
             <q-tab-panel name="details">
-              <detailFields v-if="type === 'vehicle'" :product="product" />
-              <VariablesProduct v-if="type === 'product'" :product="product" @add-variant="handleAddVariant"
+              <detailFields v-if="type === 'vehicle' || product.type === 'vehicle'" :product="product" />
+              <VariablesProduct v-if="type === 'product' || product.type === 'product'" :product="product" @add-variant="handleAddVariant"
                 @remove-variant="removeVariant" />
             </q-tab-panel>
             <q-tab-panel name="aditional">
@@ -279,8 +279,6 @@ const createProduct = async () => {
 }
 
 const updateProduct = async () => {
-  const { type } = route.query
-  product.value.type = type as string
   loading.value = true
   try {
     const updateProductObject = await handlerUpdateProduct(product.value) // save product json

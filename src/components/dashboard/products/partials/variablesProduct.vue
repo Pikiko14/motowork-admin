@@ -19,8 +19,7 @@
     <div class="col-12 q-mt-lg">
       <q-scroll-area style="width: 100%; height: 450px" v-if="product.variants && product?.variants.length > 0">
         <div class="row full-width relative" v-for="(variant, idx) in product.variants" :key="idx" :class="{ 'q-mt-lg': idx > 0 }">
-          {{ variant }}
-          <div class="col-12 q-pb-lg">
+          <div class="col-12 q-pb-md">
             <span class="text-bold label-variable">VARIABLE {{ idx + 1 }}</span>
           </div>
           <div class="col-12 col-md-6" :class="{ 'q-pr-sm': $q.screen.gt.sm }">

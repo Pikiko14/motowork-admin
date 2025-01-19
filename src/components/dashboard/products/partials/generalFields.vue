@@ -137,26 +137,26 @@ const categoriesOptions = computed(() => {
 const filterBrands = (val: string, update: any) => {
   if (val === '') {
     update(() => {
-      brandsStore.doListBrands(`?page=1&perPage=100&type=${type}&fields=name,id,icon`)
+      brandsStore.doListBrands(`?page=1&perPage=100&type=${type || props.product.type}&fields=name,id,icon`)
     })
     return
   }
   update(() => {
     const needle = val.toLowerCase()
-    brandsStore.doListBrands(`?page=1&perPage=100&type=${type}&fields=name,id,icon&search=${needle}`)
+    brandsStore.doListBrands(`?page=1&perPage=100&type=${type || props.product.type}&fields=name,id,icon&search=${needle}`)
   })
 }
 
 const filterCategory = (val: string, update: any) => {
   if (val === '') {
     update(() => {
-      categoriesStore.doListCategories(`?page=1&perPage=100&type=${type}&fields=name,id`)
+      categoriesStore.doListCategories(`?page=1&perPage=100&type=${type || props.product.type}&fields=name,id`)
     })
     return
   }
   update(() => {
     const needle = val.toLowerCase()
-    categoriesStore.doListCategories(`?page=1&perPage=100&type=${type}&fields=name,id&search=${needle}`)
+    categoriesStore.doListCategories(`?page=1&perPage=100&type=${type || props.product.type}&fields=name,id&search=${needle}`)
   })
 }
 

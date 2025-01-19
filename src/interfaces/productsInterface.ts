@@ -46,6 +46,14 @@ export interface AdditionalField {
     brand_icon?: string
     image_default?: string;
     active?: boolean;
+    variants?: VariantInterface[];
+  }
+
+  export interface VariantInterface {
+    sku: string;
+    attribute: string;
+    description?: string;
+    image?: string;
   }
 
   export interface ProductsBanners {

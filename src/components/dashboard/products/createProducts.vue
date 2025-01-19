@@ -43,7 +43,7 @@
         <q-tabs class="text-grey-7" v-model="tabFields" active-color="primary" indicator-color="primary" ina
           align="justify">
           <q-tab name="general" label="INFO. GENERAL" />
-          <q-tab name="details" label="DETALLES" />
+          <q-tab name="details" :label="type === 'vehicle' ? 'DETALLES' : 'VARIABLES'" />
           <q-tab name="aditional" label="INFO. ADICIONAL" />
         </q-tabs>
 
@@ -54,6 +54,7 @@
             </q-tab-panel>
             <q-tab-panel name="details">
               <detailFields v-if="type === 'vehicle'" :product="product" />
+              <VariablesProduct v-if="type === 'product'" :product="product" @add-variant="handleAddVariant" />
             </q-tab-panel>
             <q-tab-panel name="aditional">
               <infoAditionalFields :product="product" />
@@ -96,12 +97,13 @@
 
 <script lang="ts" setup>
 // imports
-import { computed, onBeforeMount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import statusModal from '../partials/statusModal.vue'
 import detailFields from './partials/detailFields.vue'
 import generalFields from './partials/generalFields.vue'
+import { computed, onBeforeMount, ref, watch } from 'vue'
 import { useProductsStore } from '../../../stores/products'
+import VariablesProduct from './partials/variablesProduct.vue'
 import CardModalMotowork from '../partials/cardModalMotowork.vue'
 import { ProductsInterface } from '@/interfaces/productsInterface'
 import FilePickerMotowork from '../partials/filePickerMotowork.vue'
@@ -144,6 +146,7 @@ const product = ref<ProductsInterface>({
     colors: []
   },
   additionalInfo: [],
+  variants: []
 })
 const statusDescription = ref<string>('¡Felicitaciones! Has creado un nuevo producto. Has agregado detalles, imágenes y  precios correctamente.')
 
@@ -369,6 +372,18 @@ const loadProduct = async (id: string) => {
         order: '1'
       }
     });
+  }
+}
+
+const handleAddVariant = () => {
+  const variant = {
+    sku: '',
+    attribute: '',
+    description: '',
+    image: '',
+  }
+  if (product.value.variants) {
+    product.value.variants.push(variant)
   }
 }
 

@@ -41,7 +41,6 @@
         val => (val && val.length > 0) || 'Por favor ingrese el nombre del banner',
         val => (val && val.length >= 5) || 'Mayor a 5 caracteres',
         val => (val && val.length <= 160) || 'Menor a 90 caracteres',
-        val => /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9#]+\/?)*$/.test(val) || 'Debe ser un link correcto'
       ]" placeholder="https://www.google.com" outlined dense v-model="banner.link"></q-input>
     </div>
     <div class="col-12 col-md-6 q-px-md q-mt-md q-pt-sm">
@@ -109,6 +108,10 @@ export default defineComponent({
         value: TypeBanner.accesories
       },
       {
+        label: 'Vehiculos',
+        value: TypeBanner.vehicles
+      },
+      {
         label: 'Servicio técnico',
         value: TypeBanner.used
       },
@@ -139,7 +142,7 @@ export default defineComponent({
     // methods
     const doSaveBanners = async () => {
       if (!banner.value._id && !desktopImage.value || !banner.value._id && !tableImage.value || !banner.value._id && !mobileImage.value) {
-        notification('warning', 'Faltan imagenes que agregar al banner', 'warning')
+        notification('', 'Faltan imagenes que agregar al banner', 'warning')
         return false
       }
 

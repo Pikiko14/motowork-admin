@@ -45,7 +45,8 @@
         <q-tabs class="text-grey-7" v-model="tabFields" active-color="primary" indicator-color="primary" ina
           align="justify">
           <q-tab name="general" label="INFO. GENERAL" />
-          <q-tab name="details" :label="type === 'vehicle' ? 'DETALLES' : 'VARIABLES'" />
+          <q-tab name="details"
+            :label="type === 'vehicle' || product && product.type === 'vehicle' ? 'DETALLES' : 'VARIABLES'" />
           <q-tab name="aditional" label="INFO. ADICIONAL" />
         </q-tabs>
 
@@ -56,8 +57,8 @@
             </q-tab-panel>
             <q-tab-panel name="details">
               <detailFields v-if="type === 'vehicle' || product.type === 'vehicle'" :product="product" />
-              <VariablesProduct v-if="type === 'product' || product.type === 'product'" :product="product" @add-variant="handleAddVariant"
-                @remove-variant="removeVariant" @set-image-variant="setImgVariant" />
+              <VariablesProduct v-if="type === 'product' || product.type === 'product'" :product="product"
+                @add-variant="handleAddVariant" @remove-variant="removeVariant" @set-image-variant="setImgVariant" />
             </q-tab-panel>
             <q-tab-panel name="aditional">
               <infoAditionalFields :product="product" />
@@ -176,7 +177,7 @@ watch(
 
 // computed
 const enableSaveButton = computed(() => {
-  if (type === 'vehicle') {
+  if (type === 'vehicle' || product.value && product.value.type === 'vehicle') {
     return product.value.name &&
       product.value.model &&
       product.value.state &&
@@ -400,7 +401,7 @@ const setImgVariant = (data: any) => {
     product.value.variants[data.variantIdx].image = data.imgPath
   }
 }
- 
+
 // hook
 onBeforeMount(async () => {
   if (route.params.id) {

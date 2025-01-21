@@ -138,7 +138,6 @@ onBeforeMount(() => {
   padding: 8px;
   display: flex;
   width: 100%;
-  max-height: 340px;
   padding: 8px;
   flex-direction: column;
   align-items: flex-start;
@@ -151,6 +150,14 @@ onBeforeMount(() => {
     height: 160px;
     border-radius: 8px;
     position: relative;
+
+    @media(max-width: 1400px) {
+      height: 120px;
+    }
+
+    @media(max-width: 600px) {
+      height: 155px;
+    }
   }
 
   .product-item-img {

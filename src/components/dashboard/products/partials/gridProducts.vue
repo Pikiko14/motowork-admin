@@ -150,7 +150,7 @@ onBeforeMount(() => {
     max-height: 132px;
     object-fit: cover;
     border-radius: 8px;
-    display: relative;
+    position: relative;
   }
 
   .product-item-img {

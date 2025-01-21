@@ -6,7 +6,6 @@
         val => (val && val.length > 0) || 'Por favor ingrese el nombre del producto',
         val => (val && val.length >= 1) || 'Mayor a 1 caracteres',
         val => (val && val.length <= 90) || 'Menor a 90 caracteres',
-        val => /^[a-zA-Z0-9 áéíóúÁÉÍÓÚñÑüÜ&\/-]+$/.test(val) || 'Ingresa un valor valido',
       ]" placeholder="Ingresa un nombre" class="q-mt-sm" outlined dense v-model="product.name"></q-input>
     </div>
     <div class="col-12 col-md-6" :class="{ 'q-pl-sm': $q.screen.gt.sm }">
@@ -15,7 +14,6 @@
         val => (val && val.length > 0) || 'Por favor ingrese el modelo del producto',
         val => (val && val.length >= 1) || 'Mayor a 1 caracteres',
         val => (val && val.length <= 90) || 'Menor a 90 caracteres',
-        val => /^[a-zA-Z0-9 áéíóúÁÉÍÓÚñÑüÜ&\/-]+$/.test(val) || 'Ingresa un valor valido',
       ]" placeholder="Ingresa su modelo" class="q-mt-sm" outlined dense v-model="product.model"></q-input>
     </div>
     <div class="col-12 col-md-6 relative" :class="{ 'q-pr-sm': $q.screen.gt.sm }">

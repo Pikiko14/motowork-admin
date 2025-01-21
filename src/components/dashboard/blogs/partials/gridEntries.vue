@@ -139,7 +139,7 @@ onBeforeMount(() => {
     height: 150px;
     object-fit: cover;
     border-radius: 8px;
-    display: relative;
+    position: relative;
   }
 
   .blog-title {

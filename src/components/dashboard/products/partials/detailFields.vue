@@ -2,11 +2,15 @@
   <div class="row q-mt-lg">
     <div class="col-12 col-md-6" :class="{ 'q-pr-sm': $q.screen.gt.sm }">
       <label for="">Potencia / Cilindraje <span class="text-secondary">*</span></label>
-      <q-input square :rules="[
+      <q-input square type="number" :rules="[
         val => (val && val.length > 0) || 'Por favor ingrese el cilindraje',
         val => (val && val.length >= 1) || 'Mayor a 1 caracteres',
-        val => (val && val.length <= 90) || 'Menor a 90 caracteres',
-      ]" placeholder="Ingresa un cilindraje" class="q-mt-sm" outlined dense v-model="product.details.power"></q-input>
+        val => (val && val.length <= 90) || 'Menor a 90 caracteres'
+      ]" placeholder="Ingresa un cilindraje" class="q-mt-sm" outlined dense v-model="product.details.power">
+        <template v-slot:append>
+          CC
+        </template>
+      </q-input>
     </div>
     <div class="col-12 col-md-6" :class="{ 'q-pl-sm': $q.screen.gt.sm }">
       <label for="">Peso (Con aceite y gasolina) <span class="text-secondary">*</span></label>
@@ -17,7 +21,7 @@
       ]" placeholder="Ingresa un tipo de licencia" class="q-mt-sm" outlined dense
         v-model="product.details.weight"></q-input>
     </div>
-    <div class="col-12 col-md-6 ¿" :class="{'q-pr-sm': $q.screen.gt.sm}">
+    <div class="col-12 col-md-6 ¿" :class="{ 'q-pr-sm': $q.screen.gt.sm }">
       <label for="">Potencia máxima <span class="text-secondary">*</span></label>
       <q-input square :rules="[
         val => (val && val.length > 0) || 'Por favor ingrese el almacenamiento',
@@ -26,7 +30,7 @@
       ]" placeholder="Ingresa el almacenamiento" class="q-mt-sm" outlined dense
         v-model="product.details.max_power"></q-input>
     </div>
-    <div class="col-12 col-md-6" :class="{'q-pl-sm': $q.screen.gt.sm}">
+    <div class="col-12 col-md-6" :class="{ 'q-pl-sm': $q.screen.gt.sm }">
       <label for="">Torque maximo <span class="text-secondary">*</span></label>
       <q-input square :rules="[
         val => (val && val.length > 0) || 'Por favor ingrese un link de prueba de manejo',

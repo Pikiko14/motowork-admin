@@ -4,7 +4,7 @@
       <div class="container">
         <div class="container__item">
           <span class="container__item--bold text-uppercase">Potencia / Cilindraje</span>
-          <span class="container__item--normal">{{ product.details.power }}</span>
+          <span class="container__item--normal">{{ product.details.power }} CC</span>
         </div>
 
         <div class="container__item">

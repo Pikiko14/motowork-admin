@@ -143,7 +143,7 @@ const product = ref<ProductsInterface>({
   type: '',
   enableDiscount: false,
   details: {
-    power: '',
+    power: 0,
     weight: '',
     max_power: '',
     torque: '',

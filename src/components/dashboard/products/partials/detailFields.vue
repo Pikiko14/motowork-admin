@@ -52,12 +52,12 @@
       <label for="">Colores disponibles <span class="text-secondary">*</span></label>
       <div class="color-selector q-mt-sm">
         <div @click="removeColor(idx)" class="color" v-for="(color, idx) in product.details.colors" :key="idx"
-          :style="{ backgroundColor: color }"></div>
+          :style="{ backgroundColor: color.hex }"></div>
         <div class="color bordered">
           <q-icon size="14pt" name="img:/images/search_black.svg"></q-icon>
           <q-menu class="text-center">
             <q-color class="shadow-0" v-model="color" no-footer style="max-width: 250px" />
-            <q-btn label="Gurdar" v-close-popup @click="product.details.colors.push(color)" color="secondary"
+            <q-btn label="Gurdar" v-close-popup @click="addColor" color="secondary"
               class="q-mb-md" unelevated></q-btn>
           </q-menu>
         </div>
@@ -85,6 +85,14 @@ const color = ref<string>('#285de0')
 // methods
 const removeColor = (idx: number) => {
   props.product.details.colors.splice(idx, 1)
+}
+
+const addColor = (hex: string) => {
+  const colorobj = {
+    hex: color.value,
+    image: ''
+  }
+  props.product.details.colors.push(colorobj)
 }
 </script>
 

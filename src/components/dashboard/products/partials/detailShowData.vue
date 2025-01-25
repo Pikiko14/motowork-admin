@@ -28,7 +28,7 @@
             <div
               class="container__item--normal__color"
               v-for="(color, idx) in product.details.colors" :key="idx"
-              :style="{ backgroundColor: color, zIndex: product.details.colors.length - idx, marginLeft: '-10px' }"
+              :style="{ backgroundColor: color.hex, zIndex: product.details.colors.length - idx, marginLeft: '-10px' }"
             >
             </div>
           </span>

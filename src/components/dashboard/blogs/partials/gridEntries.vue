@@ -122,6 +122,16 @@ onBeforeMount(() => {
   /* 5 columnas */
   gap: 16px;
   /* Espaciado entre elementos */
+
+  @media(min-width: 1920px) {
+    grid-template-columns: repeat(8, 1fr);
+
+  }
+
+  @media(min-width: 1620px) {
+    grid-template-columns: repeat(6, 1fr);
+
+  }
 }
 
 .blog-item {

@@ -57,6 +57,17 @@
             </q-tooltip>
         </q-item-section>
       </q-item>
+      <q-item clickable class="q-mt-sm" to="/dashboard/orders?page=1&perPage=10&search=&type=Sales Order&sortBy=createdAt&order=-1">
+        <q-item-section class="text-center">
+          <q-icon
+          style="margin-left: -3px;"
+            :name="$route.path == '/dashboard/orders' ? 'img:/images/shopping_bag_red.svg' : 'img:/images/shopping_bag.svg'"
+            size="30px"></q-icon>
+            <q-tooltip class="bg-secondary" :offset="[10, 10]">
+              Ordenes
+            </q-tooltip>
+        </q-item-section>
+      </q-item>
       <q-item clickable class="q-mt-sm" to="/dashboard/blogs?page=1&perPage=8&search=&sortBy=title&order=1">
         <q-item-section class="text-center">
           <q-icon :name="$route.path == '/dashboard/blogs' ? 'img:/images/blogs-primary.svg' : 'img:/images/blogs.svg'"

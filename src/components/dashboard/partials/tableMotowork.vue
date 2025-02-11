@@ -94,6 +94,14 @@
       </template>
       <!--End name category-->
 
+      <!--Client Name order-->
+      <template v-slot:body-cell-clientName="props">
+        <q-td class="text-left brand-name-img">
+          {{ props.row.client.firstName }} {{ props.row.client.lastName }} 
+        </q-td>
+      </template>
+      <!--End Client name order-->
+
     </q-table>
     <!--End Table section-->
 
@@ -162,8 +170,10 @@ export default defineComponent({
       const search = route.query.search ? route.query.search as string : ''
       const perPage = route.query.perPage ? parseInt(route.query.perPage as string) : 7
       const type = route.query.type ? route.query.type as string : ''
+      const sortBy = route.query.sortBy ? route.query.sortBy as string : ''
+      const order = route.query.order ? route.query.order as string : ''
       const { path } = route
-      router.push({ path: path, query: { page, perPage, search, type } })
+      router.push({ path: path, query: { page, perPage, search, type, sortBy, order } })
     }
 
     const doDelete = (id: string): void => {

@@ -57,3 +57,7 @@ export interface OrderInterface {
   payment_method?: string;
   payment_data?: any;
 }
+
+export interface OrdersStatusInterface {
+  status: string;
+}

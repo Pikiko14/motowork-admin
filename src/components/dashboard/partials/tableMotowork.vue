@@ -145,7 +145,13 @@
 
       <!--payment status-->
       <template v-slot:body-cell-paymentStatus="props">
-        <q-td class="text-center">
+        <q-td class="text-left">
+          <span class="payment-span">
+            {{ props.row.payment_method === 'mercadopago' ? 'Mercadopago' : 'Transferencia' }}
+            <img v-if="props.row.payment_method === 'mercadopago'" src="/images/mercado_pago.webp" width="25px"
+              alt="Mercado pago" title="Mercado pago">
+            <img v-else src="/images/transferencia_bancaria.webp" width="25px" alt="Mercado pago" title="Mercado pago">
+          </span>
           <div class="chip news" v-if="props.row.status === 'Pago Completado'">
             {{ props.row.status }}
           </div>
@@ -319,5 +325,11 @@ export default defineComponent({
     flex-direction: column;
     gap: 2px;
   }
+}
+
+.payment-span {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 6px;
 }
 </style>

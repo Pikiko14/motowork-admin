@@ -47,7 +47,7 @@
         </q-card-section>
 
         <q-card-section style="margin-top: -10px">
-          <ShowOrder :order="orderToShow" />
+          <ShowOrder @change-status="handlerChangeStatus" :order="orderToShow" />
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -61,6 +61,7 @@ import { Utils } from 'src/utils/utils'
 import ShowOrder from './partials/ShowOrder.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useOrdersStore } from 'src/stores/orders'
+import { notification } from 'src/boot/notification'
 import { SortGroup, SortOption } from '@/interfaces/api'
 import TableMotowork from '../partials/tableMotowork.vue'
 import { computed, onBeforeMount, ref, watch } from 'vue'
@@ -132,7 +133,7 @@ const orderColumns = ref<TableColumnsInterface[]>([
     name: 'paymentStatus',
     label: 'Estado de pago',
     field: 'status',
-    align: 'center'
+    align: 'left'
   },
   {
     name: 'total',
@@ -280,6 +281,20 @@ const handlerShowOrder = (id: string) => {
   const order = orders.value.find((item: OrderInterface) => item._id === id)
   showOrder.value = !showOrder.value
   orderToShow.value = order as OrderInterface
+}
+
+const handlerChangeStatus = async (status: string, orderId: string) => {
+  orderToShow.value.status = status
+  const params = {
+    status,
+  }
+  try {
+    const response = await store.updateOrderStatus(params, orderId)
+    if (response?.success) {
+      notification('possitive', response.message, 'primary')
+    }
+  } catch (error) {
+  }
 }
 
 // hook

@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import { Request } from "src/api/api";
 import { ResponseObj } from "src/interfaces/api";
-import { OrderInterface } from "@/interfaces/ordersInterface";
+import { OrderInterface, OrdersStatusInterface } from "@/interfaces/ordersInterface";
 
 const path = "orders";
 const handlerRequest = new Request({
@@ -73,6 +73,25 @@ export const useOrdersStore = defineStore("ordersStore", () => {
     }
   }
 
+  /**
+   * Update order
+   */
+  const updateOrderStatus = async (params: OrdersStatusInterface, id: string) => {
+    try {
+      const response = (await handlerRequest.doPutRequest(
+        `${path}/${id}`,
+        params,
+        true,
+      )) as ResponseObj;
+      if (response.success) {
+        // return response
+        return response;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   // return statement
   return {
     orders,
@@ -81,5 +100,6 @@ export const useOrdersStore = defineStore("ordersStore", () => {
     listOrders,
     clearOrders,
     getCountOrders,
+    updateOrderStatus,
   };
 });

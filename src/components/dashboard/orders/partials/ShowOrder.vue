@@ -70,9 +70,25 @@
         <div class="chip danger"
           v-if="order.status !== 'Pendiente' && order.status !== 'Pago Completado' && order.status !== 'En proceso de pago'">
           {{ order.status }}
+          <q-menu class="round" v-if="order.payment_method === 'trasnferencia'">
+            <q-list>
+              <q-item v-for="(status, idx) in statusArray" :key="idx" clickable v-close-popup
+                v-show="status !== order.status" @click="setOrderStatus(status)">
+                <q-item-section>{{ status }}</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
         </div>
         <div class="chip used" v-if="order.status == 'Pendiente' || order.status === 'En proceso de pago'">
           {{ order.status }}
+          <q-menu class="round" v-if="order.payment_method === 'trasnferencia'">
+            <q-list>
+              <q-item v-for="(status, idx) in statusArray" :key="idx" clickable v-close-popup
+                v-show="status !== order.status" @click="setOrderStatus(status)">
+                <q-item-section>{{ status }}</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
         </div>
       </span>
     </div>
@@ -128,12 +144,12 @@
 
 <script lang="ts" setup>
 // imports
-import { defineProps } from 'vue';
-import { Utils } from 'src/utils/utils';
+import { Utils } from 'src/utils/utils'
+import { defineProps, defineEmits } from 'vue'
 import { OrderInterface } from 'src/interfaces/ordersInterface'
 
 // props
-defineProps({
+const props = defineProps({
   order: {
     type: Object as () => OrderInterface,
     default: () => {
@@ -142,8 +158,26 @@ defineProps({
   }
 })
 
+// emits
+const emit = defineEmits([
+  'change-status'
+])
+
 // references
 const utils = new Utils('orders')
+const statusArray = [...new Set([
+  "Pago Completado",
+  "Pago en estado pendiente",
+  "En proceso de pago",
+  "Pago Rechazado",
+  "Pago Cancelado",
+  "Devolución de Fondos",
+])];
+
+// methods
+const setOrderStatus = (status: string) => {
+  emit('change-status', status, props.order._id)
+}
 </script>
 
 <style scoped lang="scss">

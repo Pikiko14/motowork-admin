@@ -199,9 +199,8 @@ export default defineComponent({
         from: e.from,
         to: e.to
       }
-      const { path } = route
       router.push({
-        path: path,
+        name: 'orders',
         query: {
           page: 1,
           perPage: 7,

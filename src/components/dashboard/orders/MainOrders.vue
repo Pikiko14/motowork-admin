@@ -32,8 +32,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onBeforeMount, ref } from 'vue'
+import { Utils } from 'src/utils/utils'
 import { useRoute, useRouter } from 'vue-router'
+import { computed, onBeforeMount, ref } from 'vue'
 import { useOrdersStore } from 'src/stores/orders'
 import { SortGroup, SortOption } from '@/interfaces/api'
 import TableMotowork from '../partials/tableMotowork.vue'
@@ -45,6 +46,7 @@ const tab = ref('orders')
 const route = useRoute()
 const router = useRouter()
 const store = useOrdersStore()
+const utils = new Utils('orders')
 const orderMenu = ref<SortGroup[]>([
   {
     label: 'Creación',
@@ -98,9 +100,15 @@ const orderColumns = ref<TableColumnsInterface[]>([
     align: 'left'
   },
   {
-    name: 'payment_status',
+    name: 'paymentStatus',
     label: 'Estado de pago',
     field: 'status',
+    align: 'center'
+  },
+  {
+    name: 'total',
+    label: 'Total',
+    field: row => utils.formatPrice(row.total),
     align: 'center'
   },
   {

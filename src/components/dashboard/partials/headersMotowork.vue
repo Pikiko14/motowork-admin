@@ -128,7 +128,8 @@ export default defineComponent({
     // methods
     const doSearch = (searchString: string | number | null) => {
       const type = route.query.type ? route.query.type as string : ''
-
+      const sortBy = route.query.sortBy ? route.query.sortBy as string : ''
+      const order = route.query.order ? route.query.order as string : ''
       const { path } = route
       router.push({
         path: path,
@@ -137,6 +138,8 @@ export default defineComponent({
           perPage: 10,
           search: searchString,
           type,
+          sortBy,
+          order
         }
       })
     }

@@ -96,18 +96,34 @@
 
       <!--Client Name order-->
       <template v-slot:body-cell-clientName="props">
-        <q-td class="text-left brand-name-img">
+        <q-td class="text-left">
           {{ props.row.client.firstName }} {{ props.row.client.lastName }} 
         </q-td>
       </template>
       <!--End Client name order-->
 
+      
+      <!--payment status-->
+      <template v-slot:body-cell-paymentStatus="props">
+        <q-td class="text-center">
+          <div class="chip news" v-if="props.row.status === 'Pago Completado'">
+            {{ props.row.status }} 
+          </div>
+          <div class="chip danger" v-if="props.row.status !== 'Pendiente' && props.row.status !== 'Pago Completado' && props.row.status !== 'En proceso de pago'">
+            {{ props.row.status }} 
+          </div>
+          <div class="chip used" v-if="props.row.status == 'Pendiente' || props.row.status === 'En proceso de pago'">
+            {{ props.row.status }} 
+          </div>
+        </q-td>
+      </template>
+      <!--End payment status-->
     </q-table>
     <!--End Table section-->
 
     <!--Paginator section-->
     <div class="full-width q-mt-lg" v-if="totalPages > 0">
-      <q-pagination @update:model-value="doPagination" color="secondary" v-model="currentPage" :max="totalPages" />
+      <q-pagination @update:model-value="doPagination" color="secondary" v-model="currentPage" :boundary-numbers="false"  :max-pages="5" :max="totalPages" />
     </div>
     <!--End Paginator section-->
   </section>

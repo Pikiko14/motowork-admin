@@ -351,6 +351,21 @@ input::placeholder {
   text-transform: uppercase;
 }
 
+.danger {
+  background: var(--Success-Success100, rgb(235, 154, 138)) !important;
+  overflow: hidden;
+  color: var(--Success-Success300, red) !important;
+  text-align: center;
+  text-overflow: ellipsis;
+  /* Mobile/Body/Title/Small */
+  font-family: Play;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 125%; /* 12.5px */
+  text-transform: uppercase;
+}
+
 .used {
   background: var(--Warning-Warning100, #ffd5aa);
   overflow: hidden;

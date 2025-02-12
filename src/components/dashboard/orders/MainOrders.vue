@@ -1,8 +1,8 @@
 <template>
   <div class="row q-py-md q-my-xs">
     <!--Header-->
-    <div class="col-12" :class="{ 'q-pr-md': $q.screen.gt.sm }">
-      <HeadersMotowork :show-add-button="false" :orderMenu="orderMenu" :show-order-button="true" @do-order="doOrder"
+    <div class="col-12" :class="{ 'q-pr-md': q.screen.gt.sm }">
+      <HeadersMotowork :showCalendar="true" :show-add-button="false" :orderMenu="orderMenu" :show-order-button="true" @do-order="doOrder"
         :title="'Ordenes'" @do-filter="doFilter" />
     </div>
     <!--End header-->
@@ -17,7 +17,7 @@
     <!--End tab-->
 
     <!--tab content-->
-    <div class="col-12 categories-tab q-pt-lg" :class="{ 'q-pr-md': $q.screen.gt.sm }">
+    <div class="col-12 categories-tab q-pt-lg" :class="{ 'q-pr-md': q.screen.gt.sm }">
       <TableMotowork :enableSelection="false" :columns="tab === 'orders' ? orderColumns : orderColumnsDrive" :rows="orders" :totalPages="totalPages" />
     </div>
     <!--End tab content-->
@@ -25,6 +25,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useQuasar } from 'quasar'
 import { Utils } from 'src/utils/utils'
 import { useRoute, useRouter } from 'vue-router'
 import { useOrdersStore } from 'src/stores/orders'
@@ -35,6 +36,7 @@ import HeadersMotowork from '../partials/headersMotowork.vue'
 import { TableColumnsInterface } from '@/interfaces/tableInterface'
 
 // references
+const q = useQuasar()
 const tab = ref('orders')
 const route = useRoute()
 const router = useRouter()
@@ -227,8 +229,16 @@ const loadOrder = async () => {
     const type = route.query.type || 'Sales Order'
     const sortBy = route.query.sortBy || 'client'
     const order = route.query.order || 'asc'
-    const query = `?page=${page}&perPage=${perPage}&search=${search}&type=${type}&sortBy=${sortBy}&order=${order}`
+    const filter = route.query.filter || ''
+    const query = `?page=${page}&perPage=${perPage}&search=${search}&type=${type}&sortBy=${sortBy}&order=${order}&filter=${filter}`
     await store.listOrders(query)
+  } catch (error) {
+  }
+}
+
+const loadCountOrder = async () => {
+  try {
+    await store.getCountOrders()
   } catch (error) {
   }
 }
@@ -239,5 +249,6 @@ onBeforeMount(async (): Promise<void> => {
     tab.value = route.query.type === 'Sales Order' ? 'orders' : 'drive'
   }
   await loadOrder()
+  await loadCountOrder()
 })
 </script>

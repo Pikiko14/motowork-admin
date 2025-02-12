@@ -808,3 +808,9 @@ p,h1,h2,h3,h4,h5,h6 {
 .space-between {
   justify-content: space-between;
 }
+
+.date-proxy {
+  .q-btn {
+    color: black;
+  }
+}

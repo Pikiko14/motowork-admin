@@ -40,11 +40,11 @@ module.exports = configure(function (/* ctx */) {
     extras: [
       // 'ionicons-v4',
       // 'mdi-v5',
-      "fontawesome-v6",
+      // "fontawesome-v6",
       // 'eva-icons',
       // 'themify',
       // 'line-awesome',
-      // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
+      'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
       "material-icons", // optional, you are not bound to it
     ],
 
@@ -102,8 +102,8 @@ module.exports = configure(function (/* ctx */) {
     framework: {
       config: {},
 
-      iconSet: 'material-icons', // Quasar icon set
-      // lang: 'en-US', // Quasar language pack
+      // iconSet: 'material-icons', // Quasar icon set
+      lang: 'es', // Quasar language pack
 
       // For special cases outside of where the auto-import strategy can have an impact
       // (like functional components as one of the examples),

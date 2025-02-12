@@ -57,7 +57,7 @@
             </q-tooltip>
         </q-item-section>
       </q-item>
-      <q-item clickable class="q-mt-sm" to="/dashboard/orders?page=1&perPage=10&search=&type=Sales Order&sortBy=createdAt&order=-1">
+      <q-item clickable class="q-mt-sm" to="/dashboard/orders?page=1&perPage=7&search=&type=Sales Order&sortBy=createdAt&order=-1">
         <q-item-section class="text-center">
           <q-icon
           style="margin-left: -3px;"

@@ -45,10 +45,32 @@ export const useOrdersStore = defineStore("ordersStore", () => {
     }
   };
 
+  /**
+   * clear orders
+   */
   const clearOrders  = () => {
     orders.value = []
     totalItems.value = 0
     totalPages.value = 0
+  }
+  
+  /**
+   * Count orders
+   */
+  const getCountOrders = async () => {
+    try {
+      const response = (await handlerRequest.doGetRequest(
+        `${path}/get/count`,
+        '',
+        true,
+      )) as ResponseObj;
+      if (response.success) {
+        // return response
+        return response;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   // return statement
@@ -58,5 +80,6 @@ export const useOrdersStore = defineStore("ordersStore", () => {
     totalPages,
     listOrders,
     clearOrders,
+    getCountOrders,
   };
 });

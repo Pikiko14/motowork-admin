@@ -17,15 +17,8 @@
     <!--End tab-->
 
     <!--tab content-->
-    <div class="col-12 q-mt-lg" :class="{ 'q-pr-md': $q.screen.gt.sm }">
-      <q-tab-panels v-model="tab" animated>
-        <q-tab-panel name="vehicle">
-          <gridProducts :products="products" :totalPages="totalPages" />
-        </q-tab-panel>
-        <q-tab-panel name="product">
-          <gridProducts :products="products" :totalPages="totalPages" />
-        </q-tab-panel>
-      </q-tab-panels>
+    <div class="col-12 q-mt-lg q-pt-lg" :class="{ 'q-pr-md': $q.screen.gt.sm }">
+      <gridProducts :products="products" :totalPages="totalPages" />
     </div>
     <!--End tab content-->
   </div>

@@ -12,7 +12,7 @@
     "build": "cross-env QENV=production quasar build -m spa"
   },
   "dependencies": {
-    "@quasar/extras": "^1.16.15",
+    "@quasar/extras": "^1.16.4",
     "apexcharts": "^3.52.0",
     "axios": "^1.2.1",
     "cross-env": "^7.0.3",

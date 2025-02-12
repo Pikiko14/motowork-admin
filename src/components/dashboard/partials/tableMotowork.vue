@@ -26,7 +26,7 @@
               Eliminar
             </q-tooltip>
           </q-btn>
-          <q-btn v-if="$route.path === '/dashboard/orders'" :to="`/dashboard/orders/${props.row._id}/details`"
+          <q-btn v-if="$route.path === '/dashboard/orders'"  @click="handlerShowDetail(props.row._id)"
             class="q-ml-20" size="9pt" color="black" flat dense icon="img:/images/show.svg" round>
             <q-tooltip square class="bg-primary">
               Ver detalles
@@ -203,6 +203,7 @@ export default defineComponent({
   emits: [
     'do-edit',
     'do-delete',
+    'do-show-detail',
     'do-toggle-status'
   ],
   setup(props, { emit }) {
@@ -258,6 +259,10 @@ export default defineComponent({
       emit('do-toggle-status', id)
     }
 
+    const handlerShowDetail = (id: string) => {
+      emit('do-show-detail', id)
+    }
+
     // hook
     onBeforeMount(() => {
       currentPage.value = route.query.page ? parseInt(route.query.page as string) : 1
@@ -273,6 +278,7 @@ export default defineComponent({
       currentPage,
       doPagination,
       doChangeStatus,
+      handlerShowDetail,
     }
   }
 })

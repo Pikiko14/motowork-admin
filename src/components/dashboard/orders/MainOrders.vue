@@ -18,29 +18,63 @@
 
     <!--tab content-->
     <div class="col-12 categories-tab q-pt-lg" :class="{ 'q-pr-md': q.screen.gt.sm }">
-      <TableMotowork :enableSelection="false" :columns="tab === 'orders' ? orderColumns : orderColumnsDrive" :rows="orders" :totalPages="totalPages" />
+      <TableMotowork
+        :enableSelection="false"
+        :columns="tab === 'orders' ? orderColumns : orderColumnsDrive"
+        :rows="orders"
+        :totalPages="totalPages"
+        @do-show-detail="handlerShowOrder"
+      />
     </div>
     <!--End tab content-->
+
+    <!--Dialog order-->
+    <q-dialog v-model="showOrder">
+      <q-card>
+        <q-card-section class="order-show">
+          <div class="row">
+            <div class="col-12">
+              <h1>
+                <span class="text-bold">Pedido </span>
+                <span>
+                  #{{ orderToShow._id }}
+                </span>
+              </h1>
+            </div>
+          </div>
+
+          <q-btn class="absolute-top-right" style="right: 10px; top: 15px" v-close-popup icon="img:/images/close.svg" flat dense></q-btn>
+        </q-card-section>
+
+        <q-card-section style="margin-top: -10px">
+          <ShowOrder :order="orderToShow" />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <!--End dialog order-->
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useQuasar } from 'quasar'
 import { Utils } from 'src/utils/utils'
+import ShowOrder from './partials/ShowOrder.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useOrdersStore } from 'src/stores/orders'
 import { SortGroup, SortOption } from '@/interfaces/api'
 import TableMotowork from '../partials/tableMotowork.vue'
 import { computed, onBeforeMount, ref, watch } from 'vue'
 import HeadersMotowork from '../partials/headersMotowork.vue'
+import { OrderInterface } from 'src/interfaces/ordersInterface'
 import { TableColumnsInterface } from '@/interfaces/tableInterface'
 
 // references
 const q = useQuasar()
-const tab = ref('orders')
 const route = useRoute()
+const tab = ref('orders')
 const router = useRouter()
 const store = useOrdersStore()
+const orderToShow = ref<any>({})
 const utils = new Utils('orders')
 const orderMenu = ref<SortGroup[]>([
   {
@@ -74,7 +108,7 @@ const orderMenu = ref<SortGroup[]>([
     ]
   }
 ])
-
+const showOrder = ref<boolean>(false)
 const orderColumns = ref<TableColumnsInterface[]>([
   {
     name: 'reference',
@@ -112,7 +146,6 @@ const orderColumns = ref<TableColumnsInterface[]>([
     field: 'option'
   },
 ])
-
 const orderColumnsDrive = ref<TableColumnsInterface[]>([
   {
     name: 'reference',
@@ -243,6 +276,12 @@ const loadCountOrder = async () => {
   }
 }
 
+const handlerShowOrder = (id: string) => {
+  const order = orders.value.find((item: OrderInterface) => item._id === id)
+  showOrder.value = !showOrder.value
+  orderToShow.value = order as OrderInterface
+}
+
 // hook
 onBeforeMount(async (): Promise<void> => {
   if (route.query.type) {
@@ -252,3 +291,25 @@ onBeforeMount(async (): Promise<void> => {
   await loadCountOrder()
 })
 </script>
+
+<style scoped lang="scss">
+.q-card {
+  width: 960px;
+  max-width: 1200px;
+}
+
+.order-show {
+  width: 100%;
+  max-width: 1600px;
+
+  h1 {
+    margin: 0;
+    font-size: 24px;
+    line-height: 120%;
+  }
+
+  @media(max-width: 767px) {
+    max-width: 100%;
+  }
+}
+</style>

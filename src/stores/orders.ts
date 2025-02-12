@@ -45,11 +45,18 @@ export const useOrdersStore = defineStore("ordersStore", () => {
     }
   };
 
+  const clearOrders  = () => {
+    orders.value = []
+    totalItems.value = 0
+    totalPages.value = 0
+  }
+
   // return statement
   return {
     orders,
     totalItems,
     totalPages,
-    listOrders
+    listOrders,
+    clearOrders,
   };
 });

@@ -61,7 +61,7 @@
         <q-item-section class="text-center">
           <q-icon
           style="margin-left: -3px;"
-            :name="$route.path == '/dashboard/orders' ? 'img:/images/shopping_bag_red.svg' : 'img:/images/shopping_bag.svg'"
+            :name="$route.path == '/dashboard/orders' ? 'img:/images/COMPRA ICONO ROJO.svg' : 'img:/images/COMPRA ICONO BLANCO.svg'"
             size="30px"></q-icon>
             <q-tooltip class="bg-secondary" :offset="[10, 10]">
               Ordenes

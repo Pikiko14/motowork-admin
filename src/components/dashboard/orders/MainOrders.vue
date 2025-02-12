@@ -17,15 +17,8 @@
     <!--End tab-->
 
     <!--tab content-->
-    <div class="col-12 categories-tab" :class="{ 'q-pr-md': $q.screen.gt.sm }">
-      <q-tab-panels v-model="tab" animated>
-        <q-tab-panel name="orders">
-          <TableMotowork :enableSelection="false" :columns="orderColumns" :rows="orders" :totalPages="totalPages" />
-        </q-tab-panel>
-        <q-tab-panel name="drive">
-          Manejo
-        </q-tab-panel>
-      </q-tab-panels>
+    <div class="col-12 categories-tab q-pt-lg" :class="{ 'q-pr-md': $q.screen.gt.sm }">
+      <TableMotowork :enableSelection="false" :columns="tab === 'orders' ? orderColumns : orderColumnsDrive" :rows="orders" :totalPages="totalPages" />
     </div>
     <!--End tab content-->
   </div>
@@ -34,10 +27,10 @@
 <script lang="ts" setup>
 import { Utils } from 'src/utils/utils'
 import { useRoute, useRouter } from 'vue-router'
-import { computed, onBeforeMount, ref } from 'vue'
 import { useOrdersStore } from 'src/stores/orders'
 import { SortGroup, SortOption } from '@/interfaces/api'
 import TableMotowork from '../partials/tableMotowork.vue'
+import { computed, onBeforeMount, ref, watch } from 'vue'
 import HeadersMotowork from '../partials/headersMotowork.vue'
 import { TableColumnsInterface } from '@/interfaces/tableInterface'
 
@@ -108,8 +101,40 @@ const orderColumns = ref<TableColumnsInterface[]>([
   {
     name: 'total',
     label: 'Total',
-    field: row => utils.formatPrice(row.total),
+    field: row => utils.formatPrice(row.total || 0),
     align: 'center'
+  },
+  {
+    name: 'options',
+    label: '',
+    field: 'option'
+  },
+])
+
+const orderColumnsDrive = ref<TableColumnsInterface[]>([
+  {
+    name: 'reference',
+    label: '# Orden',
+    field: '_id',
+    align: 'left'
+  },
+  {
+    name: 'dateOrder',
+    label: 'Fecha y hora',
+    field: 'serviceTime',
+    align: 'left'
+  },
+  {
+    name: 'clientNameOrder',
+    label: 'Cliente',
+    field: 'client',
+    align: 'left'
+  },
+  {
+    name: 'vehicle',
+    label: 'Vehiculo',
+    field: 'vehicle',
+    align: 'left'
   },
   {
     name: 'options',
@@ -121,6 +146,30 @@ const orderColumns = ref<TableColumnsInterface[]>([
 // computed
 const orders = computed(() => store.orders)
 const totalPages = computed(() => store.totalPages)
+
+// watch
+watch(tab, (value) => {
+  const page = 1
+  const perPage = 10
+  const type = value === 'orders' ? 'Sales Order' : 'Test Drive Request'
+  const sortBy = route.query.sortBy ? route.query.sortBy : ''
+  const order = route.query.order ? route.query.order : ''
+  const search = route.query.search ? route.query.search : ''
+  const filter = route.query.filter || ''
+  store.clearOrders()
+  router.push({
+    name: 'orders',
+    query: {
+      page,
+      perPage,
+      search,
+      type,
+      sortBy,
+      order,
+      filter
+    }
+  })
+})
 
 // methods
 const doOrder = (item: SortOption): void => {
@@ -186,6 +235,9 @@ const loadOrder = async () => {
 
 // hook
 onBeforeMount(async (): Promise<void> => {
+  if (route.query.type) {
+    tab.value = route.query.type === 'Sales Order' ? 'orders' : 'drive'
+  }
   await loadOrder()
 })
 </script>

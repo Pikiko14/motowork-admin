@@ -14,15 +14,22 @@
       <!--Options tr-->
       <template v-slot:body-cell-options="props">
         <q-td class="text-center">
-          <q-btn size="7.8pt" @click="doEdit(props.row._id)" flat dense icon="img:/images/pencil-edit.svg" round>
+          <q-btn v-if="$route.path !== '/dashboard/orders'" size="7.8pt" @click="doEdit(props.row._id)" flat dense
+            icon="img:/images/pencil-edit.svg" round>
             <q-tooltip square class="bg-primary">
               Editar
             </q-tooltip>
           </q-btn>
-          <q-btn @click="doDelete(props.row._id)" class="q-ml-20" size="9pt" color="black" flat dense
-            icon="img:/images/trash.svg" round>
+          <q-btn v-if="$route.path !== '/dashboard/orders'" @click="doDelete(props.row._id)" class="q-ml-20" size="9pt"
+            color="black" flat dense icon="img:/images/trash.svg" round>
             <q-tooltip square class="bg-red">
               Eliminar
+            </q-tooltip>
+          </q-btn>
+          <q-btn v-if="$route.path === '/dashboard/orders'" :to="`/dashboard/orders/${props.row._id}/details`"
+            class="q-ml-20" size="9pt" color="black" flat dense icon="img:/images/show.svg" round>
+            <q-tooltip square class="bg-primary">
+              Ver detalles
             </q-tooltip>
           </q-btn>
         </q-td>
@@ -42,7 +49,8 @@
       <!--name banners tr-->
       <template v-slot:body-cell-location="props">
         <q-td class="text-left">
-          <q-img v-if="props.row.desktop_image?.path" class="banners-table-img" :src="`${props.row.desktop_image?.path}`"></q-img>
+          <q-img v-if="props.row.desktop_image?.path" class="banners-table-img"
+            :src="`${props.row.desktop_image?.path}`"></q-img>
           <span class="q-ml-20">{{ props.row.name }} - {{ props.row.type }}</span>
         </q-td>
       </template>
@@ -97,23 +105,56 @@
       <!--Client Name order-->
       <template v-slot:body-cell-clientName="props">
         <q-td class="text-left">
-          {{ props.row.client.firstName }} {{ props.row.client.lastName }} 
+          {{ props.row.client.firstName }} {{ props.row.client.lastName }}<br>
+          <span class="low-text">Doc. {{ props.row.client.dni || '' }}</span>
         </q-td>
       </template>
       <!--End Client name order-->
 
-      
+      <!--Date order-->
+      <template v-slot:body-cell-dateOrder="props">
+        <q-td class="text-left">
+          {{ props.row.serviceDate }}<br>
+          <span class="low-text">Hora: {{ props.row.serviceTime || '' }}</span>
+        </q-td>
+      </template>
+      <!--End Date order-->
+
+      <!--Client Name order-->
+      <template v-slot:body-cell-clientNameOrder="props">
+        <q-td class="text-left">
+          {{ props.row.client.firstName }} {{ props.row.client.lastName }}<br />
+          <span class="low-text">Tel. {{ props.row.client.phone || '' }}</span>
+        </q-td>
+      </template>
+      <!--End Client name order-->
+
+      <!--Vehicle order-->
+      <template v-slot:body-cell-vehicle="props">
+        <q-td class="text-left">
+          <div class="vehivle-card">
+            <img :src="props.row.vehicleDetails.image" alt="Imagen del vehiculo" title="imagen del vehiculo">
+            <div class="content">
+              <span>{{ props.row.vehicleDetails.name }}</span><br>
+              <span>{{ props.row.vehicleDetails.model }}</span>
+            </div>
+          </div>
+        </q-td>
+      </template>
+      <!--End vehicleorder-->
+
       <!--payment status-->
       <template v-slot:body-cell-paymentStatus="props">
         <q-td class="text-center">
           <div class="chip news" v-if="props.row.status === 'Pago Completado'">
-            {{ props.row.status }} 
+            {{ props.row.status }}
           </div>
-          <div class="chip danger" v-if="props.row.status !== 'Pendiente' && props.row.status !== 'Pago Completado' && props.row.status !== 'En proceso de pago'">
-            {{ props.row.status }} 
+          <div class="chip danger"
+            v-if="props.row.status !== 'Pendiente' && props.row.status !== 'Pago Completado' && props.row.status !== 'En proceso de pago'">
+            {{ props.row.status }}
           </div>
           <div class="chip used" v-if="props.row.status == 'Pendiente' || props.row.status === 'En proceso de pago'">
-            {{ props.row.status }} 
+            {{ props.row.status }}
           </div>
         </q-td>
       </template>
@@ -123,7 +164,8 @@
 
     <!--Paginator section-->
     <div class="full-width q-mt-lg" v-if="totalPages > 0">
-      <q-pagination @update:model-value="doPagination" color="secondary" v-model="currentPage" :boundary-numbers="false"  :max-pages="5" :max="totalPages" />
+      <q-pagination @update:model-value="doPagination" color="secondary" v-model="currentPage" :boundary-numbers="false"
+        :max-pages="5" :max="totalPages" />
     </div>
     <!--End Paginator section-->
   </section>
@@ -249,6 +291,27 @@ export default defineComponent({
     justify-content: center;
     padding-left: 12px;
     padding-right: 12px;
+  }
+}
+
+.low-text {
+  font-size: 10pt;
+}
+
+.vehivle-card {
+  gap: 12px;
+  align-items: center;
+  display: flex;
+
+  img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
   }
 }
 </style>

@@ -10,8 +10,8 @@
     <!--tab-->
     <div class="col-12 categories-tab">
       <q-tabs class="text-grey-7" v-model="tab" active-color="primary" indicator-color="primary" ina align="justify">
-        <q-tab name="orders" label="Pedidos" />
-        <q-tab name="drive" label="Manejo" />
+        <q-tab name="orders" :label="`Pedidos (${countData.totalOrders})`" />
+        <q-tab name="drive" :label="`Manejo (${countData.totalDrive})`" />
       </q-tabs>
     </div>
     <!--End tab-->
@@ -181,6 +181,7 @@ const orderColumnsDrive = ref<TableColumnsInterface[]>([
 
 // computed
 const orders = computed(() => store.orders)
+const countData = computed(() => store.countData)
 const totalPages = computed(() => store.totalPages)
 
 // watch

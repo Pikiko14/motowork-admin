@@ -13,24 +13,11 @@
         <q-tab name="vehicle" label="MOTOCICLETAS" />
         <q-tab name="product" label="ACCESORIOS" />
       </q-tabs>
-      <q-tab-panels v-model="tab" animated>
-        <q-tab-panel name="vehicle">
-          <div class="row full-width">
-            <div class="col-12">
-              <TableMotowork @do-toggle-status="doToggleStatus" :enableSelection="true" @do-edit="doEditCategory"
-                @do-delete="deleteCategory" :columns="categoriesColums" :rows="categories" :totalPages="totalPages" />
-            </div>
-          </div>
-        </q-tab-panel>
-        <q-tab-panel name="product">
-          <div class="row full-width">
-            <div class="col-12">
-              <TableMotowork @do-toggle-status="doToggleStatus" :enableSelection="true" @do-edit="doEditCategory"
-                @do-delete="deleteCategory" :columns="categoriesColums" :rows="categories" :totalPages="totalPages" />
-            </div>
-          </div>
-        </q-tab-panel>
-      </q-tab-panels>
+    </div>
+
+    <div class="col-12 q-mt-lg">
+      <TableMotowork class="q-pt-lg" @do-toggle-status="doToggleStatus" :enableSelection="true" @do-edit="doEditCategory"
+        @do-delete="deleteCategory" :columns="categoriesColums" :rows="categories" :totalPages="totalPages" />
     </div>
     <!--End tab-->
 
@@ -164,7 +151,7 @@ export default defineComponent({
     })
 
     // watch
-    watch(tab, async (value) => {
+    watch(tab, (value) => {
       const page = 1
       const perPage = 7
       const type = value

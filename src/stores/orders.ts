@@ -14,6 +14,10 @@ export const useOrdersStore = defineStore("ordersStore", () => {
   const orders = ref<OrderInterface[]>([]);
   const totalItems = ref<number>(0);
   const totalPages = ref<number>(0);
+  const countData = ref({
+    totalDrive: 0,
+    totalOrders: 0
+  })
 
 
   /**
@@ -66,6 +70,7 @@ export const useOrdersStore = defineStore("ordersStore", () => {
       )) as ResponseObj;
       if (response.success) {
         // return response
+        countData.value = response.data
         return response;
       }
     } catch (error) {
@@ -95,6 +100,7 @@ export const useOrdersStore = defineStore("ordersStore", () => {
   // return statement
   return {
     orders,
+    countData,
     totalItems,
     totalPages,
     listOrders,

@@ -10,14 +10,15 @@
     <!--tab-->
     <div class="col-12 categories-tab">
       <q-tabs class="text-grey-7" v-model="tab" active-color="primary" indicator-color="primary" ina align="justify">
-        <q-tab name="vehicle" label="MOTOCICLETAS" />
-        <q-tab name="product" label="ACCESORIOS" />
+        <q-tab @click="handlerChangeType" name="vehicle" label="MOTOCICLETAS" />
+        <q-tab @click="handlerChangeType" name="product" label="ACCESORIOS" />
       </q-tabs>
     </div>
 
     <div class="col-12 q-mt-lg">
-      <TableMotowork class="q-pt-lg" @do-toggle-status="doToggleStatus" :enableSelection="true" @do-edit="doEditCategory"
-        @do-delete="deleteCategory" :columns="categoriesColums" :rows="categories" :totalPages="totalPages" />
+      <TableMotowork class="q-pt-lg" @do-toggle-status="doToggleStatus" :enableSelection="true"
+        @do-edit="doEditCategory" @do-delete="deleteCategory" :columns="categoriesColums" :rows="categories"
+        :totalPages="totalPages" />
     </div>
     <!--End tab-->
 
@@ -150,11 +151,12 @@ export default defineComponent({
       return store.totalPages
     })
 
-    // watch
-    watch(tab, (value) => {
+    // methods 
+    const handlerChangeType = () => {
+      store.clearCategories()
       const page = 1
       const perPage = 7
-      const type = value
+      const type = tab.value
       const sortBy = 'name'
       const order = 'asc'
       const search = route.query.search ? route.query.search as string : ''
@@ -169,9 +171,8 @@ export default defineComponent({
           order
         }
       })
-    })
+    }
 
-    // methods 
     const openModal = () => {
       openModalCategory.value = !openModalCategory.value
     }
@@ -277,11 +278,10 @@ export default defineComponent({
 
     // life cycle
     onBeforeMount(async () => {
-      await listCategories()
-
       if (route.query.type) {
         tab.value = route.query.type as string;
       }
+      await listCategories()
     })
 
     return {
@@ -300,6 +300,7 @@ export default defineComponent({
       categoriesColums,
       openDeleteDialog,
       openModalCategory,
+      handlerChangeType,
       confirmDeleteCategory,
       confirmDisableCategory,
     }

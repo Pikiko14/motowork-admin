@@ -129,7 +129,7 @@ const statusDescription = ref<string>('¡Felicitaciones! Has creado una nueva en
 
 // computed 
 const enableSaveButton = computed(() => {
-  return blog.value.title && blog.value.category && blog.value.description && imagesDesktop.value.length > 0
+  return blog.value.title && blog.value.category && blog.value.description
 })
 
 // methods

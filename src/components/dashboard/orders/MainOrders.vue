@@ -155,21 +155,27 @@ const orderColumnsDrive = ref<TableColumnsInterface[]>([
     align: 'left'
   },
   {
+    name: 'vehicle',
+    label: 'Vehiculo',
+    field: 'vehicle',
+    align: 'left'
+  },
+  {
     name: 'dateOrder',
     label: 'Fecha y hora',
     field: 'serviceTime',
     align: 'left'
   },
   {
+    name: 'contanto',
+    label: 'Tipo de contacto',
+    field: 'contact_type',
+    align: 'center'
+  },
+  {
     name: 'clientNameOrder',
     label: 'Cliente',
     field: 'client',
-    align: 'left'
-  },
-  {
-    name: 'vehicle',
-    label: 'Vehiculo',
-    field: 'vehicle',
     align: 'left'
   },
   {

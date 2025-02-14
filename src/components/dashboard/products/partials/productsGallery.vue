@@ -103,8 +103,10 @@ const deleteImageBanner = () => {
   justify-content: space-between;
 
   &__banner {
-    width: 100%;
+    max-width: 600px;
+    margin: 0px auto;
     min-height: 250px;
+    max-height: 350px;
   }
 
   &__carousel {

@@ -10,8 +10,8 @@
     <!--tab-->
     <div class="col-12 categories-tab">
       <q-tabs class="text-grey-7" v-model="tab" active-color="primary" indicator-color="primary" ina align="justify">
-        <q-tab name="orders" :label="`Pedidos (${countData.totalOrders})`" />
-        <q-tab name="drive" :label="`Manejo (${countData.totalDrive})`" />
+        <q-tab @click="handlerChangeType" name="orders" :label="`Pedidos (${countData.totalOrders})`" />
+        <q-tab @click="handlerChangeType" name="drive" :label="`Manejo (${countData.totalDrive})`" />
       </q-tabs>
     </div>
     <!--End tab-->
@@ -191,28 +191,6 @@ const countData = computed(() => store.countData)
 const totalPages = computed(() => store.totalPages)
 
 // watch
-watch(tab, (value) => {
-  const page = 1
-  const perPage = 10
-  const type = value === 'orders' ? 'Sales Order' : 'Test Drive Request'
-  const sortBy = route.query.sortBy ? route.query.sortBy : ''
-  const order = route.query.order ? route.query.order : ''
-  const search = route.query.search ? route.query.search : ''
-  const filter = route.query.filter || ''
-  store.clearOrders()
-  router.push({
-    name: 'orders',
-    query: {
-      page,
-      perPage,
-      search,
-      type,
-      sortBy,
-      order,
-      filter
-    }
-  })
-})
 
 // methods
 const doOrder = (item: SortOption): void => {
@@ -302,6 +280,30 @@ const handlerChangeStatus = async (status: string, orderId: string) => {
     }
   } catch (error) {
   }
+}
+
+const handlerChangeType = () => {
+  store.clearOrders()
+  const page = 1
+  const perPage = 10
+  const type = tab.value === 'orders' ? 'Sales Order' : 'Test Drive Request'
+  const sortBy = route.query.sortBy ? route.query.sortBy : ''
+  const order = route.query.order ? route.query.order : ''
+  const search = route.query.search ? route.query.search : ''
+  const filter = route.query.filter || ''
+  store.clearOrders()
+  router.push({
+    name: 'orders',
+    query: {
+      page,
+      perPage,
+      search,
+      type,
+      sortBy,
+      order,
+      filter
+    }
+  })
 }
 
 // hook

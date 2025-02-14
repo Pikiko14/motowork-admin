@@ -10,8 +10,8 @@
     <!--tab-->
     <div class="col-12 categories-tab">
       <q-tabs class="text-grey-7" v-model="tab" active-color="primary" indicator-color="primary" ina align="justify">
-        <q-tab name="vehicle" label="MOTOCICLETAS" />
-        <q-tab name="product" label="ACCESORIOS" />
+        <q-tab @click="handlerChangeTab" name="vehicle" label="MOTOCICLETAS" />
+        <q-tab @click="handlerChangeTab" name="product" label="ACCESORIOS" />
       </q-tabs>
     </div>
     <!--End tab-->
@@ -121,29 +121,6 @@ const totalPages = computed(() => {
 })
 
 // watch
-watch(tab, (value) => {
-  const page = 1
-  const perPage = 10
-  const type = value
-  const sortBy = route.query.sortBy ? route.query.sortBy : ''
-  const order = route.query.order ? route.query.order : ''
-  const search = route.query.search ? route.query.search : ''
-  const filter = route.query.filter || ''
-  store.clearProducts()
-  router.push({
-    name: 'products',
-    query: {
-      page,
-      perPage,
-      search,
-      type,
-      sortBy,
-      order,
-      filter
-    }
-  })
-})
-
 watch(brands, (newValues: BrandsInterface[]) => {
   const filterObject: any = {
     label: 'MARCA',
@@ -233,6 +210,30 @@ const doFilter = (item: any) => {
       sortBy,
       order,
       filter: JSON.stringify(filter)
+    }
+  })
+}
+
+const handlerChangeTab = () => {
+  store.clearProducts()
+  const page = 1
+  const perPage = 10
+  const type = tab.value
+  const sortBy = route.query.sortBy ? route.query.sortBy : ''
+  const order = route.query.order ? route.query.order : ''
+  const search = route.query.search ? route.query.search : ''
+  const filter = route.query.filter || ''
+  store.clearProducts()
+  router.push({
+    name: 'products',
+    query: {
+      page,
+      perPage,
+      search,
+      type,
+      sortBy,
+      order,
+      filter
     }
   })
 }

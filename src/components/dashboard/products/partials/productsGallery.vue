@@ -104,12 +104,14 @@ const deleteImageBanner = () => {
 
   &__banner {
     width: 100%;
-    max-height: 250px;
+    min-height: 250px;
   }
 
   &__carousel {
     .q-carousel {
-      height: 280px;
+      max-width: 600px;
+      min-height: 280px;
+      margin: 0 auto;
     }
 
     &--image {

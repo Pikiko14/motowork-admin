@@ -26,7 +26,6 @@
 import { useQuasar } from 'quasar'
 import { computed, defineProps, ref, defineEmits } from 'vue'
 import { BlogsImagesInterface } from '@/interfaces/blogs.interface'
-import { get } from 'https'
 
 // references
 const q = useQuasar()
@@ -80,7 +79,7 @@ const deleteImage = (item: BlogsImagesInterface) => {
 
   &__banner {
     width: 100%;
-    height: 388px;
+    min-height: 388px;
     object-fit: cover;
   }
 

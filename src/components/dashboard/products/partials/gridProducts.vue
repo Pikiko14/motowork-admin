@@ -132,6 +132,22 @@ onBeforeMount(() => {
   /* 5 columnas */
   gap: 16px;
   /* Espaciado entre elementos */
+
+  @media(min-width: 1921px) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  @media(min-width: 2200px) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  @media(min-width: 2400px) {
+    grid-template-columns: repeat(8, 1fr);
+  }
+
+  @media(min-width: 2600px) {
+    grid-template-columns: repeat(10, 1fr);
+  }
 }
 
 .product-item {

@@ -125,12 +125,23 @@ onBeforeMount(() => {
 
   @media(min-width: 1920px) {
     grid-template-columns: repeat(8, 1fr);
-
   }
 
   @media(min-width: 1620px) {
     grid-template-columns: repeat(6, 1fr);
 
+  }
+
+  @media(min-width: 2200px) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  @media(min-width: 2400px) {
+    grid-template-columns: repeat(8, 1fr);
+  }
+
+  @media(min-width: 2600px) {
+    grid-template-columns: repeat(10, 1fr);
   }
 }
 

@@ -126,6 +126,24 @@ export const useBlogsStore = defineStore("blogsStore", () => {
     }
   };
 
+  const doUpdateBlog = async (
+      params: BlogsInterface,
+    ): Promise<ResponseObj | void> => {
+      try {
+        const response = (await handlerRequest.doPutRequest(
+          `${path}/${params._id}`,
+          params,
+          true,
+          false
+        )) as ResponseObj;
+        if (response.success) {
+          return response;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
   // delete image
   const deleteImage = async (id: string, imageId: string) => {
     try {
@@ -148,6 +166,7 @@ export const useBlogsStore = defineStore("blogsStore", () => {
     deleteImage,
     doSaveBlogs,
     doListBlogs,
+    doUpdateBlog,
     doFilterBlog,
     doDeleteBlog,
     doUploadFiles,

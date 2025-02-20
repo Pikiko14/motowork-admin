@@ -1,10 +1,10 @@
 <template>
-  <div class="full-width q-py-md q-my-xs" :class="{ 'q-pr-md': $q.screen.gt.sm }">
+  <div class="full-width q-py-md q-my-xs" :class="{ 'q-pr-md': q.screen.gt.sm }">
     <q-form class="row" @submit="createBlogs">
       <!--title-->
       <div class="col-12">
         <div class="d-flex">
-          <q-btn style="margin-left: -10px" @click="$router.go(-1)" rounded flat dense
+          <q-btn style="margin-left: -10px" @click="router.go(-1)" rounded flat dense
             icon="img:/images/back_chevron.svg"></q-btn>
           <h2 class="title q-pl-sm" v-if="!blog._id">NUEVO EVENTO</h2>
           <h2 class="title q-pl-sm" v-if="blog._id">MODIFICAR EVENTO</h2>
@@ -13,7 +13,7 @@
       <!--end title-->
 
       <!--Files-->
-      <div class="col-12 col-md-5" :class="{ 'q-pr-lg': $q.screen.gt.sm }">
+      <div class="col-12 col-md-5" :class="{ 'q-pr-lg': q.screen.gt.sm }">
         <q-tabs class="text-grey-7" v-model="tab" active-color="primary" indicator-color="primary" ina align="justify">
           <q-tab name="desktop" label="DESKTOP" />
           <q-tab name="mobile" label="MOBILE" />
@@ -37,7 +37,7 @@
       <!--End Files-->
 
       <!--form field-->
-      <div class="col-12 col-md-7" :class="{ 'q-pl-lg': $q.screen.gt.sm, 'q-mt-xl': $q.screen.lt.md }">
+      <div class="col-12 col-md-7" :class="{ 'q-pl-lg': q.screen.gt.sm, 'q-mt-xl': q.screen.lt.md }">
         <q-tabs class="text-grey-7" v-model="tabFields" active-color="primary" indicator-color="primary" ina
           align="justify">
           <q-tab name="general" label="INFO. GENERAL" />
@@ -59,13 +59,13 @@
         <div class="buttons-section">
           <div class="row">
             <div class="col-12 col-md-6"
-              :class="{ 'q-pl-md q-pr-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
+              :class="{ 'q-pl-md q-pr-md': q.screen.gt.sm, 'full-width q-mt-md': q.screen.lt.md }">
               <q-btn :disabled="!enableSaveButton" :loading="loading" type="submit" unelevated square
                 :label="blog._id ? 'Guardar' : 'Crear'" class="full-width q-mt-md btn-cancel-solid"></q-btn>
             </div>
             <div class="col-12 col-md-6"
-              :class="{ 'q-pr-md q-pl-md': $q.screen.gt.sm, 'full-width q-mt-md': $q.screen.lt.md }">
-              <q-btn @click="$router.go(-1)" v-close-popup outline square label="Cancelar"
+              :class="{ 'q-pr-md q-pl-md': q.screen.gt.sm, 'full-width q-mt-md': q.screen.lt.md }">
+              <q-btn @click="router.go(-1)" v-close-popup outline square label="Cancelar"
                 class="full-width q-mt-md btn-cancel"></q-btn>
             </div>
           </div>
@@ -89,6 +89,7 @@
 
 <script lang="ts" setup>
 // imports
+import { useQuasar } from 'quasar'
 import { useRouter, useRoute } from 'vue-router'
 import { computed, ref, onBeforeMount } from 'vue'
 import { useBlogsStore } from '../../../stores/blog'
@@ -100,6 +101,7 @@ import CardModalMotowork from '../partials/cardModalMotowork.vue'
 import FilePickerMotowork from '../partials/filePickerMotowork.vue'
 
 // references
+const q = useQuasar()
 const tab = ref('desktop')
 const store = useBlogsStore()
 const tabFields = ref('general')
@@ -134,9 +136,14 @@ const enableSaveButton = computed(() => {
 
 // methods
 const createBlogs = async () => {
+  if (blog.value._id) {
+    await updateBlog();
+    return true
+  }
+
   try {
     loading.value = true
-    const blogObjectResponse = await handlerSaveProduct(blog.value)
+    const blogObjectResponse = await handlerSaveBlog(blog.value)
     let uploadFiles = null
     if (hasFile.value === true && blogObjectResponse._id) {
       uploadFiles = await handlerUploadFiles(blogObjectResponse._id)
@@ -155,9 +162,39 @@ const createBlogs = async () => {
   }
 }
 
-const handlerSaveProduct = async (params: BlogsInterface) => {
+const updateBlog = async () => {
+  loading.value = true
   try {
-    const response = await store.doSaveBlogs(params)
+    const updateBlogsObject = await handlerUpdateBlog(blog.value) // save product json
+    let uploadFiles = null
+    if (hasFile.value === true && updateBlogsObject._id) {
+      uploadFiles = await handlerUploadFiles(updateBlogsObject._id)
+    }
+    if (updateBlogsObject._id || uploadFiles._id) {
+      statusTitle.value = 'Entrada modificada exitosamente'
+      openModalStatus.value = true
+      return true;
+    }
+  } catch (error) {
+  } finally {
+    loading.value = false
+  }
+}
+
+const handlerUpdateBlog = async (params: BlogsInterface) => {
+  try {
+    const response = await store.doUpdateBlog(params)
+    if (response?.success) {
+      return response.data
+    }
+    return false
+  } catch (error) {
+  }
+}
+
+const handlerSaveBlog = async (params: BlogsInterface) => {
+  try {
+    const response = await store.doSaveBlogs(params as any)
     if (response?.success) {
       return response.data
     }
@@ -178,7 +215,7 @@ const handlerUploadFiles = async (id: string) => {
     imagesDesktop.value.forEach((file) => form.append("imagesDesktop", file))
     const response = await store.doUploadFiles(form)
 
-    if (response.success) {
+    if (response?.success) {
       return response.data
     }
     return false

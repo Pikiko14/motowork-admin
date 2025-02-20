@@ -13,14 +13,14 @@
           </span>
           <q-form @submit="doLogin" class="full-width row">
             <div class="col-12">
-              <label :for="login.username">
+              <label  class="text-white" :for="login.username">
                 Usuario
               </label>
               <q-input square :rules="[(val) => !!val || 'Ingresa este campo']" bg-color="accent"
                 v-model="login.username" dense outlined class="q-mt-xs" placeholder="Ingresa tu usuario"></q-input>
             </div>
             <div class="col-12">
-              <label :for="login.username">
+              <label  class="text-white" :for="login.username">
                 Contraseña
               </label>
               <q-input square type="password" :rules="[

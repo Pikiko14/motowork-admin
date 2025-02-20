@@ -14,7 +14,7 @@
       <!--Gallery section-->
       <div class="col-12 col-md-5" v-if="blog && blog?._id && blog.images && blog.images?.length > 0" :class="{ 'q-pr-lg': $q.screen.gt.sm }">
         <div class="full-width q-mt-lg">
-          <BlodGallery :images="blog?.images" />
+          <BlodGallery @do-delete-img="doDeleteImage" :images="blog?.images" />
         </div>
       </div>
       <!--End Gallery section-->
@@ -89,9 +89,9 @@ import BlodGallery from './partials/blogGallery.vue'
 import { notification } from '../../../boot/notification'
 import MoreDetailsShow from './partials/MoreDetailsShow.vue'
 import GeneralDataShow from './partials/GeneralDataShow.vue'
-import { BlogsInterface } from '@/interfaces/blogs.interface'
 import DeleteModal from 'src/components/commons/DeleteModal.vue'
 import CardModalMotowork from '../partials/cardModalMotowork.vue'
+import { BlogsImagesInterface, BlogsInterface } from '@/interfaces/blogs.interface'
 
 // references
 const q = useQuasar()
@@ -150,7 +150,7 @@ const confirmDeleteProduct = (id: string) => {
 const doDeleteBlog = async (id: string) => {
   try {
     const response = await store.doDeleteBlog(id)
-    if (response.success) {
+    if (response?.success) {
       notification('success', response.message, 'success')
       router.push({
         name: 'blogs',
@@ -164,6 +164,21 @@ const doDeleteBlog = async (id: string) => {
       })
     }
   } catch (error) {
+  }
+}
+
+const doDeleteImage = async (item: BlogsImagesInterface) => {
+  try {
+    const response = await store.deleteImage(blog.value._id as string, item?._id as string)
+    if (response?.success) {
+      const idxImgToDelete = blog.value.images?.findIndex((el: BlogsImagesInterface) => el._id === item._id)
+      if (idxImgToDelete && idxImgToDelete !== -1 && blog.value.images) {
+        blog.value.images.splice(idxImgToDelete, 1)
+      }
+      notification('pos', response?.message, 'primary')
+    }
+  } catch (error) {
+    console.error(error)
   }
 }
 

@@ -99,32 +99,45 @@ export const useBlogsStore = defineStore("blogsStore", () => {
   };
 
   const doDeleteBlog = async (id: string): Promise<ResponseObj | void> => {
-      try {
-        const response = await handlerRequest.doDeleteRequest(
-          `${path}/${id}`,
-          true
+    try {
+      const response = await handlerRequest.doDeleteRequest(
+        `${path}/${id}`,
+        true
+      );
+      if (response.success) {
+        const queryParams = utils.getCurrentQueryParams();
+        const perPage = queryParams.perPage || 8;
+
+        // delete from store
+        const index = blogs.value.findIndex(
+          (blog: BlogsInterface) => blog._id === id
         );
-        if (response.success) {
-          const queryParams = utils.getCurrentQueryParams();
-          const perPage = queryParams.perPage || 8;
-  
-          // delete from store
-          const index = blogs.value.findIndex(
-            (blog: BlogsInterface) => blog._id === id
-          );
-          if (index !== -1) blogs.value.splice(index, 1);
-  
-          // up total items
-          totalItems.value--;
-  
-          // set total pages
-          totalPages.value = Math.ceil(totalItems.value / perPage);
-        }
-        return response;
-      } catch (error) {
-        console.log(error);
+        if (index !== -1) blogs.value.splice(index, 1);
+
+        // up total items
+        totalItems.value--;
+
+        // set total pages
+        totalPages.value = Math.ceil(totalItems.value / perPage);
       }
-    };
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // delete image
+  const deleteImage = async (id: string, imageId: string) => {
+    try {
+      const response = await handlerRequest.doDeleteRequest(
+        `${path}/${id}/delete-image?imageId=${imageId}`,
+        true
+      );
+      return response;
+    } catch (error) {
+      throw error
+    }
+  };
 
   // return statement
   return {
@@ -132,6 +145,7 @@ export const useBlogsStore = defineStore("blogsStore", () => {
     totalItems,
     totalPages,
     clearBlogs,
+    deleteImage,
     doSaveBlogs,
     doListBlogs,
     doFilterBlog,

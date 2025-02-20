@@ -13,7 +13,11 @@
         <div class="row no-wrap">
           <div class="grid-scroll">
             <q-img class="grid-scroll__item"
-              v-for="(img, idx) in restImages" :key="idx" :src="img.path"></q-img>
+              v-for="(img, idx) in restImages" :key="idx" :src="img.path">
+              <div>
+                <q-btn v-if="getBannerImage" unelevated flat dense class="relative" color="secondary" icon="img:/images/trash.svg" @click="deleteImage(img)"></q-btn>
+              </div>
+            </q-img>
           </div>
         </div>
       </q-scroll-area>

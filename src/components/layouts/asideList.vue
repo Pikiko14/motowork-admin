@@ -77,7 +77,7 @@
             </q-tooltip>
         </q-item-section>
       </q-item>
-      <q-item clickable class="q-mt-sm" to="/dashboard/services?page=1&perPage=7&search=">
+      <q-item clickable class="q-mt-sm" to="/dashboard/services?page=1&perPage=1000&search=">
         <q-item-section class="text-center">
           <q-icon
             :name="$route.path == '/dashboard/services' ? 'img:/images/schedule-primary.svg' : 'img:/images/schedule.svg'"

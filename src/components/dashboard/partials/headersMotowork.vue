@@ -8,7 +8,7 @@
     <div class="col-12 col-md-8">
       <div class="row full-width justify-end">
         <div class="col-12 col-md-1 q-pt-sm" v-if="showCalendar">
-          <q-btn :class="{ 'full-width q-mb-md': q.screen.lt.md }" class="text-black" color="primary" icon="img:/images/calendar.svg"
+          <q-btn :class="{ 'full-width q-mb-md': q.screen.lt.md }" class="text-black" :color="route.path === '/dashboard/services' ? 'secondary' : 'primary'" icon="img:/images/calendar.svg"
             unelevated>
             <q-popup-proxy cover class="date-proxy" transition-show="scale" transition-hide="scale">
               <q-date @update:model-value="handlerFilterByDate" v-model="dateModel" :range="true">
@@ -200,7 +200,7 @@ export default defineComponent({
         to: e.to
       }
       router.push({
-        name: 'orders',
+        name: route.path === '/dashboard/services' ? 'services' : 'orders',
         query: {
           page: 1,
           perPage: 7,

@@ -24,7 +24,7 @@ export default boot(async ({ router, app }) => {
     }
     if (to.matched.some((record) => record.meta.auth) && !userData.value._id) {
       notification(
-        "negative",
+        "negati",
         i18n.locale === "es"
           ? "Necesitas estar logueado para acceder a esta sección"
           : "You need to be logged in to access this section",
@@ -50,7 +50,7 @@ export default boot(async ({ router, app }) => {
           }
           if (!hasPermission) {
             notification(
-              "negative",
+              "negati",
               i18n.locale === "es"
                 ? "No tienes permiso para poder ver esta sección de la app"
                 : "You do not have permission to view this section of the app",

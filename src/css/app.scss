@@ -814,3 +814,16 @@ p,h1,h2,h3,h4,h5,h6 {
     color: black;
   }
 }
+
+.is-today .week-timeline__date {
+  background-color: $secondary !important;
+}
+
+.week-timeline__date {
+  border-radius: 0px !important;
+}
+
+.is-today .calendar-month__day-date {
+  background-color: $secondary !important;
+  border-radius: 0 !important;
+}

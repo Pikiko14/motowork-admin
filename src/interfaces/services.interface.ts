@@ -8,6 +8,7 @@ export interface ServiceInterface {
   vehicle_km: string;
   complement: string;
   level_to_schedule: string;
+  _id?: string;
 }
 
 interface ClientInterface {

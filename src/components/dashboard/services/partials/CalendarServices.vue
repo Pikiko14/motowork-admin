@@ -1,42 +1,39 @@
 <template>
   <div class="is-light-mode">
-    <Qalendar style="height: 520px" class="is-light-mode" @updated-mode="filterByPeriod" @updated-period="filterByPeriod"
-      :events="events" :config="config" />
+    <Qalendar style="height: 520px" class="is-light-mode" @updated-mode="filterByMode" @updated-period="filterByPeriod"
+      :events="events" />
   </div>
 </template>
 
 <script setup>
 // imports
-import { Qalendar } from "qalendar";
+import { date } from "quasar"
+import { defineEmits } from 'vue'
+import { Qalendar } from "qalendar"
 
-// references
-const events = [
-  {
-    title: "Advanced algebra",
-    with: "Chandler Bing",
-    time: { start: "2025-02-16 12:05", end: "2025-02-16 13:35" },
-    color: "yellow",
-    isEditable: true,
-    id: "753944708f0f",
-    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores assumenda corporis doloremque et expedita molestias necessitatibus quam quas temporibus veritatis. Deserunt excepturi illum nobis perferendis praesentium repudiandae saepe sapiente voluptatem!"
-  },
-  {
-    title: "Ralph on holiday",
-    with: "Rachel Greene",
-    time: { start: "2025-02-18 13:05", end: "2025-02-18 14:05" },
-    color: "green",
-    isEditable: true,
-    id: "5602b6f589fc"
+// props
+defineProps({
+  events: {
+    type: Array,
+    default: () => []
   }
-  // ...
-]
+})
 
-const config = {
-}
+// emits
+const emit = defineEmits(['filter-by-mode', 'filter-by-period'])
 
 // methods
+const filterByMode = (e) => {
+  const { period } = e
+  const end = date.formatDate(period.end, 'YYYY-MM-DD')
+  const start = date.formatDate(period.start, 'YYYY-MM-DD')
+  emit('filter-by-mode', { start, end })
+}
+
 const filterByPeriod = (e) => {
-  console.log(e)
+  const end = date.formatDate(e.end, 'YYYY-MM-DD')
+  const start = date.formatDate(e.start, 'YYYY-MM-DD')
+  emit('filter-by-period', { start, end })
 }
 </script>
 

@@ -132,7 +132,8 @@ export default defineComponent({
   emits: [
     'open-modal',
     'do-order',
-    'do-filter'
+    'do-filter',
+    'do-search'
   ],
   setup(props, { emit }) {
     // data
@@ -146,8 +147,12 @@ export default defineComponent({
     // methods
     const doSearch = (searchString: string | number | null) => {
       const type = route.query.type ? route.query.type as string : ''
-      const sortBy = route.query.sortBy ? route.query.sortBy as string : ''
       const order = route.query.order ? route.query.order as string : ''
+      const sortBy = route.query.sortBy ? route.query.sortBy as string : ''
+      if (route.path === '/dashboard/services') {
+        emit('do-search', searchString)
+        return false
+      }
       const { path } = route
       router.push({
         path: path,

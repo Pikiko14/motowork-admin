@@ -24,14 +24,18 @@ const emit = defineEmits(['filter-by-mode', 'filter-by-period'])
 
 // methods
 const filterByMode = (e) => {
-  const { period } = e
-  const end = date.formatDate(period.end, 'YYYY-MM-DD')
-  const start = date.formatDate(period.start, 'YYYY-MM-DD')
-  emit('filter-by-mode', { start, end })
+  const { period } = e;
+  const end = getTime(period.end);
+  const start = date.formatDate(period.start, 'YYYY-MM-DD');
+  emit('filter-by-mode', { start, end });
+}
+
+const getTime = (dateString) => {
+  return date.formatDate(date.addToDate(dateString, { days: 1 }), "YYYY-MM-DD");
 }
 
 const filterByPeriod = (e) => {
-  const end = date.formatDate(e.end, 'YYYY-MM-DD')
+  const end = getTime(e.end)
   const start = date.formatDate(e.start, 'YYYY-MM-DD')
   emit('filter-by-period', { start, end })
 }

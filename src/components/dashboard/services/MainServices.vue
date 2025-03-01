@@ -18,7 +18,7 @@
     <q-dialog v-model="openModal">
       <q-card class="detail-card">
         <q-btn class="float-right q-mr-sm q-mt-sm" icon="img:/images/close.svg" flat dense v-close-popup></q-btn>
-        <q-card-section class="q-mt-lg">
+        <q-card-section class="q-mt-xl">
           <div class="row">
             <div class="col-12 col-md-4">
               <span class="text-bold">
@@ -33,7 +33,9 @@
                 Teléfono
               </span>
               <p>
-                {{ serviceDetail?.client?.phone }}
+                <a class="text-secondary" :href="`tel:${serviceDetail?.client?.phone}`">
+                  {{ serviceDetail?.client?.phone }}
+                </a>
               </p>
             </div>
             <div class="col-12 col-md-4">
@@ -49,7 +51,9 @@
                 Correo
               </span>
               <p>
-                {{ serviceDetail?.client?.email }}
+                <a class="text-secondary" :href="`mailto:${serviceDetail?.client?.email}`">
+                  {{ serviceDetail?.client?.email }}
+                </a>
               </p>
             </div>
           </div>
@@ -295,8 +299,8 @@ const doSearch = async (search: string) => {
 const showModalInformation = (id: string) => {
   const service = servicesSchedulesCompletes.value.find((el: ServiceInterface) => el._id === id)
   if (service) {
-    openModal.value = true
-    serviceDetail.value = service;
+    // openModal.value = true
+    // serviceDetail.value = service;
   }
 }
 

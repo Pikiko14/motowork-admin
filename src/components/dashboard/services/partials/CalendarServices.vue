@@ -1,6 +1,6 @@
 <template>
   <div class="is-light-mode">
-    <Qalendar style="height: 520px" class="is-light-mode" @updated-mode="filterByMode" @updated-period="filterByPeriod"
+    <Qalendar @event-was-clicked="openEventData" style="height: 520px" class="is-light-mode" @updated-mode="filterByMode" @updated-period="filterByPeriod"
       :events="events" />
   </div>
 </template>
@@ -20,7 +20,7 @@ defineProps({
 })
 
 // emits
-const emit = defineEmits(['filter-by-mode', 'filter-by-period'])
+const emit = defineEmits(['filter-by-mode', 'filter-by-period', 'open-modal-data'])
 
 // methods
 const filterByMode = (e) => {
@@ -38,6 +38,11 @@ const filterByPeriod = (e) => {
   const end = getTime(e.end)
   const start = date.formatDate(e.start, 'YYYY-MM-DD')
   emit('filter-by-period', { start, end })
+}
+
+const openEventData = (e) => {
+  const { id } = e?.clickedEvent;
+  emit('open-modal-data', id)
 }
 </script>
 

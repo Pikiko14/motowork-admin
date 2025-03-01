@@ -2,15 +2,99 @@
   <div class="row q-py-md q-my-xs">
     <!--Header-->
     <div class="col-12" :class="{ 'q-pr-md': q.screen.gt.sm }">
-      <HeadersMotowork @do-search="doSearch" :filterItems="filterMenu" :show-add-button="false" :show-order-button="false"
-        :title="'Agenda servicio técnico'" @do-filter="doFilter" />
+      <HeadersMotowork @do-search="doSearch" :filterItems="filterMenu" :show-add-button="false"
+        :show-order-button="false" :title="'Agenda servicio técnico'" @do-filter="doFilter" />
     </div>
     <!--End header-->
 
+    <!--Calendar section-->
     <div class="col-12 q-mt-xl q-pr-md">
-      <CalendarServices @filter-by-period="filterByMode" @filter-by-mode="filterByMode" is-loading
-        :events="servicesSchedule" />
+      <CalendarServices @open-modal-data="showModalInformation" @filter-by-period="filterByMode"
+        @filter-by-mode="filterByMode" is-loading :events="servicesSchedule" />
     </div>
+    <!--End calendar section-->
+
+    <!--Dialog-->
+    <q-dialog v-model="openModal">
+      <q-card class="detail-card">
+        <q-btn class="float-right q-mr-sm q-mt-sm" icon="img:/images/close.svg" flat dense v-close-popup></q-btn>
+        <q-card-section class="q-mt-lg">
+          <div class="row">
+            <div class="col-12 col-md-4">
+              <span class="text-bold">
+                Cliente
+              </span>
+              <p>
+                {{ serviceDetail?.client?.name }} {{ serviceDetail?.client?.lastName }}
+              </p>
+            </div>
+            <div class="col-12 col-md-4">
+              <span class="text-bold">
+                Teléfono
+              </span>
+              <p>
+                {{ serviceDetail?.client?.phone }}
+              </p>
+            </div>
+            <div class="col-12 col-md-4">
+              <span class="text-bold">
+                Hora
+              </span>
+              <p>
+                {{ serviceDetail?.date.split('T').shift() }} {{ serviceDetail?.hour }} {{ serviceDetail?.hourType }}
+              </p>
+            </div>
+            <div class="col-12 col-md-12 q-mt-lg">
+              <span class="text-bold">
+                Correo
+              </span>
+              <p>
+                {{ serviceDetail?.client?.email }}
+              </p>
+            </div>
+          </div>
+
+          <div class="row q-mt-lg">
+            <div class="col-12 col-md-4">
+              <span class="text-bold">
+                Típo vehículo
+              </span>
+              <p>
+                {{ serviceDetail?.vehicle_type }}
+              </p>
+            </div>
+            <div class="col-12 col-md-4">
+              <span class="text-bold">
+                Placa
+              </span>
+              <p>
+                {{ serviceDetail?.vehicle_dni }}
+              </p>
+            </div>
+            <div class="col-12 col-md-4">
+              <span class="text-bold">
+                Kilometraje
+              </span>
+              <p>
+                {{ serviceDetail?.vehicle_km }}
+              </p>
+            </div>
+          </div>
+
+          <div class="row q-mt-lg">
+            <div class="col-12">
+              <span class="text-bold">
+                Detalles del problema
+              </span>
+              <p>
+                {{ serviceDetail?.complement }}
+              </p>
+            </div>
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <!--End dialog-->
   </div>
 </template>
 
@@ -66,8 +150,35 @@ const filterMenu = ref([
     ]
   }
 ])
+const colorStatus: any = {
+  pendiente: 'yellow',
+  confirmada: 'blue',
+  aceptada: 'green',
+  completada: 'purple',
+  rechazada: 'red',
+}
 const store = useServicesStore()
 const servicesSchedule = ref([])
+const openModal = ref<boolean>(false)
+const serviceDetail = ref<ServiceInterface>({
+  hour: "",
+  date: "",
+  hourType: "",
+  client: {
+    name: "",
+    lastName: "",
+    email: "",
+    dni: "",
+    phone: ""
+  },
+  vehicle_dni: "",
+  vehicle_type: "",
+  vehicle_km: "",
+  complement: "",
+  level_to_schedule: "",
+  status: ""
+})
+const servicesSchedulesCompletes = ref<ServiceInterface[]>([]);
 
 // methods
 const doFilter = async (item: any) => {
@@ -101,6 +212,7 @@ const loadServices = async () => {
     const query = `?page=${page}&perPage=${perPage}&search=${search}&from=${startOfWeek}&to=${endOfWeek}`
     const response = await store.doLoadServices(query)
     if (response?.success) {
+      servicesSchedulesCompletes.value = response.data
       processServices(response.data)
     }
   } catch (error) {
@@ -155,9 +267,9 @@ const processServices = (arr: any) => {
   servicesSchedule.value = arr.map((e: ServiceInterface) => {
     return {
       title: "Servicio tecnico",
-      with: `${e?.client?.name} ${e?.client?.lastName}`,
+      with: `${e?.client?.name} ${e?.client?.lastName}, C.C: ${e?.client?.dni}, Tel: ${e?.client?.phone}`,
       time: { start: `${getDate(e?.date as any)} ${e?.hour}`, end: `${getDate(e?.date as any)} ${getTime(e?.hour)}` },
-      color: "yellow",
+      color: colorStatus[e.status],
       isEditable: false,
       id: e?._id,
       description: e?.complement
@@ -180,8 +292,26 @@ const doSearch = async (search: string) => {
   }
 }
 
+const showModalInformation = (id: string) => {
+  const service = servicesSchedulesCompletes.value.find((el: ServiceInterface) => el._id === id)
+  if (service) {
+    openModal.value = true
+    serviceDetail.value = service;
+  }
+}
+
 // hook
 onBeforeMount(async () => {
   await loadServices()
 })
 </script>
+
+<style scoped lang="scss">
+.detail-card {
+  min-width: 520px;
+
+  @media(max-width: 767px) {
+    min-width: 100%;
+  }
+}
+</style>

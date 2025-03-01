@@ -9,6 +9,7 @@ export interface ServiceInterface {
   complement: string;
   level_to_schedule: string;
   _id?: string;
+  status: string;
 }
 
 interface ClientInterface {

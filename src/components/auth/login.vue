@@ -45,7 +45,7 @@
         </section>
       </div>
       <div class="col-12 col-md-7 col-lg-6 full-height hide-mobile">
-        <q-img src="images/loginbg.webp" class="login-img" />
+        <q-img src="images/bg-login.webp" class="login-img" />
       </div>
     </div>
   </section>

@@ -124,6 +124,11 @@ const subcategories = [
     label: 'Carreras',
     value: 'Carreras',
     category: 'Comunidad'
+  },
+  {
+    label: 'Reseñas',
+    value: 'Reseñas',
+    category: 'Comunidad'
   }
 ]
 const filteredSubcategories = ref<any[]>([])

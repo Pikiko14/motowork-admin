@@ -82,6 +82,9 @@
           <q-icon
             :name="$route.path == '/dashboard/services' ? 'img:/images/schedule-primary.svg' : 'img:/images/schedule.svg'"
             size="24px"></q-icon>
+            <q-tooltip class="bg-secondary" :offset="[10, 10]">
+              Servicio técnico
+            </q-tooltip>
         </q-item-section>
       </q-item>
       <q-item class="absolute-bottom text-center" style="bottom: 20px;">

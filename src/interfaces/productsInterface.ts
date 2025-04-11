@@ -30,6 +30,7 @@ export interface AdditionalField {
     name: string;
     model: string;
     state: "Nueva" | "Usada";
+    dive_test: boolean;
     brand: string;
     price: number | null;
     discount?: number | null;

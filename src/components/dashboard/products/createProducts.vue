@@ -12,10 +12,10 @@
       </div>
       <!--Files-->
       <div class="col-12 col-md-5" :class="{ 'q-pr-lg': $q.screen.gt.sm }">
-        <q-tabs class="text-grey-7" v-model="tab" active-color="primary" indicator-color="primary" ina align="justify">
+        <!--<q-tabs class="text-grey-7" v-model="tab" active-color="primary" indicator-color="primary" ina align="justify">
           <q-tab name="desktop" label="DESKTOP" />
-          <q-tab name="mobile" label="MOBILE" />
-        </q-tabs>
+          <<q-tab name="mobile" label="MOBILE" />
+        </q-tabs>-->
         <div class="information">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -141,6 +141,7 @@ const product = ref<ProductsInterface>({
   images: [],
   sku: '',
   type: '',
+  dive_test: false,
   enableDiscount: false,
   details: {
     power: 0,

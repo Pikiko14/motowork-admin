@@ -75,6 +75,9 @@
       <label for="">Descripción</label>
       <q-input v-model="product.description" placeholder="Descripción del producto" class="q-mt-sm" square rows="3" outlined dense type="textarea"></q-input>
     </div>
+    <div class="col-12 q-mt-md">
+      <q-checkbox v-model="product.dive_test" label="Activar prueba de manejo" class="q-mt-sm" square outlined dense />
+    </div>
   </div>
 </template>
 

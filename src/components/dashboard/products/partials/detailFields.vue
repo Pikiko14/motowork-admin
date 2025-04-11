@@ -81,7 +81,7 @@
           <q-icon size="14pt" name="img:/images/search_black.svg"></q-icon>
           <q-menu :offset="[10, 10]" class="text-center" transition-show="rotate" transition-hide="rotate">
             <q-color class="shadow-0" v-model="color" no-footer style="max-width: 250px" />
-            <q-btn label="Gurdar" v-close-popup @click="addColor" color="secondary" class="q-mb-md" unelevated></q-btn>
+            <q-btn label="Guardar" v-close-popup @click="addColor" color="secondary" class="q-mb-md" unelevated></q-btn>
           </q-menu>
         </div>
       </div>

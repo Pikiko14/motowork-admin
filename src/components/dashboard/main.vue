@@ -12,8 +12,8 @@
         <CardMetrics :amount="countVehicles.accesories" :title="'Accesorios'" />
         <CardMetrics :amount="countVehicles.vehicle + countVehicles.accesories" :title="'Total productos'" />
       </div>
-      <div class="user-welcome-metrics-bars q-mt-lg">
-        <ChartComponent />
+      <div class="user-welcome-metrics-bars q-mt-lg" :key="productsPublish">
+        <ChartComponent :items="productsPublish" />
       </div>
     </div>
     <div class="col-12 col-md-4" :class="{ 'q-px-md': $q.screen.gt.sm }">
@@ -78,6 +78,7 @@ export default defineComponent({
     const lastVehicles = ref<ProductsInterface[]>([])
     const lastAccesories = ref<ProductsInterface[]>([])
     const productStore = useProductsStore()
+    const productsPublish = ref([])
 
     // computed
     const user = computed(() => {
@@ -109,6 +110,11 @@ export default defineComponent({
     const loadPorductsPublishCount = async () => {
       try {
         const response = await productStore.loadPublishProducts()
+        if (response.products) {
+          productsPublish.value = response.products.map((el) => {
+            return el.count
+          })
+        }
       } catch (error) {
         console.log(erorr)
       }
@@ -129,7 +135,8 @@ export default defineComponent({
       lastAccesories,
       sessionLoaded,
       loadingInstragram,
-      url: process.env.API_URL
+      url: process.env.API_URL,
+      productsPublish,
     }
   }
 })

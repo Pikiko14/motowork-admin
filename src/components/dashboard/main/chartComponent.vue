@@ -1,15 +1,7 @@
 <template>
   <div class="full-width relative">
-    <div class="chart-day-section">
-      <q-btn text-color="white"
-        :class="{ 'chart-day-disable': typeTime !== 'week', 'bg-secondary': typeTime === 'week' }" label="SEM." dense
-        square unelevated class="q-px-lg text-weight-bold" @click="setTimePeriod('week')"></q-btn>
-      <q-btn text-color="white"
-        :class="{ 'chart-day-disable': typeTime !== 'months', 'bg-secondary': typeTime === 'months' }" label="MES" dense
-        square unelevated class="q-px-lg text-weight-bold" @click="setTimePeriod('months')"></q-btn>
-      <q-btn text-color="white"
-        :class="{ 'chart-day-disable': typeTime !== 'years', 'bg-secondary': typeTime === 'years' }" label="AÑO" dense
-        square unelevated class="q-px-lg text-weight-bold" @click="setTimePeriod('years')"></q-btn>
+    <div class="text-left">
+      <span class="text-semi-bold">Productos por fecha</span>
     </div>
     <div class="chart-section" v-if="render">
       <apexchart height="380px" type="area" :options="options" :series="series"></apexchart>
@@ -23,7 +15,13 @@ import { format, startOfWeek, startOfMonth, startOfYear, add } from 'date-fns'
 
 export default defineComponent({
   name: 'ChartComponent',
-  setup() {
+  props: {
+    items: {
+      type: Array,
+      default: () => []
+    }
+  },
+  setup(props) {
     const render = ref<boolean>(true)
     const typeTime = ref<string>('week')
     const options = ref<any>({
@@ -60,11 +58,7 @@ export default defineComponent({
     const series = ref<any[]>([
       {
         name: 'PRODUCTOS PUBLICADOS',
-        data: [50, 60, 70, 80, 90, 100, 60], // Datos de productos publicados
-      },
-      {
-        name: 'PRODUCTOS VENDIDOS',
-        data: [30, 40, 35, 50, 49, 60, 70], // Datos de productos vendidos
+        data: props.items, // Datos de productos publicados
       },
     ])
 
@@ -107,6 +101,7 @@ export default defineComponent({
         currentDate = add(currentDate, { [typeTime.value === 'week' ? 'days' : 'months']: 1 })
       }
       render.value = false
+      console.log(categories)
       options.value.xaxis.categories = categories
       setTimeout(() => {
         render.value = true

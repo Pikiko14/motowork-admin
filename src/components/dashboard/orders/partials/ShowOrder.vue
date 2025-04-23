@@ -30,10 +30,11 @@
         Pago mediante:
       </span><br />
       <span class="payment-span">
-        {{ order.payment_method === 'mercadopago' ? 'Mercadopago' : 'Transferencia' }}
+        {{ order.payment_method === 'mercadopago' ? 'Mercadopago' : ( order.payment_method === 'link_pago' ? 'Link de pago' :'Transferencia' ) }}
         <img v-if="order.payment_method === 'mercadopago'" src="/images/mercado_pago.webp" width="25px"
           alt="Mercado pago" title="Mercado pago">
-        <img v-else src="/images/transferencia_bancaria.webp" width="25px" alt="Mercado pago" title="Mercado pago">
+        <img v-if="order.payment_method === 'trasnferencia'" src="/images/transferencia_bancaria.webp" width="25px" alt="Trasnferencia bancaria" title="Transferencia bancaria">
+        <img v-if="order.payment_method === 'link_pago'" src="/images/enlace.webp" width="25px" alt="Link pago" title="Link pago">
       </span>
     </div>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="is-light-mode">
-    <Qalendar @event-was-clicked="openEventData" style="height: 520px" class="is-light-mode" @updated-mode="filterByMode" @updated-period="filterByPeriod"
+    <Qalendar @event-was-clicked="openEventData" style="height: 720px" class="is-light-mode" @updated-mode="filterByMode" @updated-period="filterByPeriod"
       :events="events" />
   </div>
 </template>

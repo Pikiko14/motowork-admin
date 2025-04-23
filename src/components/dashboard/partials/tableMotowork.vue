@@ -26,8 +26,9 @@
               Eliminar
             </q-tooltip>
           </q-btn>
-          <q-btn v-if="$route.path === '/dashboard/orders' && props.row.type !== 'Test Drive Request'"  @click="handlerShowDetail(props.row._id)"
-            class="q-ml-20" size="9pt" color="black" flat dense icon="img:/images/show.svg" round>
+          <q-btn v-if="$route.path === '/dashboard/orders' && props.row.type !== 'Test Drive Request'"
+            @click="handlerShowDetail(props.row._id)" class="q-ml-20" size="9pt" color="black" flat dense
+            icon="img:/images/show.svg" round>
             <q-tooltip square class="bg-primary">
               Ver detalles
             </q-tooltip>
@@ -124,8 +125,10 @@
       <template v-slot:body-cell-clientNameOrder="props">
         <q-td class="text-left">
           {{ props.row.client.firstName }} {{ props.row.client.lastName }}<br />
-          <span class="low-text">Tel. <a :href="`tel:${props.row.client.phone}`">{{ props.row.client.phone || '' }}</a></span><br />
-          <span class="low-text">Mail. <a :href="`mailto:${props.row.client.email}`">{{ props.row.client.email || '' }}</a></span>
+          <span class="low-text">Tel. <a :href="`tel:${props.row.client.phone}`">{{ props.row.client.phone || ''
+              }}</a></span><br />
+          <span class="low-text">Mail. <a :href="`mailto:${props.row.client.email}`">{{ props.row.client.email || ''
+              }}</a></span>
         </q-td>
       </template>
       <!--End Client name order-->
@@ -148,10 +151,12 @@
       <template v-slot:body-cell-paymentStatus="props">
         <q-td class="text-left">
           <span class="payment-span">
-            {{ props.row.payment_method === 'mercadopago' ? 'Mercadopago' : 'Transferencia' }}
+            {{ props.row.payment_method === 'mercadopago' ? 'Mercadopago' : (props.row.payment_method === 'link_pago' ?
+              'Link de pago' : 'Transferencia') }}
             <img v-if="props.row.payment_method === 'mercadopago'" src="/images/mercado_pago.webp" width="25px"
               alt="Mercado pago" title="Mercado pago">
-            <img v-else src="/images/transferencia_bancaria.webp" width="25px" alt="Mercado pago" title="Mercado pago">
+            <img v-if="props.row.payment_method === 'trasnferencia'" src="/images/transferencia_bancaria.webp" width="25px" alt="transferencia bancaria" title="Transferencia bancaria">
+            <img v-if="props.row.payment_method === 'link_pago'" src="/images/enlace.webp" width="25px" alt="Link pago" title="Link pago">
           </span>
           <div class="chip news" v-if="props.row.status === 'Pago Completado'">
             {{ props.row.status }}

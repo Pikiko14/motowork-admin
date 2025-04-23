@@ -81,7 +81,7 @@
         </div>
         <div class="chip used" v-if="order.status == 'Pendiente' || order.status === 'En proceso de pago'">
           {{ order.status }}
-          <q-menu class="round" v-if="order.payment_method === 'trasnferencia'">
+          <q-menu class="round" v-if="order.payment_method === 'trasnferencia' || order.payment_method === 'link_pago'">
             <q-list>
               <q-item v-for="(status, idx) in statusArray" :key="idx" clickable v-close-popup
                 v-show="status !== order.status" @click="setOrderStatus(status)">

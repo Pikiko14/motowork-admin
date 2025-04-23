@@ -106,10 +106,19 @@ export default defineComponent({
       }
     }
 
+    const loadPorductsPublishCount = async () => {
+      try {
+        const response = await productStore.loadPublishProducts()
+      } catch (error) {
+        console.log(erorr)
+      }
+    }
+
     // hook
     onBeforeMount(async () => {
       await loadProductCount()
       await validateInstagramSession()
+      await loadPorductsPublishCount()
     })
 
     return {

@@ -173,6 +173,21 @@ export const useProductsStore = defineStore("productsStore", () => {
     }
   }
 
+  const loadPublishProducts = async (period = 'week') => {
+    try {
+      const response = (await handlerRequest.doGetRequest(
+        `${path}/publish-products/count?period=${period}`,
+        '',
+        true
+      )) as ResponseObj;
+      if (response.success) {
+        return response.data;
+      }
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  }
+
   // return statement
   return {
     products,
@@ -186,6 +201,7 @@ export const useProductsStore = defineStore("productsStore", () => {
     doDeleteProduct,
     doUpdateProduct,
     loadCountProduct,
+    loadPublishProducts,
     doDeleteProductImage,
   };
 });

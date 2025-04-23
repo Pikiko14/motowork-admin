@@ -7,7 +7,6 @@
         </q-item-section>
         <q-item-section class="q-px-sm">
           <q-item-label>
-            <q-icon v-if="showBrandIcon" style="margin-top: -2px" size="16pt" :name="`img:${item.brand_icon}`"></q-icon>
             <span class="product-title" :class="{ 'q-pl-sm': showBrandIcon }">{{ item.name }}</span>
           </q-item-label>
           <q-item-label class="q-px-xs q-pt-xs">

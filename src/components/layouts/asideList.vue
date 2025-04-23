@@ -68,7 +68,7 @@
             </q-tooltip>
         </q-item-section>
       </q-item>
-      <q-item clickable class="q-mt-sm" to="/dashboard/blogs?page=1&perPage=8&search=&sortBy=title&order=1">
+      <q-item clickable class="q-mt-sm" to="/dashboard/blogs?page=1&perPage=12&search=&sortBy=title&order=1">
         <q-item-section class="text-center">
           <q-icon :name="$route.path == '/dashboard/blogs' ? 'img:/images/blogs-primary.svg' : 'img:/images/blogs.svg'"
             size="24px"></q-icon>

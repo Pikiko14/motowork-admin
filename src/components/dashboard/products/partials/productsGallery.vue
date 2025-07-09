@@ -1,12 +1,14 @@
 <template>
   <div class="product-gallery">
     <!--Banner image-->
-    <q-img class="product-gallery__banner" :src="getBannerByTab">
+    <q-img v-if="banners && banners?.length > 0" class="product-gallery__banner" :src="getBannerByTab">
       <div>
         <q-btn v-if="getBannerByTab" unelevated flat dense class="relative" color="secondary" icon="img:/images/trash.svg" @click="deleteImageBanner"></q-btn>
       </div>
     </q-img>
     <!--End banner image-->
+
+    <q-img v-if="banners && banners.length === 0 && slideCarousel && slideCarousel.length === 0" src="https://s3.amazonaws.com/roypi.com/static/images/default_product.png"></q-img>
 
     <div class="product-gallery__carousel q-mt-lg">
       <q-carousel

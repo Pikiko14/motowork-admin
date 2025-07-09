@@ -40,7 +40,16 @@
 
     <!--Paginator section-->
     <div class="full-width q-mt-lg d-flex space-between" v-if="totalPages > 0">
-      <q-pagination @update:model-value="doPagination" color="secondary" v-model="currentPage" :max="totalPages" />
+      <q-pagination
+        :max-pages="6"
+        direction-links
+        icon-prev="<"
+        icon-next=">"
+        @update:model-value="doPagination"
+        color="secondary"
+        v-model="currentPage"
+        :max="totalPages"
+      />
       <div>
         <q-btn :disabled="currentPage === 1" flat dense icon="img:/images/left.png" @click="doPreviewPage"></q-btn>
         <q-btn :disabled="currentPage === totalPages" flat dense icon="img:/images/right.png"
@@ -105,7 +114,7 @@ const doNextPage = (): void => {
 
 const getBannerUrl = (idx: number): string => {
   const { banner } = props.products[idx];
-  let url = '';
+  let url = 'https://s3.amazonaws.com/roypi.com/static/images/default_product.png';
   const mobileBanner = banner.find((banner: ProductsBanners) => banner.type_banner === 'mobile')
   if (mobileBanner) {
     url = mobileBanner.path

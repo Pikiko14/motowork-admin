@@ -113,7 +113,7 @@ const doNextPage = (): void => {
 }
 
 const getBannerUrl = (idx: number): string => {
-  const { banner } = props.products[idx];
+  const { banner, images } = props.products[idx];
   let url = 'https://s3.amazonaws.com/roypi.com/static/images/default_product.png';
   const mobileBanner = banner.find((banner: ProductsBanners) => banner.type_banner === 'mobile')
   if (mobileBanner) {
@@ -124,6 +124,12 @@ const getBannerUrl = (idx: number): string => {
       url = desktopBanner.path
     }
   }
+
+  if(url === 'https://s3.amazonaws.com/roypi.com/static/images/default_product.png' && images && images.length > 0) {
+    const img = images.find((image: any) => image.type === 'desktop')
+    url = img?.path || '';
+  }
+
   return url;
 }
 
